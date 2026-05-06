@@ -81,10 +81,6 @@ function HistoryPage() {
               </th>
 
               <th style={thStyle}>
-                Código
-              </th>
-
-              <th style={thStyle}>
                 Curso
               </th>
 
@@ -107,10 +103,6 @@ function HistoryPage() {
               <tr key={item.created_at}>
                 <td style={tdStyle}>
                   {item.student_name}
-                </td>
-
-                <td style={tdStyle}>
-                  {item.code}
                 </td>
 
                 <td style={tdStyle}>
