@@ -9,22 +9,48 @@ function HistoryPage() {
     fetchCheckins();
   }, []);
 
-  // OBTENER FICHAJES
   const fetchCheckins = async () => {
-    const { data, error } =
-      await supabase
-        .from('checkins')
-        .select('*')
-        .order('created_at', {
-          ascending: false,
-        });
+    // FICHAJES
+    const {
+      data: checkinsData,
+      error,
+    } = await supabase
+      .from('checkins')
+      .select('*')
+      .order('created_at', {
+        ascending: false,
+      });
 
     if (error) {
       console.error(error);
       return;
     }
 
-    setCheckins(data);
+    // ALUMNOS
+    const { data: studentsData } =
+      await supabase
+        .from('students')
+        .select('*');
+
+    // UNIR DATOS
+    const formattedCheckins =
+      checkinsData.map((checkin) => {
+        const student =
+          studentsData.find(
+            (s) =>
+              s.dni_code ==
+              checkin.code
+          );
+
+        return {
+          ...checkin,
+          student_name: student
+            ? student.full_name
+            : 'No encontrado',
+        };
+      });
+
+    setCheckins(formattedCheckins);
   };
 
   return (
@@ -51,6 +77,10 @@ function HistoryPage() {
           <thead>
             <tr>
               <th style={thStyle}>
+                Alumno
+              </th>
+
+              <th style={thStyle}>
                 Código
               </th>
 
@@ -75,6 +105,10 @@ function HistoryPage() {
           <tbody>
             {checkins.map((item) => (
               <tr key={item.created_at}>
+                <td style={tdStyle}>
+                  {item.student_name}
+                </td>
+
                 <td style={tdStyle}>
                   {item.code}
                 </td>
