@@ -18,49 +18,84 @@ function HistoryPage() {
   }, []);
 
   const fetchCheckins = async () => {
+    // FICHAJES
     const { data, error } = await supabase
       .from('checkins')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', {
+        ascending: false,
+      });
 
     if (error) {
       console.error(error);
       return;
     }
 
-    setCheckins(data);
+    // ALUMNOS
+    const { data: studentsData } =
+      await supabase
+        .from('students')
+        .select('*');
+
+    // UNIR DATOS
+    const formattedCheckins = data.map(
+      (checkin) => {
+        const student =
+          studentsData.find(
+            (s) =>
+              String(s.dni_code) ===
+              String(checkin.code)
+          );
+
+        return {
+          ...checkin,
+          student_name: student
+            ? student.full_name
+            : 'No encontrado',
+        };
+      }
+    );
+
+    setCheckins(formattedCheckins);
   };
 
-  const filteredCheckins = checkins.filter((item) => {
-    const matchesCode =
-      item.code.includes(searchCode);
+  const filteredCheckins =
+    checkins.filter((item) => {
+      const matchesCode =
+        item.student_name
+          .toLowerCase()
+          .includes(
+            searchCode.toLowerCase()
+          );
 
-    const matchesCourse =
-      filterCourse === '' ||
-      item.course === filterCourse;
+      const matchesCourse =
+        filterCourse === '' ||
+        item.course === filterCourse;
 
-    const matchesType =
-      filterType === '' ||
-      item.type === filterType;
+      const matchesType =
+        filterType === '' ||
+        item.type === filterType;
 
-    return (
-      matchesCode &&
-      matchesCourse &&
-      matchesType
-    );
-  });
+      return (
+        matchesCode &&
+        matchesCourse &&
+        matchesType
+      );
+    });
 
   // EXPORTAR EXCEL
   const exportExcel = () => {
-    const data = filteredCheckins.map((item) => ({
-      Código: item.code,
-      Curso: item.course,
-      Aula: item.classroom,
-      Tipo: item.type,
-      Fecha: new Date(
-        item.created_at
-      ).toLocaleString(),
-    }));
+    const data = filteredCheckins.map(
+      (item) => ({
+        Alumno: item.student_name,
+        Curso: item.course,
+        Aula: item.classroom,
+        Tipo: item.type,
+        Fecha: new Date(
+          item.created_at
+        ).toLocaleString(),
+      })
+    );
 
     const worksheet =
       XLSX.utils.json_to_sheet(data);
@@ -94,25 +129,29 @@ function HistoryPage() {
       startY: 25,
       head: [
         [
-          'Código',
+          'Alumno',
           'Curso',
           'Aula',
           'Tipo',
           'Fecha',
         ],
       ],
-      body: filteredCheckins.map((item) => [
-        item.code,
-        item.course,
-        item.classroom,
-        item.type,
-        new Date(
-          item.created_at
-        ).toLocaleString(),
-      ]),
+      body: filteredCheckins.map(
+        (item) => [
+          item.student_name,
+          item.course,
+          item.classroom,
+          item.type,
+          new Date(
+            item.created_at
+          ).toLocaleString(),
+        ]
+      ),
     });
 
-    doc.save('historico-fichajes.pdf');
+    doc.save(
+      'historico-fichajes.pdf'
+    );
   };
 
   return (
@@ -131,7 +170,7 @@ function HistoryPage() {
       >
         <input
           type="text"
-          placeholder="Buscar código"
+          placeholder="Buscar alumno"
           value={searchCode}
           onChange={(e) =>
             setSearchCode(e.target.value)
@@ -170,7 +209,9 @@ function HistoryPage() {
           }
           style={inputStyle}
         >
-          <option value="">Todos</option>
+          <option value="">
+            Todos
+          </option>
 
           <option value="Entrada">
             Entrada
@@ -227,40 +268,56 @@ function HistoryPage() {
                 color: 'white',
               }}
             >
-              <th style={thStyle}>Código</th>
-              <th style={thStyle}>Curso</th>
-              <th style={thStyle}>Aula</th>
-              <th style={thStyle}>Tipo</th>
-              <th style={thStyle}>Fecha</th>
+              <th style={thStyle}>
+                Alumno
+              </th>
+
+              <th style={thStyle}>
+                Curso
+              </th>
+
+              <th style={thStyle}>
+                Aula
+              </th>
+
+              <th style={thStyle}>
+                Tipo
+              </th>
+
+              <th style={thStyle}>
+                Fecha
+              </th>
             </tr>
           </thead>
 
           <tbody>
-            {filteredCheckins.map((item) => (
-              <tr key={item.id}>
-                <td style={tdStyle}>
-                  {item.code}
-                </td>
+            {filteredCheckins.map(
+              (item) => (
+                <tr key={item.id}>
+                  <td style={tdStyle}>
+                    {item.student_name}
+                  </td>
 
-                <td style={tdStyle}>
-                  {item.course}
-                </td>
+                  <td style={tdStyle}>
+                    {item.course}
+                  </td>
 
-                <td style={tdStyle}>
-                  {item.classroom}
-                </td>
+                  <td style={tdStyle}>
+                    {item.classroom}
+                  </td>
 
-                <td style={tdStyle}>
-                  {item.type}
-                </td>
+                  <td style={tdStyle}>
+                    {item.type}
+                  </td>
 
-                <td style={tdStyle}>
-                  {new Date(
-                    item.created_at
-                  ).toLocaleString()}
-                </td>
-              </tr>
-            ))}
+                  <td style={tdStyle}>
+                    {new Date(
+                      item.created_at
+                    ).toLocaleString()}
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>
