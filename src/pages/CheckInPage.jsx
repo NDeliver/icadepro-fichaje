@@ -89,7 +89,8 @@ function CheckInPage() {
 
     // OBTENER ÚLTIMO FICHAJE
     const {
-      data: lastCheckin,
+      data: lastCheckins,
+      error: lastCheckinError,
     } = await supabase
       .from('checkins')
       .select('*')
@@ -97,8 +98,10 @@ function CheckInPage() {
       .order('created_at', {
         ascending: false,
       })
-      .limit(1)
-      .single();
+      .limit(1);
+
+    const lastCheckin =
+      lastCheckins?.[0];
 
     // EVITAR DOBLE ENTRADA/SALIDA
     if (
