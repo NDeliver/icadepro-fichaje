@@ -38,8 +38,8 @@ function HistoryPage() {
         const student =
           studentsData.find(
             (s) =>
-              s.dni_code ==
-              checkin.code
+              String(s.dni_code) ===
+              String(checkin.code)
           );
 
         return {
