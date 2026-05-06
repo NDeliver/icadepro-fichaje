@@ -28,7 +28,7 @@ function AdminPage() {
 
     for (const student of students) {
       try {
-        const qrUrl = `https://honey-venice-waiting-starting.trycloudflare.com/?code=${student.dni_code}`;
+        const qrUrl = `https://icadepro-fichaje-app.vercel.app/?code=${student.dni_code}`;
 
         const qr =
           await QRCode.toDataURL(qrUrl);
