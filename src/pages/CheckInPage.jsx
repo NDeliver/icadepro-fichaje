@@ -89,19 +89,22 @@ function CheckInPage() {
 
     // OBTENER ÚLTIMO FICHAJE
     const {
-      data: lastCheckins,
+      data: lastCheckin,
       error: lastCheckinError,
     } = await supabase
       .from('checkins')
-      .select('*')
-      .eq('code', code)
-      .order('created_at', {
+      .select('type')
+      .eq('code', Number(code))
+      .order('id', {
         ascending: false,
       })
-      .limit(1);
+      .limit(1)
+      .maybeSingle();
 
-    const lastCheckin =
-      lastCheckins?.[0];
+    console.log(
+      'Último fichaje:',
+      lastCheckin
+    );
 
     // EVITAR DOBLE ENTRADA/SALIDA
     if (
