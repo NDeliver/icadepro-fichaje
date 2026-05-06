@@ -72,6 +72,21 @@ function CheckInPage() {
       return;
     }
 
+    // VALIDAR ALUMNO
+    const {
+      data: studentData,
+      error: studentError,
+    } = await supabase
+      .from('students')
+      .select('*')
+      .eq('dni_code', code)
+      .single();
+
+    if (studentError || !studentData) {
+      alert('Alumno no encontrado');
+      return;
+    }
+
     const { error } = await supabase
       .from('checkins')
       .insert([
@@ -94,6 +109,7 @@ function CheckInPage() {
     setCode('');
     setCourse('');
     setClassroom('');
+    setStudent(null);
   };
 
   // CAMBIO DE CURSO
