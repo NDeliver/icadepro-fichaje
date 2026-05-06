@@ -87,6 +87,32 @@ function CheckInPage() {
       return;
     }
 
+    // OBTENER ÚLTIMO FICHAJE
+    const {
+      data: lastCheckin,
+    } = await supabase
+      .from('checkins')
+      .select('*')
+      .eq('code', code)
+      .order('created_at', {
+        ascending: false,
+      })
+      .limit(1)
+      .single();
+
+    // EVITAR DOBLE ENTRADA/SALIDA
+    if (
+      lastCheckin &&
+      lastCheckin.type === type
+    ) {
+      alert(
+        `Ya existe una ${type.toLowerCase()} registrada`
+      );
+
+      return;
+    }
+
+    // GUARDAR FICHAJE
     const { error } = await supabase
       .from('checkins')
       .insert([
@@ -104,7 +130,9 @@ function CheckInPage() {
       return;
     }
 
-    alert('Fichaje registrado correctamente');
+    alert(
+      `${type} registrada correctamente`
+    );
 
     setCode('');
     setCourse('');
