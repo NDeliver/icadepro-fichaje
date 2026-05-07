@@ -61,16 +61,14 @@ function MainLayout({ children }) {
               marginBottom: '45px',
             }}
           >
-            <h1
-              style={{
-                color: '#f47920',
-                fontSize: '30px',
-                margin: 0,
-                fontWeight: '700',
-              }}
-            >
-              IcadePro
-            </h1>
+            <img
+  src="/src/assets/logo.png"
+  alt="IcadePro"
+  style={{
+    width: '170px',
+    objectFit: 'contain',
+  }}
+/>
 
             <p
               style={{
