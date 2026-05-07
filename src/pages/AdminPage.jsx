@@ -384,50 +384,57 @@ function AdminPage() {
 
 const cardStyle = {
   backgroundColor: 'white',
-  padding: '35px',
-  borderRadius: '24px',
+  padding: '28px',
+  borderRadius: '30px',
+  border: '1px solid #ececec',
   boxShadow:
-    '0 10px 30px rgba(0,0,0,0.05)',
+    '0 4px 20px rgba(0,0,0,0.03)',
 };
 
 const titleStyle = {
   marginTop: 0,
-  marginBottom: '30px',
-  fontSize: '28px',
+  marginBottom: '26px',
+  fontSize: '24px',
   color: '#111827',
+  fontWeight: '700',
 };
 
 const fieldContainer = {
-  marginBottom: '20px',
+  marginBottom: '18px',
 };
 
 const labelStyle = {
   display: 'block',
-  marginBottom: '10px',
-  color: '#374151',
+  marginBottom: '8px',
+  color: '#6b7280',
   fontWeight: '600',
+  fontSize: '14px',
 };
 
 const inputStyle = {
   width: '100%',
-  padding: '16px',
-  borderRadius: '14px',
-  border: '1px solid #d1d5db',
+  padding: '18px',
+  borderRadius: '18px',
+  border: '1px solid #ececec',
   fontSize: '16px',
   boxSizing: 'border-box',
+  backgroundColor: '#fafafa',
+  outline: 'none',
 };
 
 const primaryButton = {
-  marginTop: '10px',
-  padding: '16px 22px',
+  marginTop: '8px',
+  padding: '20px',
   backgroundColor: '#f47920',
   color: 'white',
   border: 'none',
-  borderRadius: '14px',
+  borderRadius: '20px',
   cursor: 'pointer',
-  fontSize: '16px',
-  fontWeight: '600',
+  fontSize: '17px',
+  fontWeight: '700',
   width: '100%',
+  boxShadow:
+    '0 8px 20px rgba(244,121,32,0.20)',
 };
 
 const studentCard = {
@@ -435,19 +442,17 @@ const studentCard = {
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: '20px',
-  backgroundColor: '#f9fafb',
-  border: '1px solid #e5e7eb',
-  borderRadius: '18px',
-  padding: '20px',
-  marginBottom: '18px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #f1f1f1',
+  borderRadius: '22px',
+  padding: '18px',
+  marginBottom: '16px',
 };
 
 const courseCard = {
-  backgroundColor: '#f9fafb',
-  border: '1px solid #e5e7eb',
-  borderRadius: '18px',
-  padding: '20px',
-  marginBottom: '18px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #f1f1f1',
+  borderRadius: '22px',
+  padding: '18px',
+  marginBottom: '16px',
 };
-
-export default AdminPage;
