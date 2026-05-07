@@ -85,15 +85,19 @@ const { error } =
   await supabase
     .from('teacher_checkins')
     .insert([
-      {
-        teacher_code:
-          teacher.teacher_code,
+  {
+    teacher_code:
+      teacher.teacher_code,
 
-        teacher_name:
-          teacher.full_name,
+    teacher_name:
+      teacher.full_name,
 
-        type,
+    type,
 
+    created_at:
+      new Date().toISOString(),
+  },
+]);
         created_at:
           new Date(
             Date.now() +
