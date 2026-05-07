@@ -266,7 +266,8 @@ main {
   style={{
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: '10px',
+    marginTop: '-120px',
+    marginBottom: '-40px',
   }}
 >
 
@@ -282,7 +283,7 @@ main {
       style={{
         width: '600px',
         objectFit: 'contain',
-        marginBottom: '18px',
+        marginBottom: '10px',
       }}
     />
 
@@ -300,15 +301,14 @@ main {
 
 </div>
       <div
-        style={{
-          display: 'flex',
-          gap: '30px',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          marginTop: '-40px',
-          flexWrap: 'nowrap',
-        }}
-      >
+  style={{
+    display: 'flex',
+    gap: '30px',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    flexWrap: 'nowrap',
+  }}
+>
 
         {/* ALUMNADO */}
         <div
