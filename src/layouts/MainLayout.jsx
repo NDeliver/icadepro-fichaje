@@ -213,12 +213,8 @@ function MainLayout({ children }) {
     fontSize: '13px',
     color: '#9ca3af',
     position: 'absolute',
-    bottom: '20px',
-    right: '0',
-    width: '100%',
-    textAlign: 'right',
-    paddingRight: '20px',
-    boxSizing: 'border-box',
+bottom: '20px',
+right: '-110px',
   }}
 >
   © 2026 IcadePro
