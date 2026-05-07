@@ -57,11 +57,17 @@ function MainLayout({ children }) {
           flexDirection:
             'column',
           justifyContent:
-  'center',
+            'flex-start',
+          alignItems:
+            'center',
         }}
       >
 
-        <div>
+        <div
+          style={{
+            width: '100%',
+          }}
+        >
 
           {/* LOGO */}
           <div
@@ -160,14 +166,15 @@ function MainLayout({ children }) {
         </div>
 
         {/* FOOTER */}
-<div
-  style={{
-    paddingTop: '20px',
-    borderTop:
-      '1px solid #f1f1f1',
-    marginTop: '30px',
-  }}
->
+        <div
+          style={{
+            paddingTop: '20px',
+            borderTop:
+              '1px solid #f1f1f1',
+            marginTop: '30px',
+            width: '100%',
+          }}
+        >
 
           {isAuthenticated && (
             <button
@@ -201,6 +208,7 @@ function MainLayout({ children }) {
             style={{
               fontSize: '13px',
               color: '#9ca3af',
+              textAlign: 'center',
             }}
           >
             © 2026 IcadePro
@@ -222,7 +230,7 @@ function MainLayout({ children }) {
           style={{
             display: 'flex',
             justifyContent:
-           'flex-start',
+              'flex-start',
             alignItems:
               'center',
             marginBottom:
