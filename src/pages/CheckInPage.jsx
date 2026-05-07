@@ -266,7 +266,7 @@ main {
   style={{
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: '40px',
+    marginBottom: '10px',
   }}
 >
 
@@ -305,6 +305,7 @@ main {
           gap: '30px',
           alignItems: 'flex-start',
           justifyContent: 'center',
+          marginTop: '-40px',
           flexWrap: 'nowrap',
         }}
       >
