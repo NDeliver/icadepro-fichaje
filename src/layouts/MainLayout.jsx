@@ -53,14 +53,18 @@ function MainLayout({ children }) {
         <aside
           style={{
             width: '240px',
-            minWidth: '240px',
+            height: '100vh',
+            position: 'fixed',
+            top: 0,
+            left: 0,
             backgroundColor:
               'white',
             borderRight:
               '1px solid #ececec',
             padding: '30px 20px',
             boxSizing: 'border-box',
-            flexShrink: 0,
+            overflow: 'hidden',
+            zIndex: 1000,
           }}
         >
 
@@ -101,7 +105,7 @@ function MainLayout({ children }) {
               flexDirection: 'column',
               gap: '10px',
               position: 'relative',
-              minHeight: '220px',
+              
             }}
           >
 
@@ -144,28 +148,26 @@ function MainLayout({ children }) {
                 </Link>
 
                 <button
-                  onClick={
-                    handleLogout
-                  }
-                  style={{
-                    width: '100%',
-                    padding: '14px',
-                    border: 'none',
-                    borderRadius:
-                      '14px',
-                    backgroundColor:
-                      '#111827',
-                    color: 'white',
-                    cursor:
-                      'pointer',
-                    fontWeight:
-                      '600',
-                    fontSize: '14px',
-                    position: 'absolute',
-                    top: '150px',
-                    left: 0,
-                  }}
-                >
+  onClick={
+    handleLogout
+  }
+  style={{
+    width: '100%',
+    padding: '14px',
+    border: 'none',
+    borderRadius:
+      '14px',
+    backgroundColor:
+      '#111827',
+    color: 'white',
+    cursor:
+      'pointer',
+    fontWeight:
+      '600',
+    fontSize: '14px',
+    marginTop: '10px',
+  }}
+>
                   Cerrar sesión
                 </button>
               </>
@@ -184,6 +186,10 @@ function MainLayout({ children }) {
             isCheckinPage
               ? '0px'
               : '35px',
+          marginLeft:
+            isCheckinPage
+              ? '0px'
+              : '240px',
         }}
       >
 
