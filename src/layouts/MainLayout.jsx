@@ -75,16 +75,27 @@ function MainLayout({ children }) {
             }}
           >
 
-            <img
-              src="/icadepro-logo.png"
-              alt="Logo"
-              style={{
-                width: '170px',
-                margin:
-                  '0 auto 10px auto',
-                display: 'block',
-              }}
-            />
+            <div
+  style={{
+    width: '170px',
+    height: '90px',
+    margin:
+      '0 auto 10px auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  }}
+>
+  <img
+    src="/icadepro-logo.png"
+    alt="Logo"
+    style={{
+      width: '170px',
+      display: 'block',
+    }}
+  />
+</div>
 
             <p
               style={{
