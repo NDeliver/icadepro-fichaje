@@ -8,34 +8,36 @@ function MainLayout({ children }) {
       style={{
         display: 'flex',
         minHeight: '100vh',
-        backgroundColor: '#f5f7fb',
+        backgroundColor: '#f7f8fa',
+        fontFamily:
+          'Arial, Helvetica, sans-serif',
       }}
     >
       {/* SIDEBAR */}
       <aside
         style={{
-          width: '260px',
-          backgroundColor: '#1f1f1f',
-          color: 'white',
+          width: '240px',
+          backgroundColor: 'white',
+          borderRight:
+            '1px solid #ececec',
           padding: '30px 20px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
-          boxShadow:
-            '2px 0 10px rgba(0,0,0,0.08)',
+          justifyContent:
+            'space-between',
         }}
       >
         <div>
           {/* LOGO */}
           <div
             style={{
-              marginBottom: '50px',
+              marginBottom: '45px',
             }}
           >
             <h1
               style={{
                 color: '#f47920',
-                fontSize: '32px',
+                fontSize: '30px',
                 margin: 0,
                 fontWeight: '700',
               }}
@@ -45,8 +47,8 @@ function MainLayout({ children }) {
 
             <p
               style={{
-                color: '#999',
-                marginTop: '8px',
+                color: '#9ca3af',
+                marginTop: '6px',
                 fontSize: '14px',
               }}
             >
@@ -59,19 +61,20 @@ function MainLayout({ children }) {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
+              gap: '10px',
             }}
           >
             <Link
               to="/"
               style={{
                 ...linkStyle,
-                ...(location.pathname === '/'
+                ...(location.pathname ===
+                '/'
                   ? activeLink
                   : {}),
               }}
             >
-              Fichaje
+              Inicio
             </Link>
 
             <Link
@@ -97,7 +100,7 @@ function MainLayout({ children }) {
                   : {}),
               }}
             >
-              Histórico
+              Historial
             </Link>
           </nav>
         </div>
@@ -105,14 +108,19 @@ function MainLayout({ children }) {
         {/* FOOTER */}
         <div
           style={{
-            fontSize: '13px',
-            color: '#777',
-            borderTop:
-              '1px solid rgba(255,255,255,0.08)',
             paddingTop: '20px',
+            borderTop:
+              '1px solid #f1f1f1',
           }}
         >
-          © 2026 IcadePro
+          <div
+            style={{
+              fontSize: '13px',
+              color: '#9ca3af',
+            }}
+          >
+            © 2026 IcadePro
+          </div>
         </div>
       </aside>
 
@@ -120,63 +128,105 @@ function MainLayout({ children }) {
       <main
         style={{
           flex: 1,
-          padding: '40px',
+          padding: '35px',
         }}
       >
-        {/* HEADER */}
+        {/* TOPBAR */}
         <div
           style={{
-            backgroundColor: 'white',
-            borderRadius: '14px',
-            padding: '20px 30px',
-            marginBottom: '30px',
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent:
+              'space-between',
             alignItems: 'center',
-            boxShadow:
-              '0 2px 10px rgba(0,0,0,0.05)',
+            marginBottom: '30px',
           }}
         >
           <div>
             <h2
               style={{
                 margin: 0,
-                fontSize: '28px',
+                fontSize: '34px',
                 color: '#111827',
+                fontWeight: '700',
               }}
             >
-              Panel de Control
+              Panel principal
             </h2>
 
             <p
               style={{
-                margin: '5px 0 0 0',
-                color: '#6b7280',
+                marginTop: '8px',
+                color: '#9ca3af',
+                fontSize: '15px',
               }}
             >
-              Gestión de fichajes y alumnos
+              Gestión académica y
+              control de fichajes
             </p>
           </div>
 
+          {/* PERFIL */}
           <div
             style={{
-              width: '45px',
-              height: '45px',
-              borderRadius: '50%',
-              backgroundColor: '#f47920',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: '18px',
+              gap: '14px',
+              backgroundColor: 'white',
+              padding:
+                '10px 16px',
+              borderRadius: '18px',
+              border:
+                '1px solid #ececec',
             }}
           >
-            A
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                backgroundColor:
+                  '#f47920',
+                display: 'flex',
+                alignItems:
+                  'center',
+                justifyContent:
+                  'center',
+                color: 'white',
+                fontWeight: '700',
+              }}
+            >
+              A
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize:
+                    '14px',
+                  fontWeight:
+                    '600',
+                  color:
+                    '#111827',
+                }}
+              >
+                Administrador
+              </div>
+
+              <div
+                style={{
+                  fontSize:
+                    '12px',
+                  color:
+                    '#9ca3af',
+                }}
+              >
+                IcadePro
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* CONTENIDO DINÁMICO */}
+        {/* CONTENIDO */}
         {children}
       </main>
     </div>
@@ -184,18 +234,18 @@ function MainLayout({ children }) {
 }
 
 const linkStyle = {
-  color: '#d1d5db',
   textDecoration: 'none',
-  fontSize: '16px',
-  padding: '14px 18px',
-  borderRadius: '10px',
-  transition: '0.2s',
+  color: '#6b7280',
+  padding: '14px 16px',
+  borderRadius: '14px',
+  fontSize: '15px',
   fontWeight: '500',
+  transition: '0.2s',
 };
 
 const activeLink = {
-  backgroundColor: '#f47920',
-  color: 'white',
+  backgroundColor: '#fff4ec',
+  color: '#f47920',
 };
 
 export default MainLayout;
