@@ -51,151 +51,144 @@ function MainLayout({ children }) {
       {/* SIDEBAR */}
       {!isCheckinPage && (
         <aside
-          style={{
-            width: '240px',
-            backgroundColor:
-              'white',
-            borderRight:
-              '1px solid #ececec',
-            padding: '30px 20px',
-            display: 'flex',
-            flexDirection:
-              'column',
-            alignItems:
-              'stretch',
-            flexShrink: 0,
-          }}
-        >
-
-          {/* LOGO */}
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: '50px',
-            }}
-          >
-
-            <div
   style={{
-    width: '170px',
-    height: '90px',
-    margin:
-      '0 auto 10px auto',
+    width: '240px',
+    backgroundColor:
+      'white',
+    borderRight:
+      '1px solid #ececec',
+    padding: '30px 20px',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection:
+      'column',
+    position: 'relative',
     flexShrink: 0,
   }}
 >
-  <img
-    src="/icadepro-logo.png"
-    alt="Logo"
-    style={{
-      width: '170px',
-      display: 'block',
-    }}
-  />
-</div>
 
-            <p
-              style={{
-                color: '#9ca3af',
-                fontSize: '14px',
-              }}
-            >
-              Sistema de fichajes
-            </p>
+  {/* CONTENIDO SUPERIOR */}
+  <div>
 
-          </div>
-
-          {/* MENÚ */}
-          <nav
-            style={{
-              display: 'flex',
-              flexDirection:
-                'column',
-              gap: '10px',
-            }}
-          >
-
-            <Link
-              to="/"
-              style={{
-                ...linkStyle,
-                ...(location.pathname === '/'
-                  ? activeLink
-                  : {}),
-              }}
-            >
-              Inicio
-            </Link>
-
-            {isAuthenticated && (
-              <>
-                <Link
-                  to="/admin"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname === '/admin'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Administración
-                </Link>
-
-                <Link
-                  to="/history"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname === '/history'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Historial
-                </Link>
-              </>
-            )}
-
-          </nav>
-
-          {/* BOTÓN LOGOUT */}
-{isAuthenticated && (
-  <div
-    style={{
-      marginTop: '20px',
-      width: '100%',
-      flexShrink: 0,
-    }}
-  >
-    <button
-      onClick={
-        handleLogout
-      }
+    {/* LOGO */}
+    <div
       style={{
-        width: '100%',
-        height: '48px',
-        border: 'none',
-        borderRadius:
-          '14px',
-        backgroundColor:
-          '#111827',
-        color: 'white',
-        cursor:
-          'pointer',
-        fontWeight:
-          '600',
-        fontSize: '14px',
-        display: 'block',
+        textAlign: 'center',
+        marginBottom: '50px',
       }}
     >
-      Cerrar sesión
-    </button>
-  </div>
-)}
 
-        </aside>
+      <img
+        src="/icadepro-logo.png"
+        alt="Logo"
+        style={{
+          width: '170px',
+          display: 'block',
+          margin: '0 auto',
+        }}
+      />
+
+      <p
+        style={{
+          color: '#9ca3af',
+          fontSize: '14px',
+          marginTop: '10px',
+        }}
+      >
+        Sistema de fichajes
+      </p>
+
+    </div>
+
+    {/* MENÚ */}
+    <nav
+      style={{
+        display: 'flex',
+        flexDirection:
+          'column',
+        gap: '10px',
+      }}
+    >
+
+      <Link
+        to="/"
+        style={{
+          ...linkStyle,
+          ...(location.pathname === '/'
+            ? activeLink
+            : {}),
+        }}
+      >
+        Inicio
+      </Link>
+
+      {isAuthenticated && (
+        <>
+          <Link
+            to="/admin"
+            style={{
+              ...linkStyle,
+              ...(location.pathname === '/admin'
+                ? activeLink
+                : {}),
+            }}
+          >
+            Administración
+          </Link>
+
+          <Link
+            to="/history"
+            style={{
+              ...linkStyle,
+              ...(location.pathname === '/history'
+                ? activeLink
+                : {}),
+            }}
+          >
+            Historial
+          </Link>
+        </>
+      )}
+
+    </nav>
+
+  </div>
+
+  {/* BOTÓN FIJO */}
+  {isAuthenticated && (
+    <div
+      style={{
+        position: 'absolute',
+        top: '255px',
+        left: '20px',
+        right: '20px',
+      }}
+    >
+      <button
+        onClick={
+          handleLogout
+        }
+        style={{
+          width: '100%',
+          height: '48px',
+          border: 'none',
+          borderRadius:
+            '14px',
+          backgroundColor:
+            '#111827',
+          color: 'white',
+          cursor:
+            'pointer',
+          fontWeight:
+            '600',
+          fontSize: '14px',
+        }}
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  )}
+
+</aside>
       )}
 
       {/* CONTENIDO */}
