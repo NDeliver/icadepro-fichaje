@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
 import QRCode from 'qrcode';
+import toast from 'react-hot-toast';
 
 function AdminPage() {
   const [studentName, setStudentName] =
@@ -84,7 +85,10 @@ function AdminPage() {
   // CREAR ALUMNO
   const createStudent = async () => {
     if (!studentName || !dniCode) {
-      alert('Completa los datos');
+      toast.error(
+        'Completa los datos'
+      );
+
       return;
     }
 
@@ -98,11 +102,14 @@ function AdminPage() {
       ]);
 
     if (error) {
-      alert('Error al crear alumno');
+      toast.error(
+        'Error al crear alumno'
+      );
+
       return;
     }
 
-    alert('Alumno creado');
+    toast.success('Alumno creado');
 
     setStudentName('');
     setDniCode('');
@@ -113,7 +120,10 @@ function AdminPage() {
   // CREAR CURSO
   const createCourse = async () => {
     if (!courseName || !classroom) {
-      alert('Completa los datos');
+      toast.error(
+        'Completa los datos'
+      );
+
       return;
     }
 
@@ -127,11 +137,14 @@ function AdminPage() {
       ]);
 
     if (error) {
-      alert('Error al crear curso');
+      toast.error(
+        'Error al crear curso'
+      );
+
       return;
     }
 
-    alert('Curso creado');
+    toast.success('Curso creado');
 
     setCourseName('');
     setClassroom('');
@@ -456,3 +469,5 @@ const courseCard = {
   padding: '18px',
   marginBottom: '16px',
 };
+
+export default AdminPage;
