@@ -150,31 +150,39 @@ function MainLayout({ children }) {
           </nav>
 
           {/* BOTÓN LOGOUT */}
-          {isAuthenticated && (
-            <button
-              onClick={
-                handleLogout
-              }
-              style={{
-                width: '100%',
-                marginTop: '20px',
-                padding: '14px',
-                border: 'none',
-                borderRadius:
-                  '14px',
-                backgroundColor:
-                  '#111827',
-                color: 'white',
-                cursor:
-                  'pointer',
-                fontWeight:
-                  '600',
-                fontSize: '14px',
-              }}
-            >
-              Cerrar sesión
-            </button>
-          )}
+{isAuthenticated && (
+  <div
+    style={{
+      marginTop: '20px',
+      width: '100%',
+      flexShrink: 0,
+    }}
+  >
+    <button
+      onClick={
+        handleLogout
+      }
+      style={{
+        width: '100%',
+        height: '48px',
+        border: 'none',
+        borderRadius:
+          '14px',
+        backgroundColor:
+          '#111827',
+        color: 'white',
+        cursor:
+          'pointer',
+        fontWeight:
+          '600',
+        fontSize: '14px',
+        display: 'block',
+      }}
+    >
+      Cerrar sesión
+    </button>
+  </div>
+)}
 
         </aside>
       )}
