@@ -100,6 +100,8 @@ function MainLayout({ children }) {
               display: 'flex',
               flexDirection: 'column',
               gap: '10px',
+              position: 'relative',
+              minHeight: '220px',
             }}
           >
 
@@ -159,7 +161,9 @@ function MainLayout({ children }) {
                     fontWeight:
                       '600',
                     fontSize: '14px',
-                    marginTop: '8px',
+                    position: 'absolute',
+                    top: '150px',
+                    left: 0,
                   }}
                 >
                   Cerrar sesión
