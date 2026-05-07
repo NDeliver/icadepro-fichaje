@@ -171,7 +171,7 @@ function MainLayout({ children }) {
             paddingTop: '20px',
             borderTop:
               '1px solid #f1f1f1',
-            marginTop: '30px',
+            marginTop: 'auto',
             width: '100%',
           }}
         >
@@ -208,7 +208,7 @@ function MainLayout({ children }) {
             style={{
               fontSize: '13px',
               color: '#9ca3af',
-              textAlign: 'center',
+              textAlign: 'right',
             }}
           >
             © 2026 IcadePro
