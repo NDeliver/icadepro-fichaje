@@ -212,18 +212,6 @@ function MainLayout({
 
           </div>
 
-          <div
-            style={{
-              fontSize: '13px',
-              color: '#9ca3af',
-              position: 'absolute',
-              bottom: '20px',
-              right: '-110px',
-            }}
-          >
-            © 2026 IcadePro
-          </div>
-
         </aside>
       )}
 
