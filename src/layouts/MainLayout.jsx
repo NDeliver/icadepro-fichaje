@@ -59,64 +59,109 @@ function MainLayout({ children }) {
             borderRight:
               '1px solid #ececec',
             padding: '30px 20px',
+            display: 'flex',
+            flexDirection:
+              'column',
+            justifyContent:
+              'space-between',
           }}
         >
 
-          <nav
-            style={{
-              display: 'flex',
-              flexDirection:
-                'column',
-              gap: '10px',
-            }}
-          >
+          <div>
 
-            <Link
-              to="/"
-              style={linkStyle}
+            {/* LOGO */}
+            <div
+              style={{
+                textAlign: 'center',
+                marginBottom: '40px',
+              }}
             >
-              Inicio
-            </Link>
 
-            {isAuthenticated && (
-              <>
-                <Link
-                  to="/admin"
-                  style={linkStyle}
-                >
-                  Administración
-                </Link>
+              <img
+                src="/icadepro-logo.png"
+                alt="IcadePro"
+                style={{
+                  width: '170px',
+                  margin:
+                    '0 auto 10px auto',
+                  display: 'block',
+                }}
+              />
 
-                <Link
-                  to="/history"
-                  style={linkStyle}
-                >
-                  Historial
-                </Link>
+              <p
+                style={{
+                  color: '#9ca3af',
+                  fontSize: '14px',
+                }}
+              >
+                Sistema de fichajes
+              </p>
 
-                <button
-                  onClick={
-                    handleLogout
-                  }
-                  style={{
-                    marginTop: '20px',
-                    padding: '14px',
-                    border: 'none',
-                    borderRadius:
-                      '14px',
-                    backgroundColor:
-                      '#111827',
-                    color: 'white',
-                    cursor:
-                      'pointer',
-                  }}
-                >
-                  Cerrar sesión
-                </button>
-              </>
-            )}
+            </div>
 
-          </nav>
+            {/* MENÚ */}
+            <nav
+              style={{
+                display: 'flex',
+                flexDirection:
+                  'column',
+                gap: '10px',
+              }}
+            >
+
+              <Link
+                to="/"
+                style={linkStyle}
+              >
+                Inicio
+              </Link>
+
+              {isAuthenticated && (
+                <>
+                  <Link
+                    to="/admin"
+                    style={linkStyle}
+                  >
+                    Administración
+                  </Link>
+
+                  <Link
+                    to="/history"
+                    style={linkStyle}
+                  >
+                    Historial
+                  </Link>
+                </>
+              )}
+
+            </nav>
+
+          </div>
+
+          {/* FOOTER */}
+          {isAuthenticated && (
+            <button
+              onClick={
+                handleLogout
+              }
+              style={{
+                marginTop: '20px',
+                padding: '14px',
+                border: 'none',
+                borderRadius:
+                  '14px',
+                backgroundColor:
+                  '#111827',
+                color: 'white',
+                cursor:
+                  'pointer',
+                fontWeight:
+                  '600',
+              }}
+            >
+              Cerrar sesión
+            </button>
+          )}
 
         </aside>
       )}
@@ -132,88 +177,6 @@ function MainLayout({ children }) {
         }}
       >
 
-        {/* HEADER ADMIN */}
-        {!isCheckinPage &&
-          isAuthenticated && (
-          <div
-            style={{
-              display: 'flex',
-              marginBottom:
-                '30px',
-            }}
-          >
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems:
-                  'center',
-                gap: '14px',
-                backgroundColor:
-                  'white',
-                padding:
-                  '10px 16px',
-                borderRadius:
-                  '18px',
-                border:
-                  '1px solid #ececec',
-              }}
-            >
-
-              <div
-                style={{
-                  width: '42px',
-                  height: '42px',
-                  borderRadius:
-                    '50%',
-                  backgroundColor:
-                    '#f47920',
-                  display: 'flex',
-                  alignItems:
-                    'center',
-                  justifyContent:
-                    'center',
-                  color: 'white',
-                  fontWeight:
-                    '700',
-                }}
-              >
-                A
-              </div>
-
-              <div>
-
-                <div
-                  style={{
-                    fontSize:
-                      '14px',
-                    fontWeight:
-                      '600',
-                    color:
-                      '#111827',
-                  }}
-                >
-                  Administrador
-                </div>
-
-                <div
-                  style={{
-                    fontSize:
-                      '12px',
-                    color:
-                      '#9ca3af',
-                  }}
-                >
-                  IcadePro
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-        )}
-
         {children}
 
       </main>
@@ -227,6 +190,8 @@ const linkStyle = {
   color: '#6b7280',
   padding: '14px 16px',
   borderRadius: '14px',
+  fontWeight: '500',
+  fontSize: '15px',
 };
 
 export default MainLayout;
