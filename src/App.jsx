@@ -11,11 +11,13 @@ import CheckInPage from './pages/CheckInPage';
 import AdminPage from './pages/AdminPage';
 import HistoryPage from './pages/HistoryPage';
 import LoginPage from './pages/LoginPage';
+import TeacherCheckInPage from './pages/TeacherCheckInPage';
 
 // PROTEGER RUTAS
 function ProtectedRoute({
   children,
 }) {
+
   const isAuthenticated =
     localStorage.getItem(
       'icadepro_admin'
@@ -27,16 +29,19 @@ function ProtectedRoute({
 }
 
 function App() {
+
   return (
     <BrowserRouter>
+
       <Routes>
+
         {/* LOGIN */}
         <Route
           path="/login"
           element={<LoginPage />}
         />
 
-        {/* FICHAJE */}
+        {/* FICHAJE ALUMNOS */}
         <Route
           path="/"
           element={
@@ -46,14 +51,26 @@ function App() {
           }
         />
 
+        {/* FICHAJE PROFESORES */}
+        <Route
+          path="/teacher-checkin"
+          element={
+            <MainLayout>
+              <TeacherCheckInPage />
+            </MainLayout>
+          }
+        />
+
         {/* ADMIN */}
         <Route
           path="/admin"
           element={
             <ProtectedRoute>
+
               <MainLayout>
                 <AdminPage />
               </MainLayout>
+
             </ProtectedRoute>
           }
         />
@@ -63,13 +80,17 @@ function App() {
           path="/history"
           element={
             <ProtectedRoute>
+
               <MainLayout>
                 <HistoryPage />
               </MainLayout>
+
             </ProtectedRoute>
           }
         />
+
       </Routes>
+
     </BrowserRouter>
   );
 }
