@@ -160,13 +160,14 @@ function MainLayout({ children }) {
         </div>
 
         {/* FOOTER */}
-        <div
-          style={{
-            paddingTop: '20px',
-            borderTop:
-              '1px solid #f1f1f1',
-          }}
-        >
+<div
+  style={{
+    paddingTop: '20px',
+    borderTop:
+      '1px solid #f1f1f1',
+    marginTop: '30px',
+  }}
+>
 
           {isAuthenticated && (
             <button
@@ -221,7 +222,7 @@ function MainLayout({ children }) {
           style={{
             display: 'flex',
             justifyContent:
-              'space-between',
+           'flex-start',
             alignItems:
               'center',
             marginBottom:
