@@ -296,7 +296,7 @@ main {
     letterSpacing: '0.5px',
   }}
 >
-  Control horario PED
+  Control horarios PED
 </h2>
   
 
