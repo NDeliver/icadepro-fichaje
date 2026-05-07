@@ -154,15 +154,16 @@ function MainLayout({ children }) {
   </div>
 
   {/* BOTÓN FIJO */}
-  {isAuthenticated && (
-    <div
-      style={{
-        position: 'absolute',
-        top: '255px',
-        left: '20px',
-        right: '20px',
-      }}
-    >
+{isAuthenticated && (
+  <div
+    style={{
+      position: 'fixed',
+      width: '200px',
+      left: '20px',
+      top: '265px',
+      zIndex: 1000,
+    }}
+  >
       <button
         onClick={
           handleLogout
