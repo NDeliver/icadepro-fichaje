@@ -198,7 +198,6 @@ const linkStyle = {
   borderRadius: '14px',
   fontWeight: '500',
   fontSize: '15px',
-  transition: '0.2s',
 };
 
 const activeLink = {
