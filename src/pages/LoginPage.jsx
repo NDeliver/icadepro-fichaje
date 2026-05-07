@@ -66,14 +66,14 @@ function LoginPage() {
   style={{
     width: '240px',
     objectFit: 'contain',
-    marginBottom: '10px',
+    marginBottom: '0px',
   }}
 />
 
           <p
             style={{
               color: '#6b7280',
-              marginTop: '10px',
+              marginTop: '0px',
             }}
           >
             Acceso administrador
