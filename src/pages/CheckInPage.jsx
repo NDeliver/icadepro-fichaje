@@ -226,14 +226,18 @@ function CheckInPage() {
         await supabase
           .from('checkins')
           .insert([
-            {
-              code,
-              course,
-              classroom,
-              teacher,
-              type,
-            },
-          ]);
+  {
+    code,
+    course,
+    classroom,
+    teacher,
+    type,
+    created_at: new Date(
+      Date.now() +
+        60 * 60 * 1000
+    ).toISOString(),
+  },
+]);
 
       if (error) {
 
