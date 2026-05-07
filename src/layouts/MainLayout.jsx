@@ -6,10 +6,7 @@ import {
 
 import toast from 'react-hot-toast';
 
-function MainLayout({
-  children,
-  hideHeader = false,
-}) {
+function MainLayout({ children }) {
 
   const location =
     useLocation();
@@ -21,6 +18,11 @@ function MainLayout({
     localStorage.getItem(
       'icadepro_admin'
     ) === 'true';
+
+  // OCULTAR EN FICHAJES
+  const isCheckinPage =
+    location.pathname === '/' ||
+    location.pathname === '/teacher-checkin';
 
   const handleLogout = () => {
 
@@ -48,7 +50,7 @@ function MainLayout({
     >
 
       {/* SIDEBAR */}
-      {!hideHeader && (
+      {!isCheckinPage && (
         <aside
           style={{
             width: '240px',
@@ -57,160 +59,64 @@ function MainLayout({
             borderRight:
               '1px solid #ececec',
             padding: '30px 20px',
-            display: 'flex',
-            flexDirection:
-              'column',
-            justifyContent:
-              'flex-start',
-            alignItems:
-              'center',
-            position:
-              'relative',
           }}
         >
 
-          <div
+          <nav
             style={{
-              width: '100%',
+              display: 'flex',
+              flexDirection:
+                'column',
+              gap: '10px',
             }}
           >
 
-            {/* LOGO */}
-            <div
-              style={{
-                marginBottom:
-                  '45px',
-                textAlign:
-                  'center',
-              }}
+            <Link
+              to="/"
+              style={linkStyle}
             >
-
-              <img
-                src="/icadepro-logo.png"
-                alt="IcadePro"
-                style={{
-                  width: '180px',
-                  display:
-                    'block',
-                  margin:
-                    '0 auto',
-                }}
-              />
-
-              <p
-                style={{
-                  color:
-                    '#9ca3af',
-                  marginTop:
-                    '10px',
-                  fontSize:
-                    '14px',
-                }}
-              >
-                Sistema de fichajes
-              </p>
-
-            </div>
-
-            {/* MENÚ */}
-            <nav
-              style={{
-                display: 'flex',
-                flexDirection:
-                  'column',
-                gap: '10px',
-              }}
-            >
-
-              <Link
-                to="/"
-                style={{
-                  ...linkStyle,
-                  ...(location.pathname ===
-                  '/'
-                    ? activeLink
-                    : {}),
-                }}
-              >
-                Inicio
-              </Link>
-
-              {isAuthenticated && (
-                <>
-
-                  <Link
-                    to="/admin"
-                    style={{
-                      ...linkStyle,
-                      ...(location.pathname ===
-                      '/admin'
-                        ? activeLink
-                        : {}),
-                    }}
-                  >
-                    Administración
-                  </Link>
-
-                  <Link
-                    to="/history"
-                    style={{
-                      ...linkStyle,
-                      ...(location.pathname ===
-                      '/history'
-                        ? activeLink
-                        : {}),
-                    }}
-                  >
-                    Historial
-                  </Link>
-
-                </>
-              )}
-
-            </nav>
-
-          </div>
-
-          {/* FOOTER */}
-          <div
-            style={{
-              paddingTop: '20px',
-              borderTop:
-                '1px solid #f1f1f1',
-              marginTop: '30px',
-              width: '100%',
-            }}
-          >
+              Inicio
+            </Link>
 
             {isAuthenticated && (
-              <button
-                onClick={
-                  handleLogout
-                }
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  marginBottom:
-                    '16px',
-                  border: 'none',
-                  borderRadius:
-                    '14px',
-                  backgroundColor:
-                    '#111827',
-                  color: 'white',
-                  cursor:
-                    'pointer',
-                  fontWeight:
-                    '600',
-                  fontSize:
-                    '14px',
-                }}
-              >
-                Cerrar sesión
-              </button>
+              <>
+                <Link
+                  to="/admin"
+                  style={linkStyle}
+                >
+                  Administración
+                </Link>
+
+                <Link
+                  to="/history"
+                  style={linkStyle}
+                >
+                  Historial
+                </Link>
+
+                <button
+                  onClick={
+                    handleLogout
+                  }
+                  style={{
+                    marginTop: '20px',
+                    padding: '14px',
+                    border: 'none',
+                    borderRadius:
+                      '14px',
+                    backgroundColor:
+                      '#111827',
+                    color: 'white',
+                    cursor:
+                      'pointer',
+                  }}
+                >
+                  Cerrar sesión
+                </button>
+              </>
             )}
 
-          </div>
+          </nav>
 
         </aside>
       )}
@@ -220,96 +126,90 @@ function MainLayout({
         style={{
           flex: 1,
           padding:
-            hideHeader
+            isCheckinPage
               ? '0px'
               : '35px',
         }}
       >
 
-        {!hideHeader && (
+        {/* HEADER ADMIN */}
+        {!isCheckinPage &&
+          isAuthenticated && (
           <div
             style={{
               display: 'flex',
-              justifyContent:
-                'flex-start',
-              alignItems:
-                'center',
               marginBottom:
                 '30px',
             }}
           >
 
-            <div />
+            <div
+              style={{
+                display: 'flex',
+                alignItems:
+                  'center',
+                gap: '14px',
+                backgroundColor:
+                  'white',
+                padding:
+                  '10px 16px',
+                borderRadius:
+                  '18px',
+                border:
+                  '1px solid #ececec',
+              }}
+            >
 
-            {isAuthenticated && (
               <div
                 style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius:
+                    '50%',
+                  backgroundColor:
+                    '#f47920',
                   display: 'flex',
                   alignItems:
                     'center',
-                  gap: '14px',
-                  backgroundColor:
-                    'white',
-                  padding:
-                    '10px 16px',
-                  borderRadius:
-                    '18px',
-                  border:
-                    '1px solid #ececec',
+                  justifyContent:
+                    'center',
+                  color: 'white',
+                  fontWeight:
+                    '700',
                 }}
               >
+                A
+              </div>
+
+              <div>
 
                 <div
                   style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius:
-                      '50%',
-                    backgroundColor:
-                      '#f47920',
-                    display: 'flex',
-                    alignItems:
-                      'center',
-                    justifyContent:
-                      'center',
-                    color: 'white',
+                    fontSize:
+                      '14px',
                     fontWeight:
-                      '700',
+                      '600',
+                    color:
+                      '#111827',
                   }}
                 >
-                  A
+                  Administrador
                 </div>
 
-                <div>
-
-                  <div
-                    style={{
-                      fontSize:
-                        '14px',
-                      fontWeight:
-                        '600',
-                      color:
-                        '#111827',
-                    }}
-                  >
-                    Administrador
-                  </div>
-
-                  <div
-                    style={{
-                      fontSize:
-                        '12px',
-                      color:
-                        '#9ca3af',
-                    }}
-                  >
-                    IcadePro
-                  </div>
-
+                <div
+                  style={{
+                    fontSize:
+                      '12px',
+                    color:
+                      '#9ca3af',
+                  }}
+                >
+                  IcadePro
                 </div>
 
               </div>
-            )}
+
+            </div>
 
           </div>
         )}
@@ -327,15 +227,6 @@ const linkStyle = {
   color: '#6b7280',
   padding: '14px 16px',
   borderRadius: '14px',
-  fontSize: '15px',
-  fontWeight: '500',
-  transition: '0.2s',
-};
-
-const activeLink = {
-  backgroundColor:
-    '#fff4ec',
-  color: '#f47920',
 };
 
 export default MainLayout;
