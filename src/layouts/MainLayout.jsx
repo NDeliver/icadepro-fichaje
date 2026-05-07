@@ -209,16 +209,20 @@ function MainLayout({ children }) {
         </div>
 
         <div
-          style={{
-            fontSize: '13px',
-            color: '#9ca3af',
-            position: 'absolute',
-            bottom: '20px',
-            right: '20px',
-          }}
-        >
-          © 2026 IcadePro
-        </div>
+  style={{
+    fontSize: '13px',
+    color: '#9ca3af',
+    position: 'absolute',
+    bottom: '20px',
+    right: '0',
+    width: '100%',
+    textAlign: 'right',
+    paddingRight: '20px',
+    boxSizing: 'border-box',
+  }}
+>
+  © 2026 IcadePro
+</div>
 
       </aside>
 
