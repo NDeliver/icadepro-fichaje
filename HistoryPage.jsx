@@ -6,8 +6,13 @@ function HistoryPage() {
   const [checkins, setCheckins] =
     useState([]);
 
+  const [teacherCheckins,
+    setTeacherCheckins] =
+    useState([]);
+
   useEffect(() => {
     fetchCheckins();
+    fetchTeacherCheckins();
   }, []);
 
   const fetchCheckins = async () => {
@@ -56,21 +61,45 @@ function HistoryPage() {
     setCheckins(formattedCheckins);
   };
 
+  // PROFESORES
+  const fetchTeacherCheckins =
+    async () => {
+
+      const {
+        data,
+        error,
+      } = await supabase
+        .from(
+          'teacher_checkins'
+        )
+        .select('*')
+        .order('created_at', {
+          ascending: false,
+        });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setTeacherCheckins(data);
+    };
+
   // FORMATEAR FECHA CANARIAS
   const formatCanaryDate = (
-  date
-) => {
+    date
+  ) => {
 
-  const d = new Date(date);
+    const d = new Date(date);
 
-  d.setHours(
-    d.getHours() + 1
-  );
+    d.setHours(
+      d.getHours() + 1
+    );
 
-  return d.toLocaleString(
-    'es-ES'
-  );
-};
+    return d.toLocaleString(
+      'es-ES'
+    );
+  };
 
   return (
     <div>
@@ -79,6 +108,7 @@ function HistoryPage() {
         Historial de Fichajes
       </h1>
 
+      {/* HISTORIAL ALUMNADO */}
       <div
         style={{
           marginTop: '20px',
@@ -89,6 +119,15 @@ function HistoryPage() {
           overflowX: 'auto',
         }}
       >
+
+        <h2
+          style={{
+            marginTop: 0,
+            marginBottom: '20px',
+          }}
+        >
+          Historial Alumnado
+        </h2>
 
         <table
           style={{
@@ -119,7 +158,7 @@ function HistoryPage() {
               </th>
 
               <th style={thStyle}>
-                Fecha
+                Fecha/Hora
               </th>
 
             </tr>
@@ -150,6 +189,92 @@ function HistoryPage() {
                   <td style={tdStyle}>
                     {
                       item.classroom
+                    }
+                  </td>
+
+                  <td style={tdStyle}>
+                    {item.type}
+                  </td>
+
+                  <td style={tdStyle}>
+                    {formatCanaryDate(
+                      item.created_at
+                    )}
+                  </td>
+
+                </tr>
+              )
+            )}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      {/* HISTORIAL PROFESORADO */}
+      <div
+        style={{
+          marginTop: '30px',
+          backgroundColor:
+            'white',
+          padding: '20px',
+          borderRadius: '10px',
+          overflowX: 'auto',
+        }}
+      >
+
+        <h2
+          style={{
+            marginTop: 0,
+            marginBottom: '20px',
+          }}
+        >
+          Historial Profesorado
+        </h2>
+
+        <table
+          style={{
+            width: '100%',
+            borderCollapse:
+              'collapse',
+          }}
+        >
+
+          <thead>
+
+            <tr>
+
+              <th style={thStyle}>
+                Profesor
+              </th>
+
+              <th style={thStyle}>
+                Tipo
+              </th>
+
+              <th style={thStyle}>
+                Fecha/Hora
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {teacherCheckins.map(
+              (item) => (
+
+                <tr
+                  key={
+                    item.created_at
+                  }
+                >
+
+                  <td style={tdStyle}>
+                    {
+                      item.teacher_name
                     }
                   </td>
 
