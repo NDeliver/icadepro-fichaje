@@ -266,7 +266,7 @@ function CheckInPage() {
         gap: '30px',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
       }}
     >
 
@@ -274,7 +274,7 @@ function CheckInPage() {
       <div
         style={{
           width: '100%',
-          maxWidth: '700px',
+          maxWidth: '600px',
         }}
       >
 
@@ -507,7 +507,7 @@ function CheckInPage() {
       <div
         style={{
           width: '100%',
-          maxWidth: '700px',
+          maxWidth: '600px',
         }}
       >
 

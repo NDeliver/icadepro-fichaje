@@ -116,36 +116,53 @@ function TeacherCheckInPage() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent:
-          'center',
-      }}
-    >
 
+    <div>
+
+      {/* TITULO */}
       <div
         style={{
-          width: '100%',
-          maxWidth: '700px',
+          marginBottom: '30px',
         }}
       >
 
-        <h1>
+        <h1
+          style={{
+            margin: 0,
+            fontSize: '42px',
+            color: '#111827',
+            fontWeight: '700',
+          }}
+        >
           Fichaje Profesores
         </h1>
 
-        <div
+        <p
           style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '25px',
+            marginTop: '10px',
+            color: '#6b7280',
+            fontSize: '16px',
           }}
         >
+          Registra entradas y
+          salidas de profesores.
+        </p>
+
+      </div>
+
+      {/* CARD */}
+      <div style={cardStyle}>
+
+        {/* CODIGO */}
+        <div style={fieldContainer}>
+
+          <label style={labelStyle}>
+            Código profesor
+          </label>
 
           <input
             type="text"
-            placeholder="Código profesor"
+            maxLength="4"
             value={code}
             onChange={async (e) => {
 
@@ -161,37 +178,74 @@ function TeacherCheckInPage() {
                 await fetchTeacher(
                   value
                 );
+
+              } else {
+
+                setTeacher(null);
               }
             }}
-            style={{
-              width: '100%',
-              padding: '18px',
-              borderRadius: '16px',
-              marginBottom: '20px',
-            }}
+            placeholder="Introduce el código"
+            style={inputStyle}
           />
 
-          {teacher && (
-            <div
-              style={{
-                marginBottom: '20px',
-              }}
-            >
+        </div>
 
-              <h3>
+        {/* PROFESOR */}
+        {teacher && (
+
+          <div style={teacherCard}>
+
+            <div>
+
+              <div
+                style={{
+                  fontSize: '14px',
+                  color: '#6b7280',
+                  marginBottom:
+                    '5px',
+                }}
+              >
+                Profesor detectado
+              </div>
+
+              <h3
+                style={{
+                  margin: 0,
+                  color: '#111827',
+                }}
+              >
                 {
                   teacher.full_name
                 }
               </h3>
 
-              <p>
-                Código: {
+              <p
+                style={{
+                  marginTop: '5px',
+                  color: '#6b7280',
+                }}
+              >
+                Código:{' '}
+                {
                   teacher.teacher_code
                 }
               </p>
 
             </div>
-          )}
+
+            <div
+              style={teacherBadge}
+            >
+              OK
+            </div>
+
+          </div>
+        )}
+
+        {/* BOTONES */}
+        <div
+          style={buttonContainer}
+        >
 
           <button
             onClick={() =>
@@ -199,6 +253,7 @@ function TeacherCheckInPage() {
                 'Entrada'
               )
             }
+            style={entryButton}
           >
             Registrar Entrada
           </button>
@@ -209,9 +264,7 @@ function TeacherCheckInPage() {
                 'Salida'
               )
             }
-            style={{
-              marginLeft: '10px',
-            }}
+            style={exitButton}
           >
             Registrar Salida
           </button>
@@ -223,5 +276,91 @@ function TeacherCheckInPage() {
     </div>
   );
 }
+
+const cardStyle = {
+  backgroundColor: 'white',
+  padding: '32px',
+  borderRadius: '30px',
+  border: '1px solid #ececec',
+  boxShadow:
+    '0 4px 20px rgba(0,0,0,0.03)',
+};
+
+const fieldContainer = {
+  marginBottom: '22px',
+};
+
+const labelStyle = {
+  display: 'block',
+  marginBottom: '10px',
+  color: '#6b7280',
+  fontWeight: '600',
+  fontSize: '14px',
+};
+
+const inputStyle = {
+  width: '100%',
+  padding: '18px',
+  borderRadius: '18px',
+  border: '1px solid #e5e7eb',
+  fontSize: '16px',
+  outline: 'none',
+  boxSizing: 'border-box',
+  backgroundColor: '#fafafa',
+};
+
+const buttonContainer = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  marginTop: '35px',
+};
+
+const entryButton = {
+  width: '100%',
+  padding: '22px',
+  backgroundColor: '#f47920',
+  color: 'white',
+  border: 'none',
+  borderRadius: '22px',
+  cursor: 'pointer',
+  fontSize: '18px',
+  fontWeight: '700',
+  boxShadow:
+    '0 8px 20px rgba(244,121,32,0.25)',
+};
+
+const exitButton = {
+  width: '100%',
+  padding: '22px',
+  backgroundColor: 'white',
+  color: '#111827',
+  border: '2px solid #ececec',
+  borderRadius: '22px',
+  cursor: 'pointer',
+  fontSize: '18px',
+  fontWeight: '700',
+};
+
+const teacherCard = {
+  backgroundColor: '#fff7f2',
+  border: '1px solid #ffe2cd',
+  borderRadius: '22px',
+  padding: '22px',
+  marginBottom: '24px',
+  display: 'flex',
+  justifyContent:
+    'space-between',
+  alignItems: 'center',
+};
+
+const teacherBadge = {
+  backgroundColor: '#22c55e',
+  color: 'white',
+  padding: '12px 16px',
+  borderRadius: '14px',
+  fontWeight: '700',
+  fontSize: '14px',
+};
 
 export default TeacherCheckInPage;
