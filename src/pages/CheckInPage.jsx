@@ -288,8 +288,8 @@ main {
     />
     <h2
   style={{
-    marginTop: '10px',
-    marginBottom: '0',
+    marginTop: '-5px',
+    marginBottom: '40px',
     color: '#8b949e',
     fontSize: '34px',
     fontWeight: '600',
