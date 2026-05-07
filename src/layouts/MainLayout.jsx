@@ -19,7 +19,6 @@ function MainLayout({ children }) {
       'icadepro_admin'
     ) === 'true';
 
-  // OCULTAR EN FICHAJES
   const isCheckinPage =
     location.pathname === '/' ||
     location.pathname === '/teacher-checkin';
@@ -79,7 +78,7 @@ function MainLayout({ children }) {
 
               <img
                 src="/icadepro-logo.png"
-                alt="IcadePro"
+                alt="Logo"
                 style={{
                   width: '170px',
                   margin:
