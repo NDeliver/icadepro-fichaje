@@ -95,80 +95,88 @@ function MainLayout({ children }) {
           </div>
 
           {/* MENÚ */}
-          <nav
-            style={{
-              display: 'flex',
-              flexDirection:
-                'column',
-              gap: '10px',
-            }}
-          >
+<nav
+  style={{
+    display: 'flex',
+    flexDirection:
+      'column',
+    gap: '10px',
+  }}
+>
 
-            <Link
-              to="/"
-              style={{
-                ...linkStyle,
-                ...(location.pathname === '/'
-                  ? activeLink
-                  : {}),
-              }}
-            >
-              Inicio
-            </Link>
+  <Link
+    to="/"
+    style={{
+      ...linkStyle,
+      ...(location.pathname === '/'
+        ? activeLink
+        : {}),
+    }}
+  >
+    Inicio
+  </Link>
 
-            {isAuthenticated && (
-              <>
-                <Link
-                  to="/admin"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname === '/admin'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Administración
-                </Link>
+  {isAuthenticated && (
+    <>
+      <Link
+        to="/admin"
+        style={{
+          ...linkStyle,
+          ...(location.pathname === '/admin'
+            ? activeLink
+            : {}),
+        }}
+      >
+        Administración
+      </Link>
 
-                <Link
-                  to="/history"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname === '/history'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Historial
-                </Link>
+      <Link
+        to="/history"
+        style={{
+          ...linkStyle,
+          ...(location.pathname === '/history'
+            ? activeLink
+            : {}),
+        }}
+      >
+        Historial
+      </Link>
+    </>
+  )}
 
-                {/* BOTÓN CERRAR SESIÓN */}
-                <button
-                  onClick={
-                    handleLogout
-                  }
-                  style={{
-                    marginTop: '15px',
-                    padding: '14px',
-                    border: 'none',
-                    borderRadius:
-                      '14px',
-                    backgroundColor:
-                      '#111827',
-                    color: 'white',
-                    cursor:
-                      'pointer',
-                    fontWeight:
-                      '600',
-                    fontSize: '14px',
-                  }}
-                >
-                  Cerrar sesión
-                </button>
-              </>
-            )}
+</nav>
 
-          </nav>
+{/* BOTÓN LOGOUT */}
+{isAuthenticated && (
+  <div
+    style={{
+      marginTop: '20px',
+    }}
+  >
+    <button
+      onClick={
+        handleLogout
+      }
+      style={{
+        width: '100%',
+        padding: '14px',
+        border: 'none',
+        borderRadius:
+          '14px',
+        backgroundColor:
+          '#111827',
+        color: 'white',
+        cursor:
+          'pointer',
+        fontWeight:
+          '600',
+        fontSize: '14px',
+      }}
+    >
+      Cerrar sesión
+    </button>
+  </div>
+)}
 
         </aside>
       )}
