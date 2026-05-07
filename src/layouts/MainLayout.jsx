@@ -229,36 +229,7 @@ function MainLayout({ children }) {
           }}
         >
 
-          <div>
-
-            <h2
-              style={{
-                margin: 0,
-                fontSize:
-                  '34px',
-                color:
-                  '#111827',
-                fontWeight:
-                  '700',
-              }}
-            >
-              Panel principal
-            </h2>
-
-            <p
-              style={{
-                marginTop: '8px',
-                color:
-                  '#9ca3af',
-                fontSize:
-                  '15px',
-              }}
-            >
-              Gestión académica y
-              control de fichajes
-            </p>
-
-          </div>
+          <div />
 
           {isAuthenticated && (
             <div
