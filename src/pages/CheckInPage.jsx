@@ -280,7 +280,7 @@ main {
       src="/icadepro-logo.png"
       alt="IcadePro"
       style={{
-        width: '180px',
+        width: '320px',
         objectFit: 'contain',
         marginBottom: '18px',
       }}
