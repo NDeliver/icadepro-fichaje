@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
 import toast from 'react-hot-toast';
+import TeacherCheckInPage from './TeacherCheckInPage';
 
 function CheckInPage() {
 
@@ -135,11 +136,6 @@ function CheckInPage() {
         return;
       }
 
-      console.log(
-        'CURSO:',
-        foundCourse
-      );
-
       // AUTOCOMPLETAR
       setCourse(
         foundCourse.name || ''
@@ -263,14 +259,18 @@ function CheckInPage() {
     };
 
   return (
+
     <div
       style={{
         display: 'flex',
-        justifyContent:
-          'center',
+        gap: '30px',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
       }}
     >
 
+      {/* ALUMNADO */}
       <div
         style={{
           width: '100%',
@@ -293,7 +293,7 @@ function CheckInPage() {
               fontWeight: '700',
             }}
           >
-            Fichaje
+            Fichaje Alumnado
           </h1>
 
           <p
@@ -304,8 +304,7 @@ function CheckInPage() {
             }}
           >
             Registra entradas y
-            salidas de alumnos
-            de forma rápida.
+            salidas de alumnos.
           </p>
 
         </div>
@@ -501,6 +500,18 @@ function CheckInPage() {
           </div>
 
         </div>
+
+      </div>
+
+      {/* PROFESORES */}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '700px',
+        }}
+      >
+
+        <TeacherCheckInPage />
 
       </div>
 
