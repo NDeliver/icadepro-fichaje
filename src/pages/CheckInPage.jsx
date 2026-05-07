@@ -337,72 +337,74 @@ function CheckInPage() {
 
 const cardStyle = {
   backgroundColor: 'white',
-  padding: '40px',
-  borderRadius: '24px',
+  padding: '32px',
+  borderRadius: '30px',
+  border: '1px solid #ececec',
   boxShadow:
-    '0 10px 30px rgba(0,0,0,0.06)',
+    '0 4px 20px rgba(0,0,0,0.03)',
 };
 
 const fieldContainer = {
-  marginBottom: '24px',
+  marginBottom: '22px',
 };
 
 const labelStyle = {
   display: 'block',
   marginBottom: '10px',
-  color: '#374151',
+  color: '#6b7280',
   fontWeight: '600',
-  fontSize: '15px',
+  fontSize: '14px',
 };
 
 const inputStyle = {
   width: '100%',
-  padding: '16px',
-  borderRadius: '14px',
-  border: '1px solid #d1d5db',
+  padding: '18px',
+  borderRadius: '18px',
+  border: '1px solid #e5e7eb',
   fontSize: '16px',
   outline: 'none',
   boxSizing: 'border-box',
+  backgroundColor: '#fafafa',
 };
 
 const buttonContainer = {
   display: 'flex',
-  gap: '15px',
-  marginTop: '30px',
-  flexWrap: 'wrap',
+  flexDirection: 'column',
+  gap: '16px',
+  marginTop: '35px',
 };
 
 const entryButton = {
-  flex: 1,
-  padding: '16px',
+  width: '100%',
+  padding: '22px',
   backgroundColor: '#f47920',
   color: 'white',
   border: 'none',
-  borderRadius: '14px',
+  borderRadius: '22px',
   cursor: 'pointer',
-  fontSize: '16px',
-  fontWeight: '600',
-  minWidth: '220px',
+  fontSize: '18px',
+  fontWeight: '700',
+  boxShadow:
+    '0 8px 20px rgba(244,121,32,0.25)',
 };
 
 const exitButton = {
-  flex: 1,
-  padding: '16px',
-  backgroundColor: '#111827',
-  color: 'white',
-  border: 'none',
-  borderRadius: '14px',
+  width: '100%',
+  padding: '22px',
+  backgroundColor: 'white',
+  color: '#111827',
+  border: '2px solid #ececec',
+  borderRadius: '22px',
   cursor: 'pointer',
-  fontSize: '16px',
-  fontWeight: '600',
-  minWidth: '220px',
+  fontSize: '18px',
+  fontWeight: '700',
 };
 
 const studentCard = {
-  backgroundColor: '#f9fafb',
-  border: '1px solid #e5e7eb',
-  borderRadius: '18px',
-  padding: '20px',
+  backgroundColor: '#fff7f2',
+  border: '1px solid #ffe2cd',
+  borderRadius: '22px',
+  padding: '22px',
   marginBottom: '24px',
   display: 'flex',
   justifyContent: 'space-between',
@@ -412,9 +414,8 @@ const studentCard = {
 const studentBadge = {
   backgroundColor: '#22c55e',
   color: 'white',
-  padding: '10px 14px',
-  borderRadius: '12px',
+  padding: '12px 16px',
+  borderRadius: '14px',
   fontWeight: '700',
+  fontSize: '14px',
 };
-
-export default CheckInPage;
