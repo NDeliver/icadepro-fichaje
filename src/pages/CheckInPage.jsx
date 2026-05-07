@@ -6,7 +6,12 @@ function CheckInPage() {
   const [code, setCode] = useState('');
   const [course, setCourse] = useState('');
   const [classroom, setClassroom] = useState('');
-  const [courses, setCourses] = useState([]);
+  const [teacher, setTeacher] =
+    useState('');
+
+  const [courses, setCourses] =
+    useState([]);
+
   const [student, setStudent] =
     useState(null);
 
@@ -30,12 +35,13 @@ function CheckInPage() {
 
   // OBTENER CURSOS
   const fetchCourses = async () => {
-    const { data, error } = await supabase
-      .from('courses')
-      .select('*')
-      .order('created_at', {
-        ascending: false,
-      });
+    const { data, error } =
+      await supabase
+        .from('courses')
+        .select('*')
+        .order('created_at', {
+          ascending: false,
+        });
 
     if (error) {
       console.error(error);
@@ -67,8 +73,15 @@ function CheckInPage() {
     };
 
   // REGISTRAR FICHAJE
-  const handleCheckIn = async (type) => {
-    if (!code || !course || !classroom) {
+  const handleCheckIn = async (
+    type
+  ) => {
+    if (
+      !code ||
+      !course ||
+      !classroom ||
+      !teacher
+    ) {
       toast.error(
         'Completa todos los campos'
       );
@@ -130,6 +143,7 @@ function CheckInPage() {
           code,
           course,
           classroom,
+          teacher,
           type,
         },
       ]);
@@ -151,16 +165,21 @@ function CheckInPage() {
     setCode('');
     setCourse('');
     setClassroom('');
+    setTeacher('');
     setStudent(null);
   };
 
   // CAMBIO DE CURSO
-  const handleCourseChange = (value) => {
+  const handleCourseChange = (
+    value
+  ) => {
     setCourse(value);
 
-    const selectedCourse = courses.find(
-      (item) => item.name === value
-    );
+    const selectedCourse =
+      courses.find(
+        (item) =>
+          item.name === value
+      );
 
     if (selectedCourse) {
       setClassroom(
@@ -206,8 +225,9 @@ function CheckInPage() {
               fontSize: '16px',
             }}
           >
-            Registra entradas y salidas
-            de alumnos de forma rápida.
+            Registra entradas y
+            salidas de alumnos de
+            forma rápida.
           </p>
         </div>
 
@@ -224,7 +244,9 @@ function CheckInPage() {
               maxLength="4"
               value={code}
               onChange={(e) =>
-                setCode(e.target.value)
+                setCode(
+                  e.target.value
+                )
               }
               placeholder="Introduce el código"
               style={inputStyle}
@@ -237,9 +259,12 @@ function CheckInPage() {
               <div>
                 <div
                   style={{
-                    fontSize: '14px',
-                    color: '#6b7280',
-                    marginBottom: '5px',
+                    fontSize:
+                      '14px',
+                    color:
+                      '#6b7280',
+                    marginBottom:
+                      '5px',
                   }}
                 >
                   Alumno detectado
@@ -248,24 +273,35 @@ function CheckInPage() {
                 <h3
                   style={{
                     margin: 0,
-                    color: '#111827',
+                    color:
+                      '#111827',
                   }}
                 >
-                  {student.full_name}
+                  {
+                    student.full_name
+                  }
                 </h3>
 
                 <p
                   style={{
-                    marginTop: '5px',
-                    color: '#6b7280',
+                    marginTop:
+                      '5px',
+                    color:
+                      '#6b7280',
                   }}
                 >
                   Código:{' '}
-                  {student.dni_code}
+                  {
+                    student.dni_code
+                  }
                 </p>
               </div>
 
-              <div style={studentBadge}>
+              <div
+                style={
+                  studentBadge
+                }
+              >
                 OK
               </div>
             </div>
@@ -290,15 +326,40 @@ function CheckInPage() {
                 Seleccionar curso
               </option>
 
-              {courses.map((item) => (
-                <option
-                  key={item.id}
-                  value={item.name}
-                >
-                  {item.name}
-                </option>
-              ))}
+              {courses.map(
+                (item) => (
+                  <option
+                    key={
+                      item.id
+                    }
+                    value={
+                      item.name
+                    }
+                  >
+                    {item.name}
+                  </option>
+                )
+              )}
             </select>
+          </div>
+
+          {/* DOCENTE */}
+          <div style={fieldContainer}>
+            <label style={labelStyle}>
+              Docente
+            </label>
+
+            <input
+              type="text"
+              value={teacher}
+              onChange={(e) =>
+                setTeacher(
+                  e.target.value
+                )
+              }
+              placeholder="Nombre del docente"
+              style={inputStyle}
+            />
           </div>
 
           {/* AULA */}
@@ -320,7 +381,9 @@ function CheckInPage() {
           </div>
 
           {/* BOTONES */}
-          <div style={buttonContainer}>
+          <div
+            style={buttonContainer}
+          >
             <button
               onClick={() =>
                 handleCheckIn(
@@ -421,7 +484,8 @@ const studentCard = {
   padding: '22px',
   marginBottom: '24px',
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent:
+    'space-between',
   alignItems: 'center',
 };
 
