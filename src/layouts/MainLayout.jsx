@@ -6,12 +6,13 @@ import {
 
 import toast from 'react-hot-toast';
 
-function MainLayout({ children }) {
+function MainLayout({
+  children,
+  hideHeader = false,
+}) {
 
   const location =
-  useLocation();
-
-
+    useLocation();
 
   const navigate =
     useNavigate();
@@ -20,11 +21,6 @@ function MainLayout({ children }) {
     localStorage.getItem(
       'icadepro_admin'
     ) === 'true';
-
-  // MOSTRAR SOLO EN ADMIN E HISTORIAL
-const showUserCard =
-  location.pathname === '/admin' ||
-  location.pathname === '/history';
 
   const handleLogout = () => {
 
@@ -52,277 +48,283 @@ const showUserCard =
     >
 
       {/* SIDEBAR */}
-      <aside
-        style={{
-          width: '240px',
-          backgroundColor:
-            'white',
-          borderRight:
-            '1px solid #ececec',
-          padding: '30px 20px',
-          display: 'flex',
-          flexDirection:
-            'column',
-          justifyContent:
-            'flex-start',
-          alignItems:
-            'center',
-          position:
-            'relative',
-        }}
-      >
-
-        <div
+      {!hideHeader && (
+        <aside
           style={{
-            width: '100%',
+            width: '240px',
+            backgroundColor:
+              'white',
+            borderRight:
+              '1px solid #ececec',
+            padding: '30px 20px',
+            display: 'flex',
+            flexDirection:
+              'column',
+            justifyContent:
+              'flex-start',
+            alignItems:
+              'center',
+            position:
+              'relative',
           }}
         >
 
-          {/* LOGO */}
           <div
             style={{
-              marginBottom:
-                '45px',
-              textAlign:
-                'center',
+              width: '100%',
             }}
           >
 
-            <img
-              src="/icadepro-logo.png"
-              alt="IcadePro"
+            {/* LOGO */}
+            <div
               style={{
-                width: '180px',
-                display:
-                  'block',
-                margin:
-                  '0 auto',
-              }}
-            />
-
-            <p
-              style={{
-                color:
-                  '#9ca3af',
-                marginTop:
-                  '10px',
-                fontSize:
-                  '14px',
+                marginBottom:
+                  '45px',
+                textAlign:
+                  'center',
               }}
             >
-              Sistema de fichajes
-            </p>
+
+              <img
+                src="/icadepro-logo.png"
+                alt="IcadePro"
+                style={{
+                  width: '180px',
+                  display:
+                    'block',
+                  margin:
+                    '0 auto',
+                }}
+              />
+
+              <p
+                style={{
+                  color:
+                    '#9ca3af',
+                  marginTop:
+                    '10px',
+                  fontSize:
+                    '14px',
+                }}
+              >
+                Sistema de fichajes
+              </p>
+
+            </div>
+
+            {/* MENÚ */}
+            <nav
+              style={{
+                display: 'flex',
+                flexDirection:
+                  'column',
+                gap: '10px',
+              }}
+            >
+
+              <Link
+                to="/"
+                style={{
+                  ...linkStyle,
+                  ...(location.pathname ===
+                  '/'
+                    ? activeLink
+                    : {}),
+                }}
+              >
+                Inicio
+              </Link>
+
+              {isAuthenticated && (
+                <>
+
+                  <Link
+                    to="/admin"
+                    style={{
+                      ...linkStyle,
+                      ...(location.pathname ===
+                      '/admin'
+                        ? activeLink
+                        : {}),
+                    }}
+                  >
+                    Administración
+                  </Link>
+
+                  <Link
+                    to="/history"
+                    style={{
+                      ...linkStyle,
+                      ...(location.pathname ===
+                      '/history'
+                        ? activeLink
+                        : {}),
+                    }}
+                  >
+                    Historial
+                  </Link>
+
+                </>
+              )}
+
+            </nav>
 
           </div>
 
-          {/* MENÚ */}
-          <nav
+          {/* FOOTER */}
+          <div
             style={{
-              display: 'flex',
-              flexDirection:
-                'column',
-              gap: '10px',
+              paddingTop: '20px',
+              borderTop:
+                '1px solid #f1f1f1',
+              marginTop: '30px',
+              width: '100%',
             }}
           >
 
-            <Link
-              to="/"
-              style={{
-                ...linkStyle,
-                ...(location.pathname ===
-                '/'
-                  ? activeLink
-                  : {}),
-              }}
-            >
-              Inicio
-            </Link>
-
             {isAuthenticated && (
-              <>
-
-                <Link
-                  to="/admin"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname ===
-                    '/admin'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Administración
-                </Link>
-
-                <Link
-                  to="/history"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname ===
-                    '/history'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Historial
-                </Link>
-
-              </>
+              <button
+                onClick={
+                  handleLogout
+                }
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  marginBottom:
+                    '16px',
+                  border: 'none',
+                  borderRadius:
+                    '14px',
+                  backgroundColor:
+                    '#111827',
+                  color: 'white',
+                  cursor:
+                    'pointer',
+                  fontWeight:
+                    '600',
+                  fontSize:
+                    '14px',
+                }}
+              >
+                Cerrar sesión
+              </button>
             )}
 
-          </nav>
+          </div>
 
-        </div>
+          <div
+            style={{
+              fontSize: '13px',
+              color: '#9ca3af',
+              position: 'absolute',
+              bottom: '20px',
+              right: '-110px',
+            }}
+          >
+            © 2026 IcadePro
+          </div>
 
-        {/* FOOTER */}
-        <div
-          style={{
-            paddingTop: '20px',
-            borderTop:
-              '1px solid #f1f1f1',
-            marginTop: '30px',
-            width: '100%',
-          }}
-        >
-
-          {isAuthenticated && (
-            <button
-              onClick={
-                handleLogout
-              }
-              style={{
-                width: '100%',
-                padding: '14px',
-                marginBottom:
-                  '16px',
-                border: 'none',
-                borderRadius:
-                  '14px',
-                backgroundColor:
-                  '#111827',
-                color: 'white',
-                cursor:
-                  'pointer',
-                fontWeight:
-                  '600',
-                fontSize:
-                  '14px',
-              }}
-            >
-              Cerrar sesión
-            </button>
-          )}
-
-        </div>
-
-        <div
-          style={{
-            fontSize: '13px',
-            color: '#9ca3af',
-            position: 'absolute',
-            bottom: '20px',
-            right: '-110px',
-          }}
-        >
-          © 2026 IcadePro
-        </div>
-
-      </aside>
+        </aside>
+      )}
 
       {/* CONTENIDO */}
       <main
         style={{
           flex: 1,
-          padding: '35px',
+          padding:
+            hideHeader
+              ? '0px'
+              : '35px',
         }}
       >
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent:
-              'flex-start',
-            alignItems:
-              'center',
-            marginBottom:
-              '30px',
-          }}
-        >
+        {!hideHeader && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent:
+                'flex-start',
+              alignItems:
+                'center',
+              marginBottom:
+                '30px',
+            }}
+          >
 
-          <div />
+            <div />
 
-          {isAuthenticated &&
-  showUserCard && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems:
-                  'center',
-                gap: '14px',
-                backgroundColor:
-                  'white',
-                padding:
-                  '10px 16px',
-                borderRadius:
-                  '18px',
-                border:
-                  '1px solid #ececec',
-              }}
-            >
-
+            {isAuthenticated && (
               <div
                 style={{
-                  width: '42px',
-                  height: '42px',
-                  borderRadius:
-                    '50%',
-                  backgroundColor:
-                    '#f47920',
                   display: 'flex',
                   alignItems:
                     'center',
-                  justifyContent:
-                    'center',
-                  color: 'white',
-                  fontWeight:
-                    '700',
+                  gap: '14px',
+                  backgroundColor:
+                    'white',
+                  padding:
+                    '10px 16px',
+                  borderRadius:
+                    '18px',
+                  border:
+                    '1px solid #ececec',
                 }}
               >
-                A
-              </div>
-
-              <div>
 
                 <div
                   style={{
-                    fontSize:
-                      '14px',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius:
+                      '50%',
+                    backgroundColor:
+                      '#f47920',
+                    display: 'flex',
+                    alignItems:
+                      'center',
+                    justifyContent:
+                      'center',
+                    color: 'white',
                     fontWeight:
-                      '600',
-                    color:
-                      '#111827',
+                      '700',
                   }}
                 >
-                  Administrador
+                  A
                 </div>
 
-                <div
-                  style={{
-                    fontSize:
-                      '12px',
-                    color:
-                      '#9ca3af',
-                  }}
-                >
-                  IcadePro
+                <div>
+
+                  <div
+                    style={{
+                      fontSize:
+                        '14px',
+                      fontWeight:
+                        '600',
+                      color:
+                        '#111827',
+                    }}
+                  >
+                    Administrador
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize:
+                        '12px',
+                      color:
+                        '#9ca3af',
+                    }}
+                  >
+                    IcadePro
+                  </div>
+
                 </div>
 
               </div>
+            )}
 
-            </div>
-          )}
-
-        </div>
+          </div>
+        )}
 
         {children}
 

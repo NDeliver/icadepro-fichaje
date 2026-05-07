@@ -45,7 +45,7 @@ function App() {
         <Route
           path="/"
           element={
-            <MainLayout>
+            <MainLayout hideHeader>
               <CheckInPage />
             </MainLayout>
           }
@@ -55,7 +55,7 @@ function App() {
         <Route
           path="/teacher-checkin"
           element={
-            <MainLayout>
+            <MainLayout hideHeader>
               <TeacherCheckInPage />
             </MainLayout>
           }
