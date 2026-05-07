@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
 
 function HistoryPage() {
+
   const [checkins, setCheckins] =
     useState([]);
 
@@ -10,6 +11,7 @@ function HistoryPage() {
   }, []);
 
   const fetchCheckins = async () => {
+
     // FICHAJES
     const {
       data: checkinsData,
@@ -35,6 +37,7 @@ function HistoryPage() {
     // UNIR DATOS
     const formattedCheckins =
       checkinsData.map((checkin) => {
+
         const student =
           studentsData.find(
             (s) =>
@@ -53,8 +56,33 @@ function HistoryPage() {
     setCheckins(formattedCheckins);
   };
 
+  // FORMATEAR FECHA CANARIAS
+  const formatCanaryDate = (
+    date
+  ) => {
+
+    const canaryDate =
+      new Date(date);
+
+    return canaryDate
+      .toLocaleString(
+        'es-ES',
+        {
+          timeZone:
+            'Atlantic/Canary',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        }
+      );
+  };
+
   return (
     <div>
+
       <h1>
         Historial de Fichajes
       </h1>
@@ -62,20 +90,26 @@ function HistoryPage() {
       <div
         style={{
           marginTop: '20px',
-          backgroundColor: 'white',
+          backgroundColor:
+            'white',
           padding: '20px',
           borderRadius: '10px',
           overflowX: 'auto',
         }}
       >
+
         <table
           style={{
             width: '100%',
-            borderCollapse: 'collapse',
+            borderCollapse:
+              'collapse',
           }}
         >
+
           <thead>
+
             <tr>
+
               <th style={thStyle}>
                 Alumno
               </th>
@@ -95,41 +129,58 @@ function HistoryPage() {
               <th style={thStyle}>
                 Fecha
               </th>
+
             </tr>
+
           </thead>
 
           <tbody>
-            {checkins.map((item) => (
-              <tr key={item.created_at}>
-                <td style={tdStyle}>
-                  {item.student_name}
-                </td>
 
-                <td style={tdStyle}>
-                  {item.course}
-                </td>
+            {checkins.map(
+              (item) => (
 
-                <td style={tdStyle}>
-                  {item.classroom}
-                </td>
+                <tr
+                  key={
+                    item.created_at
+                  }
+                >
 
-                <td style={tdStyle}>
-                  {item.type}
-                </td>
+                  <td style={tdStyle}>
+                    {
+                      item.student_name
+                    }
+                  </td>
 
-                <td style={tdStyle}>
-  {new Date(
-    new Date(
-      item.created_at
-    ).getTime() +
-      1 * 60 * 60 * 1000
-  ).toLocaleString('es-ES')}
-</td>
-              </tr>
-            ))}
+                  <td style={tdStyle}>
+                    {item.course}
+                  </td>
+
+                  <td style={tdStyle}>
+                    {
+                      item.classroom
+                    }
+                  </td>
+
+                  <td style={tdStyle}>
+                    {item.type}
+                  </td>
+
+                  <td style={tdStyle}>
+                    {formatCanaryDate(
+                      item.created_at
+                    )}
+                  </td>
+
+                </tr>
+              )
+            )}
+
           </tbody>
+
         </table>
+
       </div>
+
     </div>
   );
 }
@@ -137,12 +188,14 @@ function HistoryPage() {
 const thStyle = {
   textAlign: 'left',
   padding: '12px',
-  borderBottom: '2px solid #ddd',
+  borderBottom:
+    '2px solid #ddd',
 };
 
 const tdStyle = {
   padding: '12px',
-  borderBottom: '1px solid #eee',
+  borderBottom:
+    '1px solid #eee',
 };
 
 export default HistoryPage;
