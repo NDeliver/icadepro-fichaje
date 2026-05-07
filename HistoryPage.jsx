@@ -119,14 +119,9 @@ function HistoryPage() {
 
                 <td style={tdStyle}>
                   {new Date(
-  item.created_at
-).toLocaleString(
-  'es-ES',
-  {
-    timeZone:
-      'Atlantic/Canary',
-  }
-)}
+  new Date(item.created_at)
+  .getTime() + 60 * 60 * 1000
+).toLocaleString('es-ES')}
                 </td>
               </tr>
             ))}
