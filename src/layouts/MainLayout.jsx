@@ -9,7 +9,11 @@ import toast from 'react-hot-toast';
 function MainLayout({ children }) {
 
   const location =
-    useLocation();
+  useLocation();
+
+  alert(location.pathname);
+
+console.log(location.pathname);
 
   const navigate =
     useNavigate();
@@ -21,9 +25,9 @@ function MainLayout({ children }) {
 
   // OCULTAR TARJETA EN PÁGINAS DE FICHAJE
   const hideUserCard =
-    location.pathname === '/' ||
-    location.pathname ===
-      '/teacher-checkin';
+  location.pathname === '/' ||
+  location.pathname === '/checkin' ||
+  location.pathname === '/teacher-checkin';
 
   const handleLogout = () => {
 
