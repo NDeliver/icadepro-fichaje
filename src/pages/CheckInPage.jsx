@@ -286,7 +286,18 @@ main {
         marginBottom: '10px',
       }}
     />
-
+    <h2
+  style={{
+    marginTop: '10px',
+    marginBottom: '0',
+    color: '#8b949e',
+    fontSize: '34px',
+    fontWeight: '600',
+    letterSpacing: '0.5px',
+  }}
+>
+  Control horario PED
+</h2>
   
 
   </div>
