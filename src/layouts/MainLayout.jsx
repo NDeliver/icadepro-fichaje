@@ -7,18 +7,20 @@ import {
 import toast from 'react-hot-toast';
 
 function MainLayout({ children }) {
-  const location = useLocation();
 
-  const navigate = useNavigate();
+  const location =
+    useLocation();
 
-  // VALIDAR LOGIN
+  const navigate =
+    useNavigate();
+
   const isAuthenticated =
     localStorage.getItem(
       'icadepro_admin'
     ) === 'true';
 
-  // LOGOUT
   const handleLogout = () => {
+
     localStorage.removeItem(
       'icadepro_admin'
     );
@@ -35,60 +37,79 @@ function MainLayout({ children }) {
       style={{
         display: 'flex',
         minHeight: '100vh',
-        backgroundColor: '#f7f8fa',
+        backgroundColor:
+          '#f7f8fa',
         fontFamily:
           'Arial, Helvetica, sans-serif',
       }}
     >
+
       {/* SIDEBAR */}
       <aside
         style={{
           width: '240px',
-          backgroundColor: 'white',
+          backgroundColor:
+            'white',
           borderRight:
             '1px solid #ececec',
           padding: '30px 20px',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection:
+            'column',
           justifyContent:
             'space-between',
         }}
       >
+
         <div>
+
           {/* LOGO */}
           <div
             style={{
-              marginBottom: '45px',
+              marginBottom:
+                '45px',
+              textAlign:
+                'center',
             }}
           >
+
             <img
-  src="/src/assets/logo.png"
-  alt="IcadePro"
-  style={{
-    width: '170px',
-    objectFit: 'contain',
-  }}
-/>
+              src="/icadepro-logo.png"
+              alt="IcadePro"
+              style={{
+                width: '180px',
+                display:
+                  'block',
+                margin:
+                  '0 auto',
+              }}
+            />
 
             <p
               style={{
-                color: '#9ca3af',
-                marginTop: '6px',
-                fontSize: '14px',
+                color:
+                  '#9ca3af',
+                marginTop:
+                  '10px',
+                fontSize:
+                  '14px',
               }}
             >
               Sistema de fichajes
             </p>
+
           </div>
 
           {/* MENÚ */}
           <nav
             style={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection:
+                'column',
               gap: '10px',
             }}
           >
+
             <Link
               to="/"
               style={{
@@ -102,9 +123,9 @@ function MainLayout({ children }) {
               Inicio
             </Link>
 
-            {/* SOLO ADMIN */}
             {isAuthenticated && (
               <>
+
                 <Link
                   to="/admin"
                   style={{
@@ -130,9 +151,12 @@ function MainLayout({ children }) {
                 >
                   Historial
                 </Link>
+
               </>
             )}
+
           </nav>
+
         </div>
 
         {/* FOOTER */}
@@ -143,22 +167,29 @@ function MainLayout({ children }) {
               '1px solid #f1f1f1',
           }}
         >
-          {/* BOTÓN LOGOUT */}
+
           {isAuthenticated && (
             <button
-              onClick={handleLogout}
+              onClick={
+                handleLogout
+              }
               style={{
                 width: '100%',
                 padding: '14px',
-                marginBottom: '16px',
+                marginBottom:
+                  '16px',
                 border: 'none',
-                borderRadius: '14px',
+                borderRadius:
+                  '14px',
                 backgroundColor:
                   '#111827',
                 color: 'white',
-                cursor: 'pointer',
-                fontWeight: '600',
-                fontSize: '14px',
+                cursor:
+                  'pointer',
+                fontWeight:
+                  '600',
+                fontSize:
+                  '14px',
               }}
             >
               Cerrar sesión
@@ -173,7 +204,9 @@ function MainLayout({ children }) {
           >
             © 2026 IcadePro
           </div>
+
         </div>
+
       </aside>
 
       {/* CONTENIDO */}
@@ -183,23 +216,30 @@ function MainLayout({ children }) {
           padding: '35px',
         }}
       >
-        {/* TOPBAR */}
+
         <div
           style={{
             display: 'flex',
             justifyContent:
               'space-between',
-            alignItems: 'center',
-            marginBottom: '30px',
+            alignItems:
+              'center',
+            marginBottom:
+              '30px',
           }}
         >
+
           <div>
+
             <h2
               style={{
                 margin: 0,
-                fontSize: '34px',
-                color: '#111827',
-                fontWeight: '700',
+                fontSize:
+                  '34px',
+                color:
+                  '#111827',
+                fontWeight:
+                  '700',
               }}
             >
               Panel principal
@@ -208,21 +248,24 @@ function MainLayout({ children }) {
             <p
               style={{
                 marginTop: '8px',
-                color: '#9ca3af',
-                fontSize: '15px',
+                color:
+                  '#9ca3af',
+                fontSize:
+                  '15px',
               }}
             >
               Gestión académica y
               control de fichajes
             </p>
+
           </div>
 
-          {/* PERFIL */}
           {isAuthenticated && (
             <div
               style={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems:
+                  'center',
                 gap: '14px',
                 backgroundColor:
                   'white',
@@ -234,6 +277,7 @@ function MainLayout({ children }) {
                   '1px solid #ececec',
               }}
             >
+
               <div
                 style={{
                   width: '42px',
@@ -256,6 +300,7 @@ function MainLayout({ children }) {
               </div>
 
               <div>
+
                 <div
                   style={{
                     fontSize:
@@ -279,14 +324,18 @@ function MainLayout({ children }) {
                 >
                   IcadePro
                 </div>
+
               </div>
+
             </div>
           )}
+
         </div>
 
-        {/* CONTENIDO */}
         {children}
+
       </main>
+
     </div>
   );
 }
@@ -302,7 +351,8 @@ const linkStyle = {
 };
 
 const activeLink = {
-  backgroundColor: '#fff4ec',
+  backgroundColor:
+    '#fff4ec',
   color: '#f47920',
 };
 
