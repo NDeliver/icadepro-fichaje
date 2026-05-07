@@ -60,15 +60,15 @@ function LoginPage() {
             textAlign: 'center',
           }}
         >
-          <h1
-            style={{
-              margin: 0,
-              color: '#f47920',
-              fontSize: '38px',
-            }}
-          >
-            IcadePro
-          </h1>
+          <img
+  src="/icadepro-logo.png"
+  alt="IcadePro"
+  style={{
+    width: '240px',
+    objectFit: 'contain',
+    marginBottom: '10px',
+  }}
+/>
 
           <p
             style={{
