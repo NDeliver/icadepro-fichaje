@@ -252,9 +252,13 @@ function CheckInPage() {
     <>
       <style>
         {`
-          aside nav {
-            display: none !important;
-          }
+          aside {
+  display: none !important;
+}
+
+main {
+  padding-left: 60px !important;
+}
         `}
       </style>
 
