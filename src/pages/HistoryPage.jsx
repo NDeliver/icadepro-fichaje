@@ -12,14 +12,20 @@ function HistoryPage() {
 
   const fetchHistory = async () => {
 
-    // ALUMNOS
+    // FICHAJES ALUMNOS
     const {
       data: checkinsData,
+      error,
     } = await supabase
       .from('checkins')
       .select('*');
 
-    // PROFESORES
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // FICHAJES PROFESORES
     const {
       data: teacherData,
     } = await supabase
@@ -50,17 +56,27 @@ function HistoryPage() {
 
           return {
             id:
-              checkin.created_at,
+              checkin.created_at +
+              checkin.code,
+
             name: student
               ? student.full_name
               : 'Alumno',
-            type:
-              checkin.type,
+
             role: 'Alumno',
+
             course:
               checkin.course,
+
             classroom:
               checkin.classroom,
+
+            type:
+              checkin.type,
+
+            teacher:
+              checkin.teacher,
+
             created_at:
               checkin.created_at,
           };
@@ -74,23 +90,32 @@ function HistoryPage() {
 
           return {
             id:
-              teacher.created_at,
+              teacher.created_at +
+              teacher.teacher_code,
+
             name:
               teacher.teacher_name,
-            type:
-              teacher.type,
+
             role:
               'Profesor',
+
             course: '-',
+
             classroom: '-',
+
+            type:
+              teacher.type,
+
+            teacher: '-',
+
             created_at:
               teacher.created_at,
           };
         }
       );
 
-    // UNIR Y ORDENAR
-    const combined =
+    // UNIR HISTORIAL
+    const combinedHistory =
       [
         ...studentHistory,
         ...teacherHistory,
@@ -104,7 +129,9 @@ function HistoryPage() {
           )
       );
 
-    setHistory(combined);
+    setHistory(
+      combinedHistory
+    );
   };
 
   return (
@@ -146,6 +173,10 @@ function HistoryPage() {
               </th>
 
               <th style={thStyle}>
+                Docente
+              </th>
+
+              <th style={thStyle}>
                 Curso
               </th>
 
@@ -178,6 +209,10 @@ function HistoryPage() {
 
                   <td style={tdStyle}>
                     {item.role}
+                  </td>
+
+                  <td style={tdStyle}>
+                    {item.teacher}
                   </td>
 
                   <td style={tdStyle}>
