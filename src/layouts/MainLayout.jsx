@@ -11,9 +11,7 @@ function MainLayout({ children }) {
   const location =
   useLocation();
 
-  alert(location.pathname);
 
-console.log(location.pathname);
 
   const navigate =
     useNavigate();
@@ -23,11 +21,10 @@ console.log(location.pathname);
       'icadepro_admin'
     ) === 'true';
 
-  // OCULTAR TARJETA EN PÁGINAS DE FICHAJE
-  const hideUserCard =
-  location.pathname === '/' ||
-  location.pathname === '/checkin' ||
-  location.pathname === '/teacher-checkin';
+  // MOSTRAR SOLO EN ADMIN E HISTORIAL
+const showUserCard =
+  location.pathname === '/admin' ||
+  location.pathname === '/history';
 
   const handleLogout = () => {
 
@@ -255,7 +252,7 @@ console.log(location.pathname);
           <div />
 
           {isAuthenticated &&
-            !hideUserCard && (
+  showUserCard && (
             <div
               style={{
                 display: 'flex',

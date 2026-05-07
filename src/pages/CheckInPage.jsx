@@ -253,65 +253,71 @@ function CheckInPage() {
       <style>
         {`
           aside {
-  display: none !important;
-}
+            display: none !important;
+          }
 
-main {
-  padding-left: 60px !important;
-}
+          main {
+            padding-left: 60px !important;
+            padding-top: 0px !important;
+          }
+
+          main > div:first-child {
+            display: none !important;
+          }
         `}
       </style>
 
-<div
-  style={{
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '-120px',
-    marginBottom: '-40px',
-  }}
->
-
-  <div
-    style={{
-      textAlign: 'center',
-    }}
-  >
-
-    <img
-      src="/icadepro-logo.png"
-      alt="IcadePro"
-      style={{
-        width: '600px',
-        objectFit: 'contain',
-        marginBottom: '10px',
-      }}
-    />
-    <h2
-  style={{
-    marginTop: '-80px',
-    marginBottom: '200px',
-    color: '#8b949e',
-    fontSize: '34px',
-    fontWeight: '600',
-    letterSpacing: '0.5px',
-  }}
->
-  Control horarios PED
-</h2>
-  
-
-  </div>
-
-</div>
       <div
-  style={{
-    display: 'flex',
-    gap: '30px',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    flexWrap: 'nowrap',
-  }}
->
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '-120px',
+          marginBottom: '-40px',
+        }}
+      >
+
+        <div
+          style={{
+            textAlign: 'center',
+          }}
+        >
+
+          <img
+            src="/icadepro-logo.png"
+            alt="IcadePro"
+            style={{
+              width: '600px',
+              objectFit: 'contain',
+              marginBottom: '10px',
+            }}
+          />
+
+          <h2
+            style={{
+              marginTop: '-80px',
+              marginBottom: '200px',
+              color: '#8b949e',
+              fontSize: '34px',
+              fontWeight: '600',
+              letterSpacing: '0.5px',
+            }}
+          >
+            Control horarios PED
+          </h2>
+
+        </div>
+
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          gap: '30px',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          flexWrap: 'nowrap',
+        }}
+      >
 
         {/* ALUMNADO */}
         <div
@@ -338,8 +344,6 @@ main {
             >
               Fichaje Alumnado
             </h1>
-
-          
 
           </div>
 
