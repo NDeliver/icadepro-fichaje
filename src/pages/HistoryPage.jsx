@@ -7,11 +7,17 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 function HistoryPage() {
-  const [checkins, setCheckins] = useState([]);
+  const [checkins, setCheckins] =
+    useState([]);
 
-  const [searchCode, setSearchCode] = useState('');
-  const [filterCourse, setFilterCourse] = useState('');
-  const [filterType, setFilterType] = useState('');
+  const [searchCode, setSearchCode] =
+    useState('');
+
+  const [filterCourse, setFilterCourse] =
+    useState('');
+
+  const [filterType, setFilterType] =
+    useState('');
 
   useEffect(() => {
     fetchCheckins();
@@ -19,12 +25,13 @@ function HistoryPage() {
 
   const fetchCheckins = async () => {
     // FICHAJES
-    const { data, error } = await supabase
-      .from('checkins')
-      .select('*')
-      .order('created_at', {
-        ascending: false,
-      });
+    const { data, error } =
+      await supabase
+        .from('checkins')
+        .select('*')
+        .order('created_at', {
+          ascending: false,
+        });
 
     if (error) {
       console.error(error);
@@ -38,8 +45,8 @@ function HistoryPage() {
         .select('*');
 
     // UNIR DATOS
-    const formattedCheckins = data.map(
-      (checkin) => {
+    const formattedCheckins =
+      data.map((checkin) => {
         const student =
           studentsData.find(
             (s) =>
@@ -53,8 +60,7 @@ function HistoryPage() {
             ? student.full_name
             : 'No encontrado',
         };
-      }
-    );
+      });
 
     setCheckins(formattedCheckins);
   };
@@ -156,105 +162,126 @@ function HistoryPage() {
 
   return (
     <div>
-      <h1>Histórico y Reportes</h1>
-
-      {/* Filtros */}
+      {/* HEADER */}
       <div
         style={{
-          marginTop: '20px',
-          marginBottom: '20px',
-          display: 'flex',
-          gap: '15px',
-          flexWrap: 'wrap',
+          marginBottom: '35px',
         }}
       >
-        <input
-          type="text"
-          placeholder="Buscar alumno"
-          value={searchCode}
-          onChange={(e) =>
-            setSearchCode(e.target.value)
-          }
-          style={inputStyle}
-        />
-
-        <select
-          value={filterCourse}
-          onChange={(e) =>
-            setFilterCourse(e.target.value)
-          }
-          style={inputStyle}
+        <h1
+          style={{
+            margin: 0,
+            fontSize: '42px',
+            color: '#111827',
+          }}
         >
-          <option value="">
-            Todos los cursos
-          </option>
+          Histórico y Reportes
+        </h1>
 
-          <option value="Marketing Digital">
-            Marketing Digital
-          </option>
-
-          <option value="Diseño Web">
-            Diseño Web
-          </option>
-
-          <option value="Excel Avanzado">
-            Excel Avanzado
-          </option>
-        </select>
-
-        <select
-          value={filterType}
-          onChange={(e) =>
-            setFilterType(e.target.value)
-          }
-          style={inputStyle}
+        <p
+          style={{
+            marginTop: '10px',
+            color: '#6b7280',
+            fontSize: '16px',
+          }}
         >
-          <option value="">
-            Todos
-          </option>
-
-          <option value="Entrada">
-            Entrada
-          </option>
-
-          <option value="Salida">
-            Salida
-          </option>
-        </select>
+          Consulta y exporta el
+          historial completo de
+          fichajes.
+        </p>
       </div>
 
-      {/* Botones exportación */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '15px',
-          marginBottom: '20px',
-        }}
-      >
-        <button
-          onClick={exportExcel}
-          style={excelButton}
-        >
-          Descargar Excel
-        </button>
+      {/* CARD FILTROS */}
+      <div style={filterCard}>
+        <div style={filterGrid}>
+          <input
+            type="text"
+            placeholder="Buscar alumno..."
+            value={searchCode}
+            onChange={(e) =>
+              setSearchCode(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-        <button
-          onClick={exportPDF}
-          style={pdfButton}
+          <select
+            value={filterCourse}
+            onChange={(e) =>
+              setFilterCourse(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          >
+            <option value="">
+              Todos los cursos
+            </option>
+
+            <option value="Marketing Digital">
+              Marketing Digital
+            </option>
+
+            <option value="Diseño Web">
+              Diseño Web
+            </option>
+
+            <option value="Excel Avanzado">
+              Excel Avanzado
+            </option>
+          </select>
+
+          <select
+            value={filterType}
+            onChange={(e) =>
+              setFilterType(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          >
+            <option value="">
+              Todos
+            </option>
+
+            <option value="Entrada">
+              Entrada
+            </option>
+
+            <option value="Salida">
+              Salida
+            </option>
+          </select>
+        </div>
+
+        {/* EXPORTAR */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '15px',
+            marginTop: '25px',
+            flexWrap: 'wrap',
+          }}
         >
-          Descargar PDF
-        </button>
+          <button
+            onClick={exportExcel}
+            style={excelButton}
+          >
+            Descargar Excel
+          </button>
+
+          <button
+            onClick={exportPDF}
+            style={pdfButton}
+          >
+            Descargar PDF
+          </button>
+        </div>
       </div>
 
-      {/* Tabla */}
-      <div
-        style={{
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '10px',
-          overflowX: 'auto',
-        }}
-      >
+      {/* TABLA */}
+      <div style={tableCard}>
         <table
           style={{
             width: '100%',
@@ -264,7 +291,8 @@ function HistoryPage() {
           <thead>
             <tr
               style={{
-                backgroundColor: '#f47920',
+                backgroundColor:
+                  '#f47920',
                 color: 'white',
               }}
             >
@@ -293,9 +321,19 @@ function HistoryPage() {
           <tbody>
             {filteredCheckins.map(
               (item) => (
-                <tr key={item.id}>
+                <tr
+                  key={item.id}
+                  style={{
+                    transition:
+                      '0.2s',
+                  }}
+                >
                   <td style={tdStyle}>
-                    {item.student_name}
+                    <strong>
+                      {
+                        item.student_name
+                      }
+                    </strong>
                   </td>
 
                   <td style={tdStyle}>
@@ -307,7 +345,24 @@ function HistoryPage() {
                   </td>
 
                   <td style={tdStyle}>
-                    {item.type}
+                    <span
+                      style={{
+                        ...badgeStyle,
+                        backgroundColor:
+                          item.type ===
+                          'Entrada'
+                            ? '#dcfce7'
+                            : '#fee2e2',
+
+                        color:
+                          item.type ===
+                          'Entrada'
+                            ? '#166534'
+                            : '#991b1b',
+                      }}
+                    >
+                      {item.type}
+                    </span>
                   </td>
 
                   <td style={tdStyle}>
@@ -325,39 +380,77 @@ function HistoryPage() {
   );
 }
 
+const filterCard = {
+  backgroundColor: 'white',
+  padding: '30px',
+  borderRadius: '24px',
+  boxShadow:
+    '0 10px 30px rgba(0,0,0,0.05)',
+  marginBottom: '25px',
+};
+
+const filterGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '18px',
+};
+
 const inputStyle = {
-  padding: '10px',
-  borderRadius: '6px',
-  border: '1px solid #ccc',
-  minWidth: '200px',
+  padding: '16px',
+  borderRadius: '14px',
+  border: '1px solid #d1d5db',
+  fontSize: '15px',
+  outline: 'none',
 };
 
 const excelButton = {
-  padding: '12px 18px',
+  padding: '14px 22px',
   backgroundColor: '#217346',
   color: 'white',
   border: 'none',
-  borderRadius: '6px',
+  borderRadius: '14px',
   cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '15px',
 };
 
 const pdfButton = {
-  padding: '12px 18px',
+  padding: '14px 22px',
   backgroundColor: '#d32f2f',
   color: 'white',
   border: 'none',
-  borderRadius: '6px',
+  borderRadius: '14px',
   cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '15px',
+};
+
+const tableCard = {
+  backgroundColor: 'white',
+  borderRadius: '24px',
+  overflowX: 'auto',
+  boxShadow:
+    '0 10px 30px rgba(0,0,0,0.05)',
 };
 
 const thStyle = {
-  padding: '12px',
+  padding: '18px',
   textAlign: 'left',
+  fontSize: '15px',
 };
 
 const tdStyle = {
-  padding: '12px',
-  borderBottom: '1px solid #ddd',
+  padding: '18px',
+  borderBottom: '1px solid #f1f1f1',
+  color: '#374151',
+};
+
+const badgeStyle = {
+  padding: '8px 14px',
+  borderRadius: '999px',
+  fontSize: '13px',
+  fontWeight: '600',
 };
 
 export default HistoryPage;
