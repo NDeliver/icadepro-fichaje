@@ -19,6 +19,12 @@ function MainLayout({ children }) {
       'icadepro_admin'
     ) === 'true';
 
+  // OCULTAR TARJETA EN PÁGINAS DE FICHAJE
+  const hideUserCard =
+    location.pathname === '/' ||
+    location.pathname ===
+      '/teacher-checkin';
+
   const handleLogout = () => {
 
     localStorage.removeItem(
@@ -209,16 +215,16 @@ function MainLayout({ children }) {
         </div>
 
         <div
-  style={{
-    fontSize: '13px',
-    color: '#9ca3af',
-    position: 'absolute',
-bottom: '20px',
-right: '-110px',
-  }}
->
-  © 2026 IcadePro
-</div>
+          style={{
+            fontSize: '13px',
+            color: '#9ca3af',
+            position: 'absolute',
+            bottom: '20px',
+            right: '-110px',
+          }}
+        >
+          © 2026 IcadePro
+        </div>
 
       </aside>
 
@@ -244,7 +250,8 @@ right: '-110px',
 
           <div />
 
-          {isAuthenticated && (
+          {isAuthenticated &&
+            !hideUserCard && (
             <div
               style={{
                 display: 'flex',
