@@ -382,75 +382,78 @@ function HistoryPage() {
 
 const filterCard = {
   backgroundColor: 'white',
-  padding: '30px',
-  borderRadius: '24px',
+  padding: '28px',
+  borderRadius: '30px',
+  border: '1px solid #ececec',
   boxShadow:
-    '0 10px 30px rgba(0,0,0,0.05)',
-  marginBottom: '25px',
+    '0 4px 20px rgba(0,0,0,0.03)',
+  marginBottom: '24px',
 };
 
 const filterGrid = {
   display: 'grid',
   gridTemplateColumns:
     'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: '18px',
+  gap: '16px',
 };
 
 const inputStyle = {
-  padding: '16px',
-  borderRadius: '14px',
-  border: '1px solid #d1d5db',
+  padding: '18px',
+  borderRadius: '18px',
+  border: '1px solid #ececec',
   fontSize: '15px',
   outline: 'none',
+  backgroundColor: '#fafafa',
 };
 
 const excelButton = {
-  padding: '14px 22px',
+  padding: '16px 22px',
   backgroundColor: '#217346',
   color: 'white',
   border: 'none',
-  borderRadius: '14px',
+  borderRadius: '18px',
   cursor: 'pointer',
-  fontWeight: '600',
+  fontWeight: '700',
   fontSize: '15px',
 };
 
 const pdfButton = {
-  padding: '14px 22px',
+  padding: '16px 22px',
   backgroundColor: '#d32f2f',
   color: 'white',
   border: 'none',
-  borderRadius: '14px',
+  borderRadius: '18px',
   cursor: 'pointer',
-  fontWeight: '600',
+  fontWeight: '700',
   fontSize: '15px',
 };
 
 const tableCard = {
   backgroundColor: 'white',
-  borderRadius: '24px',
+  borderRadius: '30px',
   overflowX: 'auto',
+  border: '1px solid #ececec',
   boxShadow:
-    '0 10px 30px rgba(0,0,0,0.05)',
+    '0 4px 20px rgba(0,0,0,0.03)',
 };
 
 const thStyle = {
-  padding: '18px',
+  padding: '22px',
   textAlign: 'left',
-  fontSize: '15px',
+  fontSize: '14px',
+  fontWeight: '700',
 };
 
 const tdStyle = {
-  padding: '18px',
-  borderBottom: '1px solid #f1f1f1',
+  padding: '22px',
+  borderBottom: '1px solid #f5f5f5',
   color: '#374151',
+  fontSize: '15px',
 };
 
 const badgeStyle = {
-  padding: '8px 14px',
+  padding: '10px 16px',
   borderRadius: '999px',
   fontSize: '13px',
-  fontWeight: '600',
+  fontWeight: '700',
 };
-
-export default HistoryPage;
