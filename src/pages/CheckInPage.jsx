@@ -90,7 +90,6 @@ function CheckInPage() {
     // OBTENER ÚLTIMO FICHAJE
     const {
       data: lastCheckin,
-      error: lastCheckinError,
     } = await supabase
       .from('checkins')
       .select('type')
@@ -100,11 +99,6 @@ function CheckInPage() {
       })
       .limit(1)
       .maybeSingle();
-
-    console.log(
-      'Último fichaje:',
-      lastCheckin
-    );
 
     // EVITAR DOBLE ENTRADA/SALIDA
     if (
@@ -155,159 +149,272 @@ function CheckInPage() {
     );
 
     if (selectedCourse) {
-      setClassroom(selectedCourse.classroom);
+      setClassroom(
+        selectedCourse.classroom
+      );
     }
   };
 
   return (
-    <div>
-      <h1>Pantalla de Fichaje</h1>
-
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
       <div
         style={{
-          marginTop: '20px',
-          backgroundColor: 'white',
-          padding: '30px',
-          borderRadius: '10px',
-          maxWidth: '500px',
+          width: '100%',
+          maxWidth: '700px',
         }}
       >
-        {/* CÓDIGO */}
-        <div style={{ marginBottom: '20px' }}>
-          <label>Código de 4 dígitos</label>
-
-          <input
-            type="text"
-            maxLength="4"
-            value={code}
-            onChange={(e) =>
-              setCode(e.target.value)
-            }
-            placeholder="Ej: 1234"
-            style={inputStyle}
-          />
-        </div>
-
-        {/* ALUMNO */}
-        {student && (
-          <div
-            style={{
-              marginBottom: '20px',
-              padding: '15px',
-              backgroundColor: '#f5f5f5',
-              borderRadius: '10px',
-            }}
-          >
-            <strong>
-              {student.full_name}
-            </strong>
-
-            <div>
-              Código:{' '}
-              {student.dni_code}
-            </div>
-          </div>
-        )}
-
-        {/* CURSO */}
-        <div style={{ marginBottom: '20px' }}>
-          <label>Curso</label>
-
-          <select
-            value={course}
-            onChange={(e) =>
-              handleCourseChange(
-                e.target.value
-              )
-            }
-            style={inputStyle}
-          >
-            <option value="">
-              Seleccionar curso
-            </option>
-
-            {courses.map((item) => (
-              <option
-                key={item.id}
-                value={item.name}
-              >
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* AULA */}
-        <div style={{ marginBottom: '20px' }}>
-          <label>Aula</label>
-
-          <input
-            type="text"
-            value={classroom}
-            readOnly
-            style={{
-              ...inputStyle,
-              backgroundColor: '#f0f0f0',
-            }}
-          />
-        </div>
-
-        {/* BOTONES */}
+        {/* TÍTULO */}
         <div
           style={{
-            display: 'flex',
-            gap: '15px',
+            marginBottom: '30px',
           }}
         >
-          <button
-            onClick={() =>
-              handleCheckIn('Entrada')
-            }
-            style={entryButton}
+          <h1
+            style={{
+              margin: 0,
+              fontSize: '42px',
+              color: '#111827',
+              fontWeight: '700',
+            }}
           >
-            Registrar Entrada
-          </button>
+            Fichaje
+          </h1>
 
-          <button
-            onClick={() =>
-              handleCheckIn('Salida')
-            }
-            style={exitButton}
+          <p
+            style={{
+              marginTop: '10px',
+              color: '#6b7280',
+              fontSize: '16px',
+            }}
           >
-            Registrar Salida
-          </button>
+            Registra entradas y salidas
+            de alumnos de forma rápida.
+          </p>
+        </div>
+
+        {/* CARD PRINCIPAL */}
+        <div style={cardStyle}>
+          {/* CÓDIGO */}
+          <div style={fieldContainer}>
+            <label style={labelStyle}>
+              Código de alumno
+            </label>
+
+            <input
+              type="text"
+              maxLength="4"
+              value={code}
+              onChange={(e) =>
+                setCode(e.target.value)
+              }
+              placeholder="Introduce el código"
+              style={inputStyle}
+            />
+          </div>
+
+          {/* ALUMNO */}
+          {student && (
+            <div style={studentCard}>
+              <div>
+                <div
+                  style={{
+                    fontSize: '14px',
+                    color: '#6b7280',
+                    marginBottom: '5px',
+                  }}
+                >
+                  Alumno detectado
+                </div>
+
+                <h3
+                  style={{
+                    margin: 0,
+                    color: '#111827',
+                  }}
+                >
+                  {student.full_name}
+                </h3>
+
+                <p
+                  style={{
+                    marginTop: '5px',
+                    color: '#6b7280',
+                  }}
+                >
+                  Código:{' '}
+                  {student.dni_code}
+                </p>
+              </div>
+
+              <div style={studentBadge}>
+                OK
+              </div>
+            </div>
+          )}
+
+          {/* CURSO */}
+          <div style={fieldContainer}>
+            <label style={labelStyle}>
+              Curso
+            </label>
+
+            <select
+              value={course}
+              onChange={(e) =>
+                handleCourseChange(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            >
+              <option value="">
+                Seleccionar curso
+              </option>
+
+              {courses.map((item) => (
+                <option
+                  key={item.id}
+                  value={item.name}
+                >
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* AULA */}
+          <div style={fieldContainer}>
+            <label style={labelStyle}>
+              Aula
+            </label>
+
+            <input
+              type="text"
+              value={classroom}
+              readOnly
+              style={{
+                ...inputStyle,
+                backgroundColor:
+                  '#f3f4f6',
+              }}
+            />
+          </div>
+
+          {/* BOTONES */}
+          <div style={buttonContainer}>
+            <button
+              onClick={() =>
+                handleCheckIn(
+                  'Entrada'
+                )
+              }
+              style={entryButton}
+            >
+              Registrar Entrada
+            </button>
+
+            <button
+              onClick={() =>
+                handleCheckIn(
+                  'Salida'
+                )
+              }
+              style={exitButton}
+            >
+              Registrar Salida
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+const cardStyle = {
+  backgroundColor: 'white',
+  padding: '40px',
+  borderRadius: '24px',
+  boxShadow:
+    '0 10px 30px rgba(0,0,0,0.06)',
+};
+
+const fieldContainer = {
+  marginBottom: '24px',
+};
+
+const labelStyle = {
+  display: 'block',
+  marginBottom: '10px',
+  color: '#374151',
+  fontWeight: '600',
+  fontSize: '15px',
+};
+
 const inputStyle = {
   width: '100%',
-  padding: '12px',
-  marginTop: '8px',
-  borderRadius: '6px',
-  border: '1px solid #ccc',
+  padding: '16px',
+  borderRadius: '14px',
+  border: '1px solid #d1d5db',
+  fontSize: '16px',
+  outline: 'none',
+  boxSizing: 'border-box',
+};
+
+const buttonContainer = {
+  display: 'flex',
+  gap: '15px',
+  marginTop: '30px',
+  flexWrap: 'wrap',
 };
 
 const entryButton = {
   flex: 1,
-  padding: '12px',
+  padding: '16px',
   backgroundColor: '#f47920',
   color: 'white',
   border: 'none',
-  borderRadius: '6px',
+  borderRadius: '14px',
   cursor: 'pointer',
+  fontSize: '16px',
+  fontWeight: '600',
+  minWidth: '220px',
 };
 
 const exitButton = {
   flex: 1,
-  padding: '12px',
-  backgroundColor: '#555555',
+  padding: '16px',
+  backgroundColor: '#111827',
   color: 'white',
   border: 'none',
-  borderRadius: '6px',
+  borderRadius: '14px',
   cursor: 'pointer',
+  fontSize: '16px',
+  fontWeight: '600',
+  minWidth: '220px',
+};
+
+const studentCard = {
+  backgroundColor: '#f9fafb',
+  border: '1px solid #e5e7eb',
+  borderRadius: '18px',
+  padding: '20px',
+  marginBottom: '24px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+};
+
+const studentBadge = {
+  backgroundColor: '#22c55e',
+  color: 'white',
+  padding: '10px 14px',
+  borderRadius: '12px',
+  fontWeight: '700',
 };
 
 export default CheckInPage;
