@@ -457,3 +457,4 @@ const badgeStyle = {
   fontSize: '13px',
   fontWeight: '700',
 };
+export default HistoryPage;

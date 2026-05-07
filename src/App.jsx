@@ -36,38 +36,37 @@ function App() {
           element={<LoginPage />}
         />
 
-        {/* APP */}
+        {/* FICHAJE */}
         <Route
-          path="*"
+          path="/"
           element={
             <MainLayout>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <CheckInPage />
-                  }
-                />
-
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute>
-                      <AdminPage />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
-                  path="/history"
-                  element={
-                    <ProtectedRoute>
-                      <HistoryPage />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
+              <CheckInPage />
             </MainLayout>
+          }
+        />
+
+        {/* ADMIN */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <AdminPage />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* HISTORY */}
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <HistoryPage />
+              </MainLayout>
+            </ProtectedRoute>
           }
         />
       </Routes>
