@@ -287,15 +287,7 @@ main {
       }}
     />
 
-    <p
-      style={{
-        color: '#9ca3af',
-        fontSize: '15px',
-        margin: 0,
-      }}
-    >
-      Sistema de fichajes
-    </p>
+  
 
   </div>
 
@@ -336,16 +328,7 @@ main {
               Fichaje Alumnado
             </h1>
 
-            <p
-              style={{
-                marginTop: '10px',
-                color: '#6b7280',
-                fontSize: '16px',
-              }}
-            >
-              Registra entradas y
-              salidas de alumnos.
-            </p>
+          
 
           </div>
 

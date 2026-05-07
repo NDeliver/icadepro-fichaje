@@ -145,16 +145,7 @@ const { error } =
           Fichaje Profesores
         </h1>
 
-        <p
-          style={{
-            marginTop: '10px',
-            color: '#6b7280',
-            fontSize: '16px',
-          }}
-        >
-          Registra entradas y
-          salidas de profesores.
-        </p>
+    
 
       </div>
 
