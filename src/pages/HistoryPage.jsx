@@ -94,6 +94,7 @@ function HistoryPage() {
     const data = filteredCheckins.map(
       (item) => ({
         Alumno: item.student_name,
+        Docente: item.teacher || '-',
         Curso: item.course,
         Aula: item.classroom,
         Tipo: item.type,
@@ -136,6 +137,7 @@ function HistoryPage() {
       head: [
         [
           'Alumno',
+          'Docente',
           'Curso',
           'Aula',
           'Tipo',
@@ -145,6 +147,7 @@ function HistoryPage() {
       body: filteredCheckins.map(
         (item) => [
           item.student_name,
+          item.teacher || '-',
           item.course,
           item.classroom,
           item.type,
@@ -301,6 +304,10 @@ function HistoryPage() {
               </th>
 
               <th style={thStyle}>
+                Docente
+              </th>
+
+              <th style={thStyle}>
                 Curso
               </th>
 
@@ -334,6 +341,10 @@ function HistoryPage() {
                         item.student_name
                       }
                     </strong>
+                  </td>
+
+                  <td style={tdStyle}>
+                    {item.teacher || '-'}
                   </td>
 
                   <td style={tdStyle}>
@@ -457,4 +468,5 @@ const badgeStyle = {
   fontSize: '13px',
   fontWeight: '700',
 };
+
 export default HistoryPage;

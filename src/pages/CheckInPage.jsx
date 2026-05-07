@@ -3,20 +3,25 @@ import { supabase } from '../services/supabase';
 import toast from 'react-hot-toast';
 
 function CheckInPage() {
-  const [code, setCode] = useState('');
-  const [course, setCourse] = useState('');
-  const [classroom, setClassroom] = useState('');
-  const [teacher, setTeacher] =
+
+  const [code, setCode] =
     useState('');
 
-  const [courses, setCourses] =
-    useState([]);
+  const [course, setCourse] =
+    useState('');
+
+  const [classroom, setClassroom] =
+    useState('');
+
+  const [teacher, setTeacher] =
+    useState('');
 
   const [student, setStudent] =
     useState(null);
 
-  // LEER CÓDIGO DESDE QR
+  // LEER QR
   useEffect(() => {
+
     const params =
       new URLSearchParams(
         window.location.search
@@ -26,187 +31,260 @@ function CheckInPage() {
       params.get('code');
 
     if (qrCode) {
+
       setCode(qrCode);
-      fetchStudentByCode(qrCode);
+
+      fetchStudentByCode(
+        qrCode
+      );
     }
 
-    fetchCourses();
   }, []);
-
-  // OBTENER CURSOS
-  const fetchCourses = async () => {
-    const { data, error } =
-      await supabase
-        .from('courses')
-        .select('*')
-        .order('created_at', {
-          ascending: false,
-        });
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setCourses(data);
-  };
 
   // BUSCAR ALUMNO
   const fetchStudentByCode =
     async (studentCode) => {
-      const { data, error } =
-        await supabase
-          .from('students')
-          .select('*')
-          .eq(
-            'dni_code',
-            studentCode
-          )
-          .single();
 
-      if (error) {
-        console.error(error);
+      // LIMPIAR
+      setCourse('');
+      setClassroom('');
+      setTeacher('');
+
+      // BUSCAR ALUMNO
+      const {
+        data: studentData,
+        error: studentError,
+      } = await supabase
+        .from('students')
+        .select('*')
+        .eq(
+          'dni_code',
+          studentCode
+        )
+        .single();
+
+      if (
+        studentError ||
+        !studentData
+      ) {
+
+        console.error(
+          studentError
+        );
+
+        setStudent(null);
+
         return;
       }
 
-      setStudent(data);
+      setStudent(studentData);
+
+      // CURSO DEL ALUMNO
+      const studentCourse =
+        String(
+          studentData.course || ''
+        )
+          .trim()
+          .toLowerCase();
+
+      // BUSCAR TODOS LOS CURSOS
+      const {
+        data: coursesData,
+        error: courseError,
+      } = await supabase
+        .from('courses')
+        .select('*');
+
+      if (
+        courseError ||
+        !coursesData
+      ) {
+
+        console.error(
+          courseError
+        );
+
+        return;
+      }
+
+      // BUSCAR CURSO
+      const foundCourse =
+        coursesData.find(
+          (item) => {
+
+            const courseName =
+              String(
+                item.name || ''
+              )
+                .trim()
+                .toLowerCase();
+
+            return (
+              courseName ===
+              studentCourse
+            );
+          }
+        );
+
+      if (!foundCourse) {
+
+        console.log(
+          'Curso no encontrado'
+        );
+
+        return;
+      }
+
+      console.log(
+        'CURSO:',
+        foundCourse
+      );
+
+      // AUTOCOMPLETAR
+      setCourse(
+        foundCourse.name || ''
+      );
+
+      setClassroom(
+        foundCourse.classroom || ''
+      );
+
+      setTeacher(
+        foundCourse.teacher || ''
+      );
     };
 
-  // REGISTRAR FICHAJE
-  const handleCheckIn = async (
-    type
-  ) => {
-    if (
-      !code ||
-      !course ||
-      !classroom ||
-      !teacher
-    ) {
-      toast.error(
-        'Completa todos los campos'
+  // REGISTRAR
+  const handleCheckIn =
+    async (type) => {
+
+      if (
+        !code ||
+        !course ||
+        !teacher
+      ) {
+
+        toast.error(
+          'Completa todos los campos'
+        );
+
+        return;
+      }
+
+      // VALIDAR ALUMNO
+      const {
+        data: studentData,
+        error: studentError,
+      } = await supabase
+        .from('students')
+        .select('*')
+        .eq(
+          'dni_code',
+          code
+        )
+        .single();
+
+      if (
+        studentError ||
+        !studentData
+      ) {
+
+        toast.error(
+          'Alumno no encontrado'
+        );
+
+        return;
+      }
+
+      // ÚLTIMO FICHAJE
+      const {
+        data: lastCheckin,
+      } = await supabase
+        .from('checkins')
+        .select('type')
+        .eq(
+          'code',
+          Number(code)
+        )
+        .order('id', {
+          ascending: false,
+        })
+        .limit(1)
+        .maybeSingle();
+
+      // EVITAR DUPLICADOS
+      if (
+        lastCheckin &&
+        lastCheckin.type === type
+      ) {
+
+        toast.error(
+          `Ya existe una ${type.toLowerCase()} registrada`
+        );
+
+        return;
+      }
+
+      // GUARDAR
+      const { error } =
+        await supabase
+          .from('checkins')
+          .insert([
+            {
+              code,
+              course,
+              classroom,
+              teacher,
+              type,
+            },
+          ]);
+
+      if (error) {
+
+        console.error(error);
+
+        toast.error(
+          'Error al guardar fichaje'
+        );
+
+        return;
+      }
+
+      toast.success(
+        `${type} registrada correctamente`
       );
 
-      return;
-    }
-
-    // VALIDAR ALUMNO
-    const {
-      data: studentData,
-      error: studentError,
-    } = await supabase
-      .from('students')
-      .select('*')
-      .eq('dni_code', code)
-      .single();
-
-    if (
-      studentError ||
-      !studentData
-    ) {
-      toast.error(
-        'Alumno no encontrado'
-      );
-
-      return;
-    }
-
-    // OBTENER ÚLTIMO FICHAJE
-    const {
-      data: lastCheckin,
-    } = await supabase
-      .from('checkins')
-      .select('type')
-      .eq('code', Number(code))
-      .order('id', {
-        ascending: false,
-      })
-      .limit(1)
-      .maybeSingle();
-
-    // EVITAR DOBLE ENTRADA/SALIDA
-    if (
-      lastCheckin &&
-      lastCheckin.type === type
-    ) {
-      toast.error(
-        `Ya existe una ${type.toLowerCase()} registrada`
-      );
-
-      return;
-    }
-
-    // GUARDAR FICHAJE
-    const { error } = await supabase
-      .from('checkins')
-      .insert([
-        {
-          code,
-          course,
-          classroom,
-          teacher,
-          type,
-        },
-      ]);
-
-    if (error) {
-      console.error(error);
-
-      toast.error(
-        'Error al guardar fichaje'
-      );
-
-      return;
-    }
-
-    toast.success(
-      `${type} registrada correctamente`
-    );
-
-    setCode('');
-    setCourse('');
-    setClassroom('');
-    setTeacher('');
-    setStudent(null);
-  };
-
-  // CAMBIO DE CURSO
-  const handleCourseChange = (
-    value
-  ) => {
-    setCourse(value);
-
-    const selectedCourse =
-      courses.find(
-        (item) =>
-          item.name === value
-      );
-
-    if (selectedCourse) {
-      setClassroom(
-        selectedCourse.classroom
-      );
-    }
-  };
+      // LIMPIAR
+      setCode('');
+      setCourse('');
+      setClassroom('');
+      setTeacher('');
+      setStudent(null);
+    };
 
   return (
     <div
       style={{
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent:
+          'center',
       }}
     >
+
       <div
         style={{
           width: '100%',
           maxWidth: '700px',
         }}
       >
-        {/* TÍTULO */}
+
+        {/* TITULO */}
         <div
           style={{
             marginBottom: '30px',
           }}
         >
+
           <h1
             style={{
               margin: 0,
@@ -226,15 +304,18 @@ function CheckInPage() {
             }}
           >
             Registra entradas y
-            salidas de alumnos de
-            forma rápida.
+            salidas de alumnos
+            de forma rápida.
           </p>
+
         </div>
 
-        {/* CARD PRINCIPAL */}
+        {/* CARD */}
         <div style={cardStyle}>
-          {/* CÓDIGO */}
+
+          {/* CODIGO */}
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Código de alumno
             </label>
@@ -243,26 +324,47 @@ function CheckInPage() {
               type="text"
               maxLength="4"
               value={code}
-              onChange={(e) =>
-                setCode(
-                  e.target.value
-                )
-              }
+              onChange={async (e) => {
+
+                const value =
+                  e.target.value;
+
+                setCode(value);
+
+                if (
+                  value.length === 4
+                ) {
+
+                  await fetchStudentByCode(
+                    value
+                  );
+
+                } else {
+
+                  setStudent(null);
+
+                  setCourse('');
+                  setClassroom('');
+                  setTeacher('');
+                }
+              }}
               placeholder="Introduce el código"
               style={inputStyle}
             />
+
           </div>
 
           {/* ALUMNO */}
           {student && (
+
             <div style={studentCard}>
+
               <div>
+
                 <div
                   style={{
-                    fontSize:
-                      '14px',
-                    color:
-                      '#6b7280',
+                    fontSize: '14px',
+                    color: '#6b7280',
                     marginBottom:
                       '5px',
                   }}
@@ -273,8 +375,7 @@ function CheckInPage() {
                 <h3
                   style={{
                     margin: 0,
-                    color:
-                      '#111827',
+                    color: '#111827',
                   }}
                 >
                   {
@@ -284,10 +385,8 @@ function CheckInPage() {
 
                 <p
                   style={{
-                    marginTop:
-                      '5px',
-                    color:
-                      '#6b7280',
+                    marginTop: '5px',
+                    color: '#6b7280',
                   }}
                 >
                   Código:{' '}
@@ -295,6 +394,7 @@ function CheckInPage() {
                     student.dni_code
                   }
                 </p>
+
               </div>
 
               <div
@@ -304,47 +404,34 @@ function CheckInPage() {
               >
                 OK
               </div>
+
             </div>
           )}
 
           {/* CURSO */}
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Curso
             </label>
 
-            <select
+            <input
+              type="text"
               value={course}
-              onChange={(e) =>
-                handleCourseChange(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            >
-              <option value="">
-                Seleccionar curso
-              </option>
+              readOnly
+              placeholder="Curso automático"
+              style={{
+                ...inputStyle,
+                backgroundColor:
+                  '#f3f4f6',
+              }}
+            />
 
-              {courses.map(
-                (item) => (
-                  <option
-                    key={
-                      item.id
-                    }
-                    value={
-                      item.name
-                    }
-                  >
-                    {item.name}
-                  </option>
-                )
-              )}
-            </select>
           </div>
 
           {/* DOCENTE */}
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Docente
             </label>
@@ -352,18 +439,20 @@ function CheckInPage() {
             <input
               type="text"
               value={teacher}
-              onChange={(e) =>
-                setTeacher(
-                  e.target.value
-                )
-              }
-              placeholder="Nombre del docente"
-              style={inputStyle}
+              readOnly
+              placeholder="Docente automático"
+              style={{
+                ...inputStyle,
+                backgroundColor:
+                  '#f3f4f6',
+              }}
             />
+
           </div>
 
           {/* AULA */}
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Aula
             </label>
@@ -372,18 +461,21 @@ function CheckInPage() {
               type="text"
               value={classroom}
               readOnly
+              placeholder="Aula automática"
               style={{
                 ...inputStyle,
                 backgroundColor:
                   '#f3f4f6',
               }}
             />
+
           </div>
 
           {/* BOTONES */}
           <div
             style={buttonContainer}
           >
+
             <button
               onClick={() =>
                 handleCheckIn(
@@ -405,9 +497,13 @@ function CheckInPage() {
             >
               Registrar Salida
             </button>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 }
