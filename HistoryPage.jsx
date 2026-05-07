@@ -118,11 +118,13 @@ function HistoryPage() {
                 </td>
 
                 <td style={tdStyle}>
-                  {new Date(
-  new Date(item.created_at)
-  .getTime() + 60 * 60 * 1000
-).toLocaleString('es-ES')}
-                </td>
+  {new Date(
+    new Date(
+      item.created_at
+    ).getTime() +
+      1 * 60 * 60 * 1000
+  ).toLocaleString('es-ES')}
+</td>
               </tr>
             ))}
           </tbody>
