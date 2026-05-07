@@ -262,6 +262,43 @@ main {
         `}
       </style>
 
+<div
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '40px',
+  }}
+>
+
+  <div
+    style={{
+      textAlign: 'center',
+    }}
+  >
+
+    <img
+      src="/icadepro-logo.png"
+      alt="IcadePro"
+      style={{
+        width: '180px',
+        objectFit: 'contain',
+        marginBottom: '18px',
+      }}
+    />
+
+    <p
+      style={{
+        color: '#9ca3af',
+        fontSize: '15px',
+        margin: 0,
+      }}
+    >
+      Sistema de fichajes
+    </p>
+
+  </div>
+
+</div>
       <div
         style={{
           display: 'flex',
