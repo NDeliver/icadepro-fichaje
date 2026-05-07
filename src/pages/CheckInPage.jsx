@@ -251,21 +251,28 @@ function CheckInPage() {
   return (
     <>
       <style>
-        {`
-          aside {
-            display: none !important;
-          }
+  {`
+    aside {
+      display: none !important;
+    }
 
-          main {
-            padding-left: 60px !important;
-            padding-top: 0px !important;
-          }
+    main {
+      padding: 0 !important;
+    }
 
-          main > div:first-child {
-            display: none !important;
-          }
-        `}
-      </style>
+    main > div:first-child {
+      display: none !important;
+    }
+
+    main > div:nth-child(1) {
+      display: none !important;
+    }
+
+    main > div:nth-child(2) {
+      margin-top: 0 !important;
+    }
+  `}
+</style>
 
       <div
         style={{
