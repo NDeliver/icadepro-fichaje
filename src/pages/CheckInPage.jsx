@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
+import toast from 'react-hot-toast';
 
 function CheckInPage() {
   const [code, setCode] = useState('');
@@ -68,7 +69,10 @@ function CheckInPage() {
   // REGISTRAR FICHAJE
   const handleCheckIn = async (type) => {
     if (!code || !course || !classroom) {
-      alert('Completa todos los campos');
+      toast.error(
+        'Completa todos los campos'
+      );
+
       return;
     }
 
@@ -82,8 +86,14 @@ function CheckInPage() {
       .eq('dni_code', code)
       .single();
 
-    if (studentError || !studentData) {
-      alert('Alumno no encontrado');
+    if (
+      studentError ||
+      !studentData
+    ) {
+      toast.error(
+        'Alumno no encontrado'
+      );
+
       return;
     }
 
@@ -105,7 +115,7 @@ function CheckInPage() {
       lastCheckin &&
       lastCheckin.type === type
     ) {
-      alert(
+      toast.error(
         `Ya existe una ${type.toLowerCase()} registrada`
       );
 
@@ -126,11 +136,15 @@ function CheckInPage() {
 
     if (error) {
       console.error(error);
-      alert('Error al guardar fichaje');
+
+      toast.error(
+        'Error al guardar fichaje'
+      );
+
       return;
     }
 
-    alert(
+    toast.success(
       `${type} registrada correctamente`
     );
 
@@ -419,3 +433,5 @@ const studentBadge = {
   fontWeight: '700',
   fontSize: '14px',
 };
+
+export default CheckInPage;
