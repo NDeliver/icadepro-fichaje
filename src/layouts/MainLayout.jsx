@@ -51,145 +51,125 @@ function MainLayout({ children }) {
       {/* SIDEBAR */}
       {!isCheckinPage && (
         <aside
-  style={{
-    width: '240px',
-    backgroundColor:
-      'white',
-    borderRight:
-      '1px solid #ececec',
-    padding: '30px 20px',
-    display: 'flex',
-    flexDirection:
-      'column',
-    position: 'relative',
-    flexShrink: 0,
-  }}
->
+          style={{
+            width: '240px',
+            minWidth: '240px',
+            backgroundColor:
+              'white',
+            borderRight:
+              '1px solid #ececec',
+            padding: '30px 20px',
+            boxSizing: 'border-box',
+            flexShrink: 0,
+          }}
+        >
 
-  {/* CONTENIDO SUPERIOR */}
-  <div>
-
-    {/* LOGO */}
-    <div
-      style={{
-        textAlign: 'center',
-        marginBottom: '50px',
-      }}
-    >
-
-      <img
-        src="/icadepro-logo.png"
-        alt="Logo"
-        style={{
-          width: '170px',
-          display: 'block',
-          margin: '0 auto',
-        }}
-      />
-
-      <p
-        style={{
-          color: '#9ca3af',
-          fontSize: '14px',
-          marginTop: '10px',
-        }}
-      >
-        Sistema de fichajes
-      </p>
-
-    </div>
-
-    {/* MENÚ */}
-    <nav
-      style={{
-        display: 'flex',
-        flexDirection:
-          'column',
-        gap: '10px',
-      }}
-    >
-
-      <Link
-        to="/"
-        style={{
-          ...linkStyle,
-          ...(location.pathname === '/'
-            ? activeLink
-            : {}),
-        }}
-      >
-        Inicio
-      </Link>
-
-      {isAuthenticated && (
-        <>
-          <Link
-            to="/admin"
+          {/* LOGO */}
+          <div
             style={{
-              ...linkStyle,
-              ...(location.pathname === '/admin'
-                ? activeLink
-                : {}),
+              textAlign: 'center',
+              marginBottom: '50px',
             }}
           >
-            Administración
-          </Link>
 
-          <Link
-            to="/history"
+            <img
+              src="/icadepro-logo.png"
+              alt="Logo"
+              style={{
+                width: '170px',
+                display: 'block',
+                margin: '0 auto',
+              }}
+            />
+
+            <p
+              style={{
+                color: '#9ca3af',
+                fontSize: '14px',
+                marginTop: '10px',
+              }}
+            >
+              Sistema de fichajes
+            </p>
+
+          </div>
+
+          {/* BLOQUE MENÚ + LOGOUT */}
+          <div
             style={{
-              ...linkStyle,
-              ...(location.pathname === '/history'
-                ? activeLink
-                : {}),
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
             }}
           >
-            Historial
-          </Link>
-        </>
-      )}
 
-    </nav>
+            <Link
+              to="/"
+              style={{
+                ...linkStyle,
+                ...(location.pathname === '/'
+                  ? activeLink
+                  : {}),
+              }}
+            >
+              Inicio
+            </Link>
 
-  </div>
+            {isAuthenticated && (
+              <>
+                <Link
+                  to="/admin"
+                  style={{
+                    ...linkStyle,
+                    ...(location.pathname === '/admin'
+                      ? activeLink
+                      : {}),
+                  }}
+                >
+                  Administración
+                </Link>
 
-  {/* BOTÓN FIJO */}
-{isAuthenticated && (
-  <div
-    style={{
-      position: 'fixed',
-      width: '200px',
-      left: '20px',
-      top: '265px',
-      zIndex: 1000,
-    }}
-  >
-      <button
-        onClick={
-          handleLogout
-        }
-        style={{
-          width: '100%',
-          height: '48px',
-          border: 'none',
-          borderRadius:
-            '14px',
-          backgroundColor:
-            '#111827',
-          color: 'white',
-          cursor:
-            'pointer',
-          fontWeight:
-            '600',
-          fontSize: '14px',
-        }}
-      >
-        Cerrar sesión
-      </button>
-    </div>
-  )}
+                <Link
+                  to="/history"
+                  style={{
+                    ...linkStyle,
+                    ...(location.pathname === '/history'
+                      ? activeLink
+                      : {}),
+                  }}
+                >
+                  Historial
+                </Link>
 
-</aside>
+                <button
+                  onClick={
+                    handleLogout
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    border: 'none',
+                    borderRadius:
+                      '14px',
+                    backgroundColor:
+                      '#111827',
+                    color: 'white',
+                    cursor:
+                      'pointer',
+                    fontWeight:
+                      '600',
+                    fontSize: '14px',
+                    marginTop: '8px',
+                  }}
+                >
+                  Cerrar sesión
+                </button>
+              </>
+            )}
+
+          </div>
+
+        </aside>
       )}
 
       {/* CONTENIDO */}
