@@ -1,15 +1,12 @@
 import {
-  Link,
-  useLocation,
   useNavigate,
 } from 'react-router-dom';
 
 import toast from 'react-hot-toast';
 
-function MainLayout({ children }) {
-
-  const location =
-    useLocation();
+function MainLayout({
+  children,
+}) {
 
   const navigate =
     useNavigate();
@@ -47,163 +44,54 @@ function MainLayout({ children }) {
       {/* SIDEBAR */}
       <aside
         style={{
-          width: '240px',
+          width: '260px',
           backgroundColor:
             'white',
           borderRight:
             '1px solid #ececec',
-          padding: '30px 20px',
           display: 'flex',
           flexDirection:
             'column',
           justifyContent:
-            'space-between',
+            'center',
+          alignItems:
+            'center',
+          padding:
+            '40px 20px',
         }}
       >
 
-        <div>
-
-          {/* LOGO */}
-          <div
-            style={{
-              marginBottom:
-                '45px',
-              textAlign:
-                'center',
-            }}
-          >
-
-            <img
-              src="/icadepro-logo.png"
-              alt="IcadePro"
-              style={{
-                width: '180px',
-                display:
-                  'block',
-                margin:
-                  '0 auto',
-              }}
-            />
-
-            <p
-              style={{
-                color:
-                  '#9ca3af',
-                marginTop:
-                  '10px',
-                fontSize:
-                  '14px',
-              }}
-            >
-              Sistema de fichajes
-            </p>
-
-          </div>
-
-          {/* MENÚ */}
-          <nav
-            style={{
-              display: 'flex',
-              flexDirection:
-                'column',
-              gap: '10px',
-            }}
-          >
-
-            <Link
-              to="/"
-              style={{
-                ...linkStyle,
-                ...(location.pathname ===
-                '/'
-                  ? activeLink
-                  : {}),
-              }}
-            >
-              Inicio
-            </Link>
-
-            {isAuthenticated && (
-              <>
-
-                <Link
-                  to="/admin"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname ===
-                    '/admin'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Administración
-                </Link>
-
-                <Link
-                  to="/history"
-                  style={{
-                    ...linkStyle,
-                    ...(location.pathname ===
-                    '/history'
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  Historial
-                </Link>
-
-              </>
-            )}
-
-          </nav>
-
-        </div>
-
-        {/* FOOTER */}
+        {/* LOGO */}
         <div
           style={{
-            paddingTop: '20px',
-            borderTop:
-              '1px solid #f1f1f1',
+            textAlign:
+              'center',
           }}
         >
 
-          {isAuthenticated && (
-            <button
-              onClick={
-                handleLogout
-              }
-              style={{
-                width: '100%',
-                padding: '14px',
-                marginBottom:
-                  '16px',
-                border: 'none',
-                borderRadius:
-                  '14px',
-                backgroundColor:
-                  '#111827',
-                color: 'white',
-                cursor:
-                  'pointer',
-                fontWeight:
-                  '600',
-                fontSize:
-                  '14px',
-              }}
-            >
-              Cerrar sesión
-            </button>
-          )}
-
-          <div
+          <img
+            src="/icadepro-logo.png"
+            alt="IcadePro"
             style={{
-              fontSize: '13px',
-              color: '#9ca3af',
+              width: '180px',
+              objectFit:
+                'contain',
+              marginBottom:
+                '20px',
+            }}
+          />
+
+          <p
+            style={{
+              color:
+                '#9ca3af',
+              fontSize:
+                '15px',
+              margin: 0,
             }}
           >
-            © 2026 IcadePro
-          </div>
+            Sistema de fichajes
+          </p>
 
         </div>
 
@@ -334,26 +222,41 @@ function MainLayout({ children }) {
 
         {children}
 
+        {/* LOGOUT */}
+        {isAuthenticated && (
+          <button
+            onClick={
+              handleLogout
+            }
+            style={{
+              position:
+                'fixed',
+              bottom: '20px',
+              left: '20px',
+              padding:
+                '14px 18px',
+              border: 'none',
+              borderRadius:
+                '14px',
+              backgroundColor:
+                '#111827',
+              color: 'white',
+              cursor:
+                'pointer',
+              fontWeight:
+                '600',
+              fontSize:
+                '14px',
+            }}
+          >
+            Cerrar sesión
+          </button>
+        )}
+
       </main>
 
     </div>
   );
 }
-
-const linkStyle = {
-  textDecoration: 'none',
-  color: '#6b7280',
-  padding: '14px 16px',
-  borderRadius: '14px',
-  fontSize: '15px',
-  fontWeight: '500',
-  transition: '0.2s',
-};
-
-const activeLink = {
-  backgroundColor:
-    '#fff4ec',
-  color: '#f47920',
-};
 
 export default MainLayout;
