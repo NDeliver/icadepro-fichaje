@@ -46,12 +46,10 @@ function CheckInPage() {
   const fetchStudentByCode =
     async (studentCode) => {
 
-      // LIMPIAR
       setCourse('');
       setClassroom('');
       setTeacher('');
 
-      // BUSCAR ALUMNO
       const {
         data: studentData,
         error: studentError,
@@ -80,7 +78,6 @@ function CheckInPage() {
 
       setStudent(studentData);
 
-      // CURSO DEL ALUMNO
       const studentCourse =
         String(
           studentData.course || ''
@@ -88,7 +85,6 @@ function CheckInPage() {
           .trim()
           .toLowerCase();
 
-      // BUSCAR TODOS LOS CURSOS
       const {
         data: coursesData,
         error: courseError,
@@ -108,7 +104,6 @@ function CheckInPage() {
         return;
       }
 
-      // BUSCAR CURSO
       const foundCourse =
         coursesData.find(
           (item) => {
@@ -136,7 +131,6 @@ function CheckInPage() {
         return;
       }
 
-      // AUTOCOMPLETAR
       setCourse(
         foundCourse.name || ''
       );
@@ -167,7 +161,6 @@ function CheckInPage() {
         return;
       }
 
-      // VALIDAR ALUMNO
       const {
         data: studentData,
         error: studentError,
@@ -192,7 +185,6 @@ function CheckInPage() {
         return;
       }
 
-      // ÚLTIMO FICHAJE
       const {
         data: lastCheckin,
       } = await supabase
@@ -208,7 +200,6 @@ function CheckInPage() {
         .limit(1)
         .maybeSingle();
 
-      // EVITAR DUPLICADOS
       if (
         lastCheckin &&
         lastCheckin.type === type
@@ -226,18 +217,14 @@ function CheckInPage() {
         await supabase
           .from('checkins')
           .insert([
-  {
-    code,
-    course,
-    classroom,
-    teacher,
-    type,
-    created_at: new Date(
-      Date.now() +
-        60 * 60 * 1000
-    ).toISOString(),
-  },
-]);
+            {
+              code,
+              course,
+              classroom,
+              teacher,
+              type,
+            },
+          ]);
 
       if (error) {
 
@@ -254,7 +241,6 @@ function CheckInPage() {
         `${type} registrada correctamente`
       );
 
-      // LIMPIAR
       setCode('');
       setCourse('');
       setClassroom('');
@@ -263,263 +249,272 @@ function CheckInPage() {
     };
 
   return (
+    <>
+      <style>
+        {`
+          aside nav {
+            display: none !important;
+          }
+        `}
+      </style>
 
-    <div
-      style={{
-        display: 'flex',
-        gap: '30px',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        flexWrap: 'nowrap',
-      }}
-    >
-
-      {/* ALUMNADO */}
       <div
         style={{
-          width: '100%',
-          maxWidth: '600px',
+          display: 'flex',
+          gap: '30px',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          flexWrap: 'nowrap',
         }}
       >
 
-        {/* TITULO */}
+        {/* ALUMNADO */}
         <div
           style={{
-            marginBottom: '30px',
+            width: '100%',
+            maxWidth: '600px',
           }}
         >
 
-          <h1
+          {/* TITULO */}
+          <div
             style={{
-              margin: 0,
-              fontSize: '42px',
-              color: '#111827',
-              fontWeight: '700',
+              marginBottom: '30px',
             }}
           >
-            Fichaje Alumnado
-          </h1>
 
-          <p
-            style={{
-              marginTop: '10px',
-              color: '#6b7280',
-              fontSize: '16px',
-            }}
-          >
-            Registra entradas y
-            salidas de alumnos.
-          </p>
-
-        </div>
-
-        {/* CARD */}
-        <div style={cardStyle}>
-
-          {/* CODIGO */}
-          <div style={fieldContainer}>
-
-            <label style={labelStyle}>
-              Código de alumno
-            </label>
-
-            <input
-              type="text"
-              maxLength="4"
-              value={code}
-              onChange={async (e) => {
-
-                const value =
-                  e.target.value;
-
-                setCode(value);
-
-                if (
-                  value.length === 4
-                ) {
-
-                  await fetchStudentByCode(
-                    value
-                  );
-
-                } else {
-
-                  setStudent(null);
-
-                  setCourse('');
-                  setClassroom('');
-                  setTeacher('');
-                }
+            <h1
+              style={{
+                margin: 0,
+                fontSize: '42px',
+                color: '#111827',
+                fontWeight: '700',
               }}
-              placeholder="Introduce el código"
-              style={inputStyle}
-            />
+            >
+              Fichaje Alumnado
+            </h1>
+
+            <p
+              style={{
+                marginTop: '10px',
+                color: '#6b7280',
+                fontSize: '16px',
+              }}
+            >
+              Registra entradas y
+              salidas de alumnos.
+            </p>
 
           </div>
 
-          {/* ALUMNO */}
-          {student && (
+          {/* CARD */}
+          <div style={cardStyle}>
 
-            <div style={studentCard}>
+            {/* CODIGO */}
+            <div style={fieldContainer}>
 
-              <div>
+              <label style={labelStyle}>
+                Código de alumno
+              </label>
 
-                <div
-                  style={{
-                    fontSize: '14px',
-                    color: '#6b7280',
-                    marginBottom:
-                      '5px',
-                  }}
-                >
-                  Alumno detectado
-                </div>
+              <input
+                type="text"
+                maxLength="4"
+                value={code}
+                onChange={async (e) => {
 
-                <h3
-                  style={{
-                    margin: 0,
-                    color: '#111827',
-                  }}
-                >
-                  {
-                    student.full_name
+                  const value =
+                    e.target.value;
+
+                  setCode(value);
+
+                  if (
+                    value.length === 4
+                  ) {
+
+                    await fetchStudentByCode(
+                      value
+                    );
+
+                  } else {
+
+                    setStudent(null);
+
+                    setCourse('');
+                    setClassroom('');
+                    setTeacher('');
                   }
-                </h3>
-
-                <p
-                  style={{
-                    marginTop: '5px',
-                    color: '#6b7280',
-                  }}
-                >
-                  Código:{' '}
-                  {
-                    student.dni_code
-                  }
-                </p>
-
-              </div>
-
-              <div
-                style={
-                  studentBadge
-                }
-              >
-                OK
-              </div>
+                }}
+                placeholder="Introduce el código"
+                style={inputStyle}
+              />
 
             </div>
-          )}
 
-          {/* CURSO */}
-          <div style={fieldContainer}>
+            {/* ALUMNO */}
+            {student && (
 
-            <label style={labelStyle}>
-              Curso
-            </label>
+              <div style={studentCard}>
 
-            <input
-              type="text"
-              value={course}
-              readOnly
-              placeholder="Curso automático"
-              style={{
-                ...inputStyle,
-                backgroundColor:
-                  '#f3f4f6',
-              }}
-            />
+                <div>
 
-          </div>
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      color: '#6b7280',
+                      marginBottom:
+                        '5px',
+                    }}
+                  >
+                    Alumno detectado
+                  </div>
 
-          {/* DOCENTE */}
-          <div style={fieldContainer}>
+                  <h3
+                    style={{
+                      margin: 0,
+                      color: '#111827',
+                    }}
+                  >
+                    {
+                      student.full_name
+                    }
+                  </h3>
 
-            <label style={labelStyle}>
-              Docente
-            </label>
+                  <p
+                    style={{
+                      marginTop: '5px',
+                      color: '#6b7280',
+                    }}
+                  >
+                    Código:{' '}
+                    {
+                      student.dni_code
+                    }
+                  </p>
 
-            <input
-              type="text"
-              value={teacher}
-              readOnly
-              placeholder="Docente automático"
-              style={{
-                ...inputStyle,
-                backgroundColor:
-                  '#f3f4f6',
-              }}
-            />
+                </div>
 
-          </div>
+                <div
+                  style={
+                    studentBadge
+                  }
+                >
+                  OK
+                </div>
 
-          {/* AULA */}
-          <div style={fieldContainer}>
+              </div>
+            )}
 
-            <label style={labelStyle}>
-              Aula
-            </label>
+            {/* CURSO */}
+            <div style={fieldContainer}>
 
-            <input
-              type="text"
-              value={classroom}
-              readOnly
-              placeholder="Aula automática"
-              style={{
-                ...inputStyle,
-                backgroundColor:
-                  '#f3f4f6',
-              }}
-            />
+              <label style={labelStyle}>
+                Curso
+              </label>
 
-          </div>
+              <input
+                type="text"
+                value={course}
+                readOnly
+                placeholder="Curso automático"
+                style={{
+                  ...inputStyle,
+                  backgroundColor:
+                    '#f3f4f6',
+                }}
+              />
 
-          {/* BOTONES */}
-          <div
-            style={buttonContainer}
-          >
+            </div>
 
-            <button
-              onClick={() =>
-                handleCheckIn(
-                  'Entrada'
-                )
-              }
-              style={entryButton}
+            {/* DOCENTE */}
+            <div style={fieldContainer}>
+
+              <label style={labelStyle}>
+                Docente
+              </label>
+
+              <input
+                type="text"
+                value={teacher}
+                readOnly
+                placeholder="Docente automático"
+                style={{
+                  ...inputStyle,
+                  backgroundColor:
+                    '#f3f4f6',
+                }}
+              />
+
+            </div>
+
+            {/* AULA */}
+            <div style={fieldContainer}>
+
+              <label style={labelStyle}>
+                Aula
+              </label>
+
+              <input
+                type="text"
+                value={classroom}
+                readOnly
+                placeholder="Aula automática"
+                style={{
+                  ...inputStyle,
+                  backgroundColor:
+                    '#f3f4f6',
+                }}
+              />
+
+            </div>
+
+            {/* BOTONES */}
+            <div
+              style={buttonContainer}
             >
-              Registrar Entrada
-            </button>
 
-            <button
-              onClick={() =>
-                handleCheckIn(
-                  'Salida'
-                )
-              }
-              style={exitButton}
-            >
-              Registrar Salida
-            </button>
+              <button
+                onClick={() =>
+                  handleCheckIn(
+                    'Entrada'
+                  )
+                }
+                style={entryButton}
+              >
+                Registrar Entrada
+              </button>
+
+              <button
+                onClick={() =>
+                  handleCheckIn(
+                    'Salida'
+                  )
+                }
+                style={exitButton}
+              >
+                Registrar Salida
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
+        {/* PROFESORES */}
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '600px',
+          }}
+        >
+
+          <TeacherCheckInPage />
+
+        </div>
+
       </div>
-
-      {/* PROFESORES */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '600px',
-        }}
-      >
-
-        <TeacherCheckInPage />
-
-      </div>
-
-    </div>
+    </>
   );
 }
 

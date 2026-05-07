@@ -57,7 +57,7 @@ function MainLayout({ children }) {
           flexDirection:
             'column',
           justifyContent:
-            'space-between',
+  'center',
         }}
       >
 
