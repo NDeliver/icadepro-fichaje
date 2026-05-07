@@ -81,32 +81,23 @@ function TeacherCheckInPage() {
     }
 
     // GUARDAR
-const { error } =
-  await supabase
-    .from('teacher_checkins')
-    .insert([
-  {
-    teacher_code:
-      teacher.teacher_code,
+    const { error } =
+      await supabase
+        .from('teacher_checkins')
+        .insert([
+          {
+            teacher_code:
+              teacher.teacher_code,
 
-    teacher_name:
-      teacher.full_name,
+            teacher_name:
+              teacher.full_name,
 
-    type,
+            type,
 
-    created_at:
-      new Date().toISOString(),
-  },
-]);
-        created_at:
-          new Date(
-            Date.now() +
-              60 *
-                60 *
-                1000
-          ).toISOString(),
-      },
-    ]);
+            created_at:
+              new Date().toISOString(),
+          },
+        ]);
 
     if (error) {
 
@@ -148,8 +139,6 @@ const { error } =
         >
           Fichaje Profesores
         </h1>
-
-    
 
       </div>
 
