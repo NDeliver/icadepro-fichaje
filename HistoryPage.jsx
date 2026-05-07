@@ -58,27 +58,19 @@ function HistoryPage() {
 
   // FORMATEAR FECHA CANARIAS
   const formatCanaryDate = (
-    date
-  ) => {
+  date
+) => {
 
-    const canaryDate =
-      new Date(date);
+  const d = new Date(date);
 
-    return canaryDate
-      .toLocaleString(
-        'es-ES',
-        {
-          timeZone:
-            'Atlantic/Canary',
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        }
-      );
-  };
+  d.setHours(
+    d.getHours() + 1
+  );
+
+  return d.toLocaleString(
+    'es-ES'
+  );
+};
 
   return (
     <div>
