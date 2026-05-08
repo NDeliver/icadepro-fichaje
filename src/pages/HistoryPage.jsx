@@ -193,43 +193,114 @@ function HistoryPage() {
   };
 
   // EXPORTAR PDF
-  const exportPDF = () => {
+const exportPDF = () => {
 
-    const doc = new jsPDF();
+  const doc = new jsPDF();
 
-    doc.text(
-      'Historial Alumnado',
-      14,
-      15
-    );
+  // LOGO TEXTO
+  doc.setFontSize(24);
 
-    autoTable(doc, {
-      startY: 25,
-      head: [[
-        'Alumno',
-        'Curso',
-        'Aula',
-        'Tipo',
-        'Fecha',
-      ]],
-      body:
-        filteredCheckins.map(
-          (item) => [
-            item.student_name,
-            item.course,
-            item.classroom,
-            item.type,
-            formatDate(
-              item.created_at
-            ),
-          ]
-        ),
-    });
+  doc.setTextColor(
+    244,
+    121,
+    32
+  );
 
-    doc.save(
-      'historial_alumnado.pdf'
-    );
-  };
+  doc.text(
+    'ICADEPRO',
+    14,
+    20
+  );
+
+  // TITULO
+  doc.setFontSize(18);
+
+  doc.setTextColor(
+    17,
+    24,
+    39
+  );
+
+  doc.text(
+    'Historial Alumnado',
+    14,
+    35
+  );
+
+  // FECHA
+  doc.setFontSize(11);
+
+  doc.setTextColor(
+    107,
+    114,
+    128
+  );
+
+  doc.text(
+    `Generado: ${new Date().toLocaleString('es-ES')}`,
+    14,
+    43
+  );
+
+  autoTable(doc, {
+
+    startY: 55,
+
+    head: [[
+      'Alumno',
+      'Curso',
+      'Aula',
+      'Tipo',
+      'Fecha',
+    ]],
+
+    body:
+      filteredCheckins.map(
+        (item) => [
+          item.student_name,
+          item.course,
+          item.classroom,
+          item.type,
+          formatDate(
+            item.created_at
+          ),
+        ]
+      ),
+
+    headStyles: {
+      fillColor: [
+        244,
+        121,
+        32,
+      ],
+      textColor: 255,
+      fontStyle: 'bold',
+    },
+
+    styles: {
+      fontSize: 10,
+      cellPadding: 4,
+    },
+
+    alternateRowStyles: {
+      fillColor: [
+        248,
+        248,
+        248,
+      ],
+    },
+
+    margin: {
+      left: 14,
+      right: 14,
+    },
+
+  });
+
+  doc.save(
+    'historial_alumnado_icadepro.pdf'
+  );
+};
 
   return (
     <div>
