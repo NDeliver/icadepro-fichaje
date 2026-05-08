@@ -85,18 +85,14 @@ function HistoryPage() {
       setTeacherCheckins(data);
     };
 
-  // FORMATEAR FECHA CANARIAS
-  const formatCanaryDate = (
+  // FORMATEAR FECHA
+  const formatDate = (
     date
   ) => {
 
-    const d = new Date(date);
-
-    d.setHours(
-      d.getHours() + 1
-    );
-
-    return d.toLocaleString(
+    return new Date(
+      date
+    ).toLocaleString(
       'es-ES'
     );
   };
@@ -197,7 +193,7 @@ function HistoryPage() {
                   </td>
 
                   <td style={tdStyle}>
-                    {formatCanaryDate(
+                    {formatDate(
                       item.created_at
                     )}
                   </td>
@@ -283,7 +279,7 @@ function HistoryPage() {
                   </td>
 
                   <td style={tdStyle}>
-                    {formatCanaryDate(
+                    {formatDate(
                       item.created_at
                     )}
                   </td>
