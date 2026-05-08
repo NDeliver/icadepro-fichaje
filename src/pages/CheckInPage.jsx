@@ -317,20 +317,23 @@ function CheckInPage() {
       </div>
 
       <div
-        style={{
-          display: 'flex',
-          gap: '30px',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          flexWrap: 'nowrap',
-        }}
-      >
+  style={{
+    display: 'flex',
+    gap: '30px',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  }}
+>
 
         {/* ALUMNADO */}
         <div
           style={{
             width: '100%',
-            maxWidth: '600px',
+            width: '100%',
+maxWidth: '600px',
+minWidth: '320px',
+flex: '1 1 500px',
           }}
         >
 
@@ -552,7 +555,10 @@ function CheckInPage() {
         <div
           style={{
             width: '100%',
-            maxWidth: '600px',
+            width: '100%',
+maxWidth: '600px',
+minWidth: '320px',
+flex: '1 1 500px',
           }}
         >
 
