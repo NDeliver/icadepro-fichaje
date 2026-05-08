@@ -6,10 +6,6 @@ function HistoryPage() {
   const [checkins, setCheckins] =
     useState([]);
 
-  const [teacherCheckins,
-    setTeacherCheckins] =
-    useState([]);
-
   const [startDate, setStartDate] =
     useState('');
 
@@ -18,7 +14,6 @@ function HistoryPage() {
 
   useEffect(() => {
     fetchCheckins();
-    fetchTeacherCheckins();
   }, []);
 
   // HISTORIAL ALUMNADO
@@ -64,30 +59,6 @@ function HistoryPage() {
 
     setCheckins(formattedCheckins);
   };
-
-  // HISTORIAL PROFESORADO
-  const fetchTeacherCheckins =
-    async () => {
-
-      const {
-        data,
-        error,
-      } = await supabase
-        .from(
-          'teacher_checkins'
-        )
-        .select('*')
-        .order('created_at', {
-          ascending: false,
-        });
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      setTeacherCheckins(data);
-    };
 
   // FORMATEAR FECHA
   const formatDate = (
@@ -208,7 +179,6 @@ function HistoryPage() {
 
             <input
               type="date"
-              lang="es-ES"
               value={startDate}
               onChange={(e) =>
                 setStartDate(
@@ -230,7 +200,6 @@ function HistoryPage() {
 
             <input
               type="date"
-              lang="es-ES"
               value={endDate}
               onChange={(e) =>
                 setEndDate(
@@ -271,7 +240,13 @@ function HistoryPage() {
 
             <tr>
 
-              <th style={thStyle}>
+              <th
+                style={{
+                  ...thStyle,
+                  borderTopLeftRadius:
+                    '20px',
+                }}
+              >
                 Alumno
               </th>
 
@@ -287,7 +262,13 @@ function HistoryPage() {
                 Tipo
               </th>
 
-              <th style={thStyle}>
+              <th
+                style={{
+                  ...thStyle,
+                  borderTopRightRadius:
+                    '20px',
+                }}
+              >
                 Fecha/Hora
               </th>
 
@@ -319,87 +300,6 @@ function HistoryPage() {
                   <td style={tdStyle}>
                     {
                       item.classroom
-                    }
-                  </td>
-
-                  <td style={tdStyle}>
-                    {item.type}
-                  </td>
-
-                  <td style={tdStyle}>
-                    {formatDate(
-                      item.created_at
-                    )}
-                  </td>
-
-                </tr>
-              )
-            )}
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-      {/* HISTORIAL PROFESORADO */}
-      <div
-        style={{
-          ...tableContainer,
-          marginTop: '30px',
-        }}
-      >
-
-        <h2
-          style={titleStyle}
-        >
-          Historial Profesorado
-        </h2>
-
-        <table
-          style={tableStyle}
-        >
-
-          <thead
-            style={{
-              backgroundColor:
-                '#f47920',
-              color: 'white',
-            }}
-          >
-
-            <tr>
-
-              <th style={thStyle}>
-                Profesor
-              </th>
-
-              <th style={thStyle}>
-                Tipo
-              </th>
-
-              <th style={thStyle}>
-                Fecha/Hora
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            {teacherCheckins.map(
-              (item) => (
-
-                <tr
-                  key={
-                    item.created_at
-                  }
-                >
-
-                  <td style={tdStyle}>
-                    {
-                      item.teacher_name
                     }
                   </td>
 
