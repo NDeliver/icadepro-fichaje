@@ -164,7 +164,8 @@ function HistoryPage() {
         Historial de Fichajes
       </h1>
 
-      <div
+      {/* FILTROS */}
+<div
   style={{
     display: 'flex',
     gap: '15px',
@@ -175,6 +176,7 @@ function HistoryPage() {
 
   <input
     type="date"
+    lang="es-ES"
     value={startDate}
     onChange={(e) =>
       setStartDate(
@@ -186,6 +188,7 @@ function HistoryPage() {
 
   <input
     type="date"
+    lang="es-ES"
     value={endDate}
     onChange={(e) =>
       setEndDate(
@@ -196,40 +199,6 @@ function HistoryPage() {
   />
 
 </div>
-
-      {/* FILTROS */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '15px',
-          marginTop: '20px',
-          marginBottom: '20px',
-        }}
-      >
-
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) =>
-            setStartDate(
-              e.target.value
-            )
-          }
-          style={inputStyle}
-        />
-
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) =>
-            setEndDate(
-              e.target.value
-            )
-          }
-          style={inputStyle}
-        />
-
-      </div>
 
       {/* HISTORIAL ALUMNADO */}
       <div
