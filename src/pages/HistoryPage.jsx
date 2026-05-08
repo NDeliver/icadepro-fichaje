@@ -164,6 +164,39 @@ function HistoryPage() {
         Historial de Fichajes
       </h1>
 
+      <div
+  style={{
+    display: 'flex',
+    gap: '15px',
+    marginTop: '20px',
+    marginBottom: '20px',
+  }}
+>
+
+  <input
+    type="date"
+    value={startDate}
+    onChange={(e) =>
+      setStartDate(
+        e.target.value
+      )
+    }
+    style={inputStyle}
+  />
+
+  <input
+    type="date"
+    value={endDate}
+    onChange={(e) =>
+      setEndDate(
+        e.target.value
+      )
+    }
+    style={inputStyle}
+  />
+
+</div>
+
       {/* FILTROS */}
       <div
         style={{
