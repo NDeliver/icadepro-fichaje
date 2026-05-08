@@ -251,41 +251,52 @@ function CheckInPage() {
   return (
     <>
       <style>
-  {`
-    aside {
-      display: none !important;
-    }
+        {`
+          * {
+            box-sizing: border-box;
+          }
 
-    main {
-      padding: 0 !important;
-    }
+          body {
+            overflow-x: hidden;
+          }
 
-    main > div:first-child {
-      display: none !important;
-    }
+          aside {
+            display: none !important;
+          }
 
-    main > div:nth-child(1) {
-      display: none !important;
-    }
+          main {
+            padding: 0 !important;
+          }
 
-    main > div:nth-child(2) {
-      margin-top: 0 !important;
-    }
-  `}
-</style>
+          main > div:first-child {
+            display: none !important;
+          }
 
+          main > div:nth-child(1) {
+            display: none !important;
+          }
+
+          main > div:nth-child(2) {
+            margin-top: 0 !important;
+          }
+        `}
+      </style>
+
+      {/* LOGO */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
-          marginTop: '-120px',
-          marginBottom: '-40px',
+          marginTop: '0px',
+          marginBottom: '30px',
+          padding: '20px',
         }}
       >
 
         <div
           style={{
             textAlign: 'center',
+            width: '100%',
           }}
         >
 
@@ -293,7 +304,8 @@ function CheckInPage() {
             src="/icadepro-logo.png"
             alt="IcadePro"
             style={{
-              width: '600px',
+              width: '100%',
+              maxWidth: '420px',
               objectFit: 'contain',
               marginBottom: '10px',
             }}
@@ -301,10 +313,11 @@ function CheckInPage() {
 
           <h2
             style={{
-              marginTop: '-80px',
-              marginBottom: '200px',
+              marginTop: '-40px',
+              marginBottom: '60px',
               color: '#8b949e',
-              fontSize: '34px',
+              fontSize:
+                'clamp(24px, 5vw, 34px)',
               fontWeight: '600',
               letterSpacing: '0.5px',
             }}
@@ -316,24 +329,26 @@ function CheckInPage() {
 
       </div>
 
+      {/* CONTENIDO */}
       <div
-  style={{
-    display: 'flex',
-    gap: '30px',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-  }}
->
+        style={{
+          display: 'flex',
+          gap: '30px',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          width: '100%',
+          padding: '0 20px 40px',
+        }}
+      >
 
         {/* ALUMNADO */}
         <div
           style={{
             width: '100%',
-            width: '100%',
-maxWidth: '600px',
-minWidth: '320px',
-flex: '1 1 500px',
+            maxWidth: '600px',
+            minWidth: '320px',
+            flex: '1 1 500px',
           }}
         >
 
@@ -347,7 +362,8 @@ flex: '1 1 500px',
             <h1
               style={{
                 margin: 0,
-                fontSize: '42px',
+                fontSize:
+                  'clamp(28px, 6vw, 42px)',
                 color: '#111827',
                 fontWeight: '700',
               }}
@@ -555,10 +571,9 @@ flex: '1 1 500px',
         <div
           style={{
             width: '100%',
-            width: '100%',
-maxWidth: '600px',
-minWidth: '320px',
-flex: '1 1 500px',
+            maxWidth: '600px',
+            minWidth: '320px',
+            flex: '1 1 500px',
           }}
         >
 
@@ -573,7 +588,7 @@ flex: '1 1 500px',
 
 const cardStyle = {
   backgroundColor: 'white',
-  padding: '32px',
+  padding: '24px',
   borderRadius: '30px',
   border: '1px solid #ececec',
   boxShadow:
