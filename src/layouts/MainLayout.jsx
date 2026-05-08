@@ -63,8 +63,12 @@ function MainLayout({ children }) {
               '1px solid #ececec',
             padding: '30px 20px',
             boxSizing: 'border-box',
-            overflow: 'hidden',
+            overflowY: 'auto',
+            overflowX: 'hidden',
             zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
           }}
         >
 
@@ -73,6 +77,7 @@ function MainLayout({ children }) {
             style={{
               textAlign: 'center',
               marginBottom: '50px',
+              flexShrink: 0,
             }}
           >
 
@@ -98,14 +103,13 @@ function MainLayout({ children }) {
 
           </div>
 
-          {/* BLOQUE MENÚ + LOGOUT */}
-          <div
+          {/* MENÚ */}
+          <nav
             style={{
               display: 'flex',
               flexDirection: 'column',
               gap: '10px',
-              position: 'relative',
-              
+              flexShrink: 0,
             }}
           >
 
@@ -148,32 +152,33 @@ function MainLayout({ children }) {
                 </Link>
 
                 <button
-  onClick={
-    handleLogout
-  }
-  style={{
-    width: '100%',
-    padding: '14px',
-    border: 'none',
-    borderRadius:
-      '14px',
-    backgroundColor:
-      '#111827',
-    color: 'white',
-    cursor:
-      'pointer',
-    fontWeight:
-      '600',
-    fontSize: '14px',
-    marginTop: '10px',
-  }}
->
+                  onClick={
+                    handleLogout
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    border: 'none',
+                    borderRadius:
+                      '14px',
+                    backgroundColor:
+                      '#111827',
+                    color: 'white',
+                    cursor:
+                      'pointer',
+                    fontWeight:
+                      '600',
+                    fontSize: '14px',
+                    marginTop: '10px',
+                    flexShrink: 0,
+                  }}
+                >
                   Cerrar sesión
                 </button>
               </>
             )}
 
-          </div>
+          </nav>
 
         </aside>
       )}
