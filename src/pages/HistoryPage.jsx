@@ -160,76 +160,114 @@ function HistoryPage() {
   return (
     <div>
 
-      <h1>
-        Historial de Fichajes
+      <h1
+        style={{
+          fontSize: '48px',
+          marginBottom: '10px',
+          color: '#111827',
+        }}
+      >
+        Histórico y Reportes
       </h1>
 
+      <p
+        style={{
+          color: '#6b7280',
+          marginBottom: '30px',
+          fontSize: '18px',
+        }}
+      >
+        Consulta y exporta el historial completo de fichajes.
+      </p>
+
       {/* FILTROS */}
-<div
-  style={{
-    display: 'flex',
-    gap: '15px',
-    marginTop: '20px',
-    marginBottom: '20px',
-  }}
->
-
-  <input
-    type="date"
-    lang="es-ES"
-    value={startDate}
-    onChange={(e) =>
-      setStartDate(
-        e.target.value
-      )
-    }
-    style={inputStyle}
-  />
-
-  <input
-    type="date"
-    lang="es-ES"
-    value={endDate}
-    onChange={(e) =>
-      setEndDate(
-        e.target.value
-      )
-    }
-    style={inputStyle}
-  />
-
-</div>
-
-      {/* HISTORIAL ALUMNADO */}
       <div
         style={{
-          marginTop: '20px',
-          backgroundColor:
-            'white',
-          padding: '20px',
-          borderRadius: '10px',
-          overflowX: 'auto',
+          backgroundColor: '#f5f5f5',
+          padding: '30px',
+          borderRadius: '30px',
+          marginBottom: '30px',
         }}
       >
 
-        <h2
+        <div
           style={{
-            marginTop: 0,
-            marginBottom: '20px',
+            display: 'flex',
+            gap: '15px',
+            flexWrap: 'wrap',
           }}
+        >
+
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Fecha desde
+            </label>
+
+            <input
+              type="date"
+              lang="es-ES"
+              value={startDate}
+              onChange={(e) =>
+                setStartDate(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            />
+
+          </div>
+
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Fecha hasta
+            </label>
+
+            <input
+              type="date"
+              lang="es-ES"
+              value={endDate}
+              onChange={(e) =>
+                setEndDate(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            />
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* HISTORIAL ALUMNADO */}
+      <div
+        style={tableContainer}
+      >
+
+        <h2
+          style={titleStyle}
         >
           Historial Alumnado
         </h2>
 
         <table
-          style={{
-            width: '100%',
-            borderCollapse:
-              'collapse',
-          }}
+          style={tableStyle}
         >
 
-          <thead>
+          <thead
+            style={{
+              backgroundColor:
+                '#f47920',
+              color: 'white',
+            }}
+          >
 
             <tr>
 
@@ -307,33 +345,28 @@ function HistoryPage() {
       {/* HISTORIAL PROFESORADO */}
       <div
         style={{
+          ...tableContainer,
           marginTop: '30px',
-          backgroundColor:
-            'white',
-          padding: '20px',
-          borderRadius: '10px',
-          overflowX: 'auto',
         }}
       >
 
         <h2
-          style={{
-            marginTop: 0,
-            marginBottom: '20px',
-          }}
+          style={titleStyle}
         >
           Historial Profesorado
         </h2>
 
         <table
-          style={{
-            width: '100%',
-            borderCollapse:
-              'collapse',
-          }}
+          style={tableStyle}
         >
 
-          <thead>
+          <thead
+            style={{
+              backgroundColor:
+                '#f47920',
+              color: 'white',
+            }}
+          >
 
             <tr>
 
@@ -394,24 +427,55 @@ function HistoryPage() {
   );
 }
 
+const tableContainer = {
+  backgroundColor: 'white',
+  borderRadius: '30px',
+  overflow: 'hidden',
+  boxShadow:
+    '0 4px 20px rgba(0,0,0,0.03)',
+};
+
+const tableStyle = {
+  width: '100%',
+  borderCollapse:
+    'collapse',
+};
+
+const titleStyle = {
+  padding: '30px 30px 0px',
+  margin: 0,
+  marginBottom: '20px',
+  color: '#111827',
+};
+
 const thStyle = {
   textAlign: 'left',
-  padding: '12px',
-  borderBottom:
-    '2px solid #ddd',
+  padding: '18px',
+  color: 'white',
+  fontWeight: '700',
 };
 
 const tdStyle = {
-  padding: '12px',
+  padding: '18px',
   borderBottom:
-    '1px solid #eee',
+    '1px solid #f1f1f1',
+  backgroundColor: 'white',
 };
 
 const inputStyle = {
-  padding: '12px',
-  borderRadius: '10px',
-  border: '1px solid #ddd',
-  fontSize: '14px',
+  padding: '16px',
+  borderRadius: '14px',
+  border: '1px solid #d1d5db',
+  fontSize: '15px',
+  minWidth: '220px',
+  backgroundColor: 'white',
+};
+
+const labelStyle = {
+  display: 'block',
+  marginBottom: '8px',
+  fontWeight: '600',
+  color: '#374151',
 };
 
 export default HistoryPage;
