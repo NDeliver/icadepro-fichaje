@@ -52,7 +52,7 @@ function MainLayout({ children }) {
       {!isCheckinPage && (
         <aside
           style={{
-            width: '240px',
+            width: '270px',
             height: '100vh',
             position: 'fixed',
             top: 0,
@@ -160,7 +160,7 @@ function MainLayout({ children }) {
                       : {}),
                   }}
                 >
-                  Historial Profesores
+                  Profesores
                 </Link>
 
                 <button
@@ -204,9 +204,9 @@ function MainLayout({ children }) {
               ? '0px'
               : '35px',
           marginLeft:
-            isCheckinPage
-              ? '0px'
-              : '240px',
+  isCheckinPage
+    ? '0px'
+    : '270px',
         }}
       >
 
