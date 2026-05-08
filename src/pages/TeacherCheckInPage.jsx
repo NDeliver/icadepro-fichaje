@@ -95,7 +95,7 @@ function TeacherCheckInPage() {
             type,
 
             created_at:
-              new Date().toISOString(),
+              new Date(),
           },
         ]);
 
