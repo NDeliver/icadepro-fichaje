@@ -151,6 +151,18 @@ function MainLayout({ children }) {
                   Historial
                 </Link>
 
+                <Link
+  to="/teacher-history"
+  style={{
+    ...linkStyle,
+    ...(location.pathname === '/teacher-history'
+      ? activeLink
+      : {}),
+  }}
+>
+  Historial Profesores
+</Link>
+
                 <button
                   onClick={
                     handleLogout

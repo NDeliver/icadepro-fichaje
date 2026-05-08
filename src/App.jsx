@@ -10,6 +10,7 @@ import MainLayout from './layouts/MainLayout';
 import CheckInPage from './pages/CheckInPage';
 import AdminPage from './pages/AdminPage';
 import HistoryPage from './pages/HistoryPage';
+import TeacherHistoryPage from './pages/TeacherHistoryPage';
 import LoginPage from './pages/LoginPage';
 import TeacherCheckInPage from './pages/TeacherCheckInPage';
 
@@ -88,6 +89,19 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/teacher-history"
+  element={
+    <ProtectedRoute>
+
+      <MainLayout>
+        <TeacherHistoryPage />
+      </MainLayout>
+
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
 
