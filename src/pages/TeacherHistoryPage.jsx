@@ -15,6 +15,10 @@ function TeacherHistoryPage() {
     setEndDate] =
     useState('');
 
+  const [searchTeacher,
+    setSearchTeacher] =
+    useState('');
+
   useEffect(() => {
     fetchTeacherCheckins();
   }, []);
@@ -65,18 +69,12 @@ function TeacherHistoryPage() {
     );
   };
 
-  // FILTRAR FECHAS
+  // FILTROS
   const filteredTeacherCheckins =
     teacherCheckins.filter(
       (item) => {
 
-        if (
-          !startDate &&
-          !endDate
-        ) {
-          return true;
-        }
-
+        // FECHAS
         const itemDate =
           new Date(
             item.created_at
@@ -105,6 +103,18 @@ function TeacherHistoryPage() {
         if (
           end &&
           itemDate > end
+        ) {
+          return false;
+        }
+
+        // PROFESOR
+        if (
+          searchTeacher &&
+          !item.teacher_name
+            ?.toLowerCase()
+            .includes(
+              searchTeacher.toLowerCase()
+            )
         ) {
           return false;
         }
@@ -151,9 +161,34 @@ function TeacherHistoryPage() {
             display: 'flex',
             gap: '15px',
             flexWrap: 'wrap',
+            alignItems: 'end',
           }}
         >
 
+          {/* PROFESOR */}
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Profesor
+            </label>
+
+            <input
+              type="text"
+              placeholder="Buscar profesor..."
+              value={searchTeacher}
+              onChange={(e) =>
+                setSearchTeacher(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            />
+
+          </div>
+
+          {/* FECHA DESDE */}
           <div>
 
             <label
@@ -175,6 +210,7 @@ function TeacherHistoryPage() {
 
           </div>
 
+          {/* FECHA HASTA */}
           <div>
 
             <label
