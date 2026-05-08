@@ -152,16 +152,16 @@ function MainLayout({ children }) {
                 </Link>
 
                 <Link
-  to="/teacher-history"
-  style={{
-    ...linkStyle,
-    ...(location.pathname === '/teacher-history'
-      ? activeLink
-      : {}),
-  }}
->
-  Historial Profesores
-</Link>
+                  to="/teacher-history"
+                  style={{
+                    ...linkStyle,
+                    ...(location.pathname === '/teacher-history'
+                      ? activeLink
+                      : {}),
+                  }}
+                >
+                  Historial Profesores
+                </Link>
 
                 <button
                   onClick={
