@@ -4,6 +4,7 @@ import QRCode from 'qrcode';
 import toast from 'react-hot-toast';
 
 function AdminPage() {
+
   const [studentName, setStudentName] =
     useState('');
 
@@ -25,6 +26,10 @@ function AdminPage() {
   const [qrCodes, setQrCodes] =
     useState({});
 
+  const [showStudents,
+    setShowStudents] =
+    useState(false);
+
   useEffect(() => {
     fetchStudents();
     fetchCourses();
@@ -35,131 +40,176 @@ function AdminPage() {
   }, [students]);
 
   // GENERAR QR
-  const generateQRCodes = async () => {
-    const qrMap = {};
+  const generateQRCodes =
+    async () => {
 
-    for (const student of students) {
-      try {
-        const qrUrl = `https://icadepro-fichaje-app.vercel.app/?code=${student.dni_code}`;
+      const qrMap = {};
 
-        const qr =
-          await QRCode.toDataURL(qrUrl);
+      for (const student of students) {
 
-        qrMap[student.id] = qr;
-      } catch (error) {
-        console.error(error);
+        try {
+
+          const qrUrl =
+            `https://icadepro-fichaje-app.vercel.app/?code=${student.dni_code}`;
+
+          const qr =
+            await QRCode.toDataURL(
+              qrUrl
+            );
+
+          qrMap[student.id] = qr;
+
+        } catch (error) {
+
+          console.error(error);
+        }
       }
-    }
 
-    setQrCodes(qrMap);
-  };
+      setQrCodes(qrMap);
+    };
 
   // OBTENER ALUMNOS
-  const fetchStudents = async () => {
-    const { data } = await supabase
-      .from('students')
-      .select('*')
-      .order('created_at', {
-        ascending: false,
-      });
+  const fetchStudents =
+    async () => {
 
-    if (data) {
-      setStudents(data);
-    }
-  };
+      const { data } =
+        await supabase
+          .from('students')
+          .select('*')
+          .order(
+            'created_at',
+            {
+              ascending: false,
+            }
+          );
+
+      if (data) {
+        setStudents(data);
+      }
+    };
 
   // OBTENER CURSOS
-  const fetchCourses = async () => {
-    const { data } = await supabase
-      .from('courses')
-      .select('*')
-      .order('created_at', {
-        ascending: false,
-      });
+  const fetchCourses =
+    async () => {
 
-    if (data) {
-      setCourses(data);
-    }
-  };
+      const { data } =
+        await supabase
+          .from('courses')
+          .select('*')
+          .order(
+            'created_at',
+            {
+              ascending: false,
+            }
+          );
+
+      if (data) {
+        setCourses(data);
+      }
+    };
 
   // CREAR ALUMNO
-  const createStudent = async () => {
-    if (!studentName || !dniCode) {
-      toast.error(
-        'Completa los datos'
+  const createStudent =
+    async () => {
+
+      if (
+        !studentName ||
+        !dniCode
+      ) {
+
+        toast.error(
+          'Completa los datos'
+        );
+
+        return;
+      }
+
+      const { error } =
+        await supabase
+          .from('students')
+          .insert([
+            {
+              full_name:
+                studentName,
+              dni_code:
+                dniCode,
+            },
+          ]);
+
+      if (error) {
+
+        toast.error(
+          'Error al crear alumno'
+        );
+
+        return;
+      }
+
+      toast.success(
+        'Alumno creado'
       );
 
-      return;
-    }
+      setStudentName('');
+      setDniCode('');
 
-    const { error } = await supabase
-      .from('students')
-      .insert([
-        {
-          full_name: studentName,
-          dni_code: dniCode,
-        },
-      ]);
-
-    if (error) {
-      toast.error(
-        'Error al crear alumno'
-      );
-
-      return;
-    }
-
-    toast.success('Alumno creado');
-
-    setStudentName('');
-    setDniCode('');
-
-    fetchStudents();
-  };
+      fetchStudents();
+    };
 
   // CREAR CURSO
-  const createCourse = async () => {
-    if (!courseName || !classroom) {
-      toast.error(
-        'Completa los datos'
+  const createCourse =
+    async () => {
+
+      if (
+        !courseName ||
+        !classroom
+      ) {
+
+        toast.error(
+          'Completa los datos'
+        );
+
+        return;
+      }
+
+      const { error } =
+        await supabase
+          .from('courses')
+          .insert([
+            {
+              name: courseName,
+              classroom,
+            },
+          ]);
+
+      if (error) {
+
+        toast.error(
+          'Error al crear curso'
+        );
+
+        return;
+      }
+
+      toast.success(
+        'Curso creado'
       );
 
-      return;
-    }
+      setCourseName('');
+      setClassroom('');
 
-    const { error } = await supabase
-      .from('courses')
-      .insert([
-        {
-          name: courseName,
-          classroom,
-        },
-      ]);
-
-    if (error) {
-      toast.error(
-        'Error al crear curso'
-      );
-
-      return;
-    }
-
-    toast.success('Curso creado');
-
-    setCourseName('');
-    setClassroom('');
-
-    fetchCourses();
-  };
+      fetchCourses();
+    };
 
   return (
     <div>
+
       {/* HEADER */}
       <div
         style={{
           marginBottom: '35px',
         }}
       >
+
         <h1
           style={{
             margin: 0,
@@ -177,9 +227,10 @@ function AdminPage() {
             fontSize: '16px',
           }}
         >
-          Gestiona alumnos, cursos y
-          códigos QR.
+          Gestiona alumnos,
+          cursos y códigos QR.
         </p>
+
       </div>
 
       {/* GRID */}
@@ -191,13 +242,16 @@ function AdminPage() {
           gap: '25px',
         }}
       >
+
         {/* ALUMNOS */}
         <div style={cardStyle}>
+
           <h2 style={titleStyle}>
             Crear Alumno
           </h2>
 
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Nombre completo
             </label>
@@ -213,9 +267,11 @@ function AdminPage() {
               }
               style={inputStyle}
             />
+
           </div>
 
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Código DNI
             </label>
@@ -232,6 +288,7 @@ function AdminPage() {
               }
               style={inputStyle}
             />
+
           </div>
 
           <button
@@ -241,94 +298,151 @@ function AdminPage() {
             Crear Alumno
           </button>
 
-          {/* LISTA ALUMNOS */}
+          {/* BOTON ALUMNOS */}
           <div
             style={{
               marginTop: '35px',
             }}
           >
-            {students.map((student) => (
+
+            <button
+              onClick={() =>
+                setShowStudents(
+                  !showStudents
+                )
+              }
+              style={
+                secondaryButton
+              }
+            >
+              {showStudents
+                ? 'Ocultar'
+                : 'Alumnos'}
+            </button>
+
+            {/* LISTADO */}
+            {showStudents && (
+
               <div
-                key={student.id}
-                style={studentCard}
+                style={{
+                  marginTop: '20px',
+                }}
               >
-                <div>
-                  <h3
-                    style={{
-                      margin: 0,
-                      color: '#111827',
-                      fontSize: '18px',
-                    }}
-                  >
-                    {
-                      student.full_name
-                    }
-                  </h3>
 
-                  <p
-                    style={{
-                      marginTop: '8px',
-                      color: '#6b7280',
-                    }}
-                  >
-                    Código:{' '}
-                    {
-                      student.dni_code
-                    }
-                  </p>
-                </div>
+                {students.map(
+                  (student) => (
 
-                <div
-                  style={{
-                    width: '90px',
-                    height: '90px',
-                    flexShrink: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {qrCodes[
-                    student.id
-                  ] && (
-                    <img
-                      src={
-                        qrCodes[
-                          student.id
-                        ]
+                    <div
+                      key={student.id}
+                      style={
+                        studentCard
                       }
-                      alt="QR"
-                      width="90"
-                      height="90"
-                      style={{
-                        width: '90px',
-                        height: '90px',
-                        objectFit:
-                          'contain',
-                        display:
-                          'block',
-                        borderRadius:
-                          '10px',
-                        backgroundColor:
-                          'white',
-                        padding: '5px',
-                        flexShrink: 0,
-                      }}
-                    />
-                  )}
-                </div>
+                    >
+
+                      <div>
+
+                        <h3
+                          style={{
+                            margin: 0,
+                            color:
+                              '#111827',
+                            fontSize:
+                              '18px',
+                          }}
+                        >
+                          {
+                            student.full_name
+                          }
+                        </h3>
+
+                        <p
+                          style={{
+                            marginTop:
+                              '8px',
+                            color:
+                              '#6b7280',
+                          }}
+                        >
+                          Código:{' '}
+                          {
+                            student.dni_code
+                          }
+                        </p>
+
+                      </div>
+
+                      <div
+                        style={{
+                          width:
+                            '90px',
+                          height:
+                            '90px',
+                          flexShrink: 0,
+                          display:
+                            'flex',
+                          alignItems:
+                            'center',
+                          justifyContent:
+                            'center',
+                        }}
+                      >
+
+                        {qrCodes[
+                          student.id
+                        ] && (
+
+                          <img
+                            src={
+                              qrCodes[
+                                student
+                                  .id
+                              ]
+                            }
+                            alt="QR"
+                            width="90"
+                            height="90"
+                            style={{
+                              width:
+                                '90px',
+                              height:
+                                '90px',
+                              objectFit:
+                                'contain',
+                              display:
+                                'block',
+                              borderRadius:
+                                '10px',
+                              backgroundColor:
+                                'white',
+                              padding:
+                                '5px',
+                              flexShrink: 0,
+                            }}
+                          />
+                        )}
+
+                      </div>
+
+                    </div>
+                  )
+                )}
+
               </div>
-            ))}
+            )}
+
           </div>
+
         </div>
 
         {/* CURSOS */}
         <div style={cardStyle}>
+
           <h2 style={titleStyle}>
             Crear Curso
           </h2>
 
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Nombre del curso
             </label>
@@ -344,9 +458,11 @@ function AdminPage() {
               }
               style={inputStyle}
             />
+
           </div>
 
           <div style={fieldContainer}>
+
             <label style={labelStyle}>
               Aula
             </label>
@@ -362,6 +478,7 @@ function AdminPage() {
               }
               style={inputStyle}
             />
+
           </div>
 
           <button
@@ -377,38 +494,54 @@ function AdminPage() {
               marginTop: '35px',
             }}
           >
-            {courses.map((course) => (
-              <div
-                key={course.id}
-                style={courseCard}
-              >
-                <div>
-                  <h3
-                    style={{
-                      margin: 0,
-                      color: '#111827',
-                      fontSize: '18px',
-                    }}
-                  >
-                    {course.name}
-                  </h3>
 
-                  <p
-                    style={{
-                      marginTop: '8px',
-                      color: '#6b7280',
-                    }}
-                  >
-                    {
-                      course.classroom
-                    }
-                  </p>
+            {courses.map(
+              (course) => (
+
+                <div
+                  key={course.id}
+                  style={courseCard}
+                >
+
+                  <div>
+
+                    <h3
+                      style={{
+                        margin: 0,
+                        color:
+                          '#111827',
+                        fontSize:
+                          '18px',
+                      }}
+                    >
+                      {course.name}
+                    </h3>
+
+                    <p
+                      style={{
+                        marginTop:
+                          '8px',
+                        color:
+                          '#6b7280',
+                      }}
+                    >
+                      {
+                        course.classroom
+                      }
+                    </p>
+
+                  </div>
+
                 </div>
-              </div>
-            ))}
+              )
+            )}
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 }
@@ -468,9 +601,22 @@ const primaryButton = {
     '0 8px 20px rgba(244,121,32,0.20)',
 };
 
+const secondaryButton = {
+  width: '100%',
+  padding: '18px',
+  borderRadius: '20px',
+  border: 'none',
+  backgroundColor: '#111827',
+  color: 'white',
+  fontSize: '16px',
+  fontWeight: '700',
+  cursor: 'pointer',
+};
+
 const studentCard = {
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent:
+    'space-between',
   alignItems: 'center',
   gap: '20px',
   backgroundColor: '#ffffff',
