@@ -1,52 +1,52 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
 
-import * as XLSX from 'xlsx';
-
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-
 function HistoryPage() {
+
   const [checkins, setCheckins] =
     useState([]);
 
-  const [searchCode, setSearchCode] =
+  const [teacherCheckins,
+    setTeacherCheckins] =
+    useState([]);
+
+  const [startDate, setStartDate] =
     useState('');
 
-  const [filterCourse, setFilterCourse] =
-    useState('');
-
-  const [filterType, setFilterType] =
+  const [endDate, setEndDate] =
     useState('');
 
   useEffect(() => {
     fetchCheckins();
+    fetchTeacherCheckins();
   }, []);
 
+  // HISTORIAL ALUMNADO
   const fetchCheckins = async () => {
-    // FICHAJES
-    const { data, error } =
-      await supabase
-        .from('checkins')
-        .select('*')
-        .order('created_at', {
-          ascending: false,
-        });
+
+    const {
+      data: checkinsData,
+      error,
+    } = await supabase
+      .from('checkins')
+      .select('*')
+      .order('created_at', {
+        ascending: false,
+      });
 
     if (error) {
       console.error(error);
       return;
     }
 
-    // ALUMNOS
     const { data: studentsData } =
       await supabase
         .from('students')
         .select('*');
 
-    // UNIR DATOS
     const formattedCheckins =
-      data.map((checkin) => {
+      checkinsData.map((checkin) => {
+
         const student =
           studentsData.find(
             (s) =>
@@ -65,237 +65,172 @@ function HistoryPage() {
     setCheckins(formattedCheckins);
   };
 
+  // HISTORIAL PROFESORADO
+  const fetchTeacherCheckins =
+    async () => {
+
+      const {
+        data,
+        error,
+      } = await supabase
+        .from(
+          'teacher_checkins'
+        )
+        .select('*')
+        .order('created_at', {
+          ascending: false,
+        });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setTeacherCheckins(data);
+    };
+
+  // FORMATEAR FECHA
+  const formatDate = (
+    date
+  ) => {
+
+    return new Date(
+      date
+    ).toLocaleString(
+      'es-ES',
+      {
+        timeZone:
+          'Atlantic/Canary',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      }
+    );
+  };
+
+  // FILTRAR FECHAS
   const filteredCheckins =
     checkins.filter((item) => {
-      const matchesCode =
-        item.student_name
-          .toLowerCase()
-          .includes(
-            searchCode.toLowerCase()
-          );
 
-      const matchesCourse =
-        filterCourse === '' ||
-        item.course === filterCourse;
+      if (
+        !startDate &&
+        !endDate
+      ) {
+        return true;
+      }
 
-      const matchesType =
-        filterType === '' ||
-        item.type === filterType;
-
-      return (
-        matchesCode &&
-        matchesCourse &&
-        matchesType
-      );
-    });
-
-  // EXPORTAR EXCEL
-  const exportExcel = () => {
-    const data = filteredCheckins.map(
-      (item) => ({
-        Alumno: item.student_name,
-        Curso: item.course,
-        Aula: item.classroom,
-        Tipo: item.type,
-        Fecha: new Date(
+      const itemDate =
+        new Date(
           item.created_at
-        ).toLocaleString(),
-      })
-    );
+        );
 
-    const worksheet =
-      XLSX.utils.json_to_sheet(data);
+      const start =
+        startDate
+          ? new Date(startDate)
+          : null;
 
-    const workbook =
-      XLSX.utils.book_new();
+      const end =
+        endDate
+          ? new Date(
+              endDate +
+              'T23:59:59'
+            )
+          : null;
 
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      'Fichajes'
-    );
+      if (
+        start &&
+        itemDate < start
+      ) {
+        return false;
+      }
 
-    XLSX.writeFile(
-      workbook,
-      'historico-fichajes.xlsx'
-    );
-  };
+      if (
+        end &&
+        itemDate > end
+      ) {
+        return false;
+      }
 
-  // EXPORTAR PDF
-  const exportPDF = () => {
-    const doc = new jsPDF();
-
-    doc.text(
-      'Histórico de Fichajes',
-      14,
-      15
-    );
-
-    autoTable(doc, {
-      startY: 25,
-      head: [
-        [
-          'Alumno',
-          'Curso',
-          'Aula',
-          'Tipo',
-          'Fecha',
-        ],
-      ],
-      body: filteredCheckins.map(
-        (item) => [
-          item.student_name,
-          item.course,
-          item.classroom,
-          item.type,
-          new Date(
-            item.created_at
-          ).toLocaleString(),
-        ]
-      ),
+      return true;
     });
-
-    doc.save(
-      'historico-fichajes.pdf'
-    );
-  };
 
   return (
     <div>
-      {/* HEADER */}
+
+      <h1>
+        Historial de Fichajes
+      </h1>
+
+      {/* FILTROS */}
       <div
         style={{
-          marginBottom: '35px',
+          display: 'flex',
+          gap: '15px',
+          marginTop: '20px',
+          marginBottom: '20px',
         }}
       >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: '42px',
-            color: '#111827',
-          }}
-        >
-          Histórico y Reportes
-        </h1>
 
-        <p
-          style={{
-            marginTop: '10px',
-            color: '#6b7280',
-            fontSize: '16px',
-          }}
-        >
-          Consulta y exporta el
-          historial completo de
-          fichajes.
-        </p>
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) =>
+            setStartDate(
+              e.target.value
+            )
+          }
+          style={inputStyle}
+        />
+
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) =>
+            setEndDate(
+              e.target.value
+            )
+          }
+          style={inputStyle}
+        />
+
       </div>
 
-      {/* CARD FILTROS */}
-      <div style={filterCard}>
-        <div style={filterGrid}>
-          <input
-            type="text"
-            placeholder="Buscar alumno..."
-            value={searchCode}
-            onChange={(e) =>
-              setSearchCode(
-                e.target.value
-              )
-            }
-            style={inputStyle}
-          />
+      {/* HISTORIAL ALUMNADO */}
+      <div
+        style={{
+          marginTop: '20px',
+          backgroundColor:
+            'white',
+          padding: '20px',
+          borderRadius: '10px',
+          overflowX: 'auto',
+        }}
+      >
 
-          <select
-            value={filterCourse}
-            onChange={(e) =>
-              setFilterCourse(
-                e.target.value
-              )
-            }
-            style={inputStyle}
-          >
-            <option value="">
-              Todos los cursos
-            </option>
-
-            <option value="Marketing Digital">
-              Marketing Digital
-            </option>
-
-            <option value="Diseño Web">
-              Diseño Web
-            </option>
-
-            <option value="Excel Avanzado">
-              Excel Avanzado
-            </option>
-          </select>
-
-          <select
-            value={filterType}
-            onChange={(e) =>
-              setFilterType(
-                e.target.value
-              )
-            }
-            style={inputStyle}
-          >
-            <option value="">
-              Todos
-            </option>
-
-            <option value="Entrada">
-              Entrada
-            </option>
-
-            <option value="Salida">
-              Salida
-            </option>
-          </select>
-        </div>
-
-        {/* EXPORTAR */}
-        <div
+        <h2
           style={{
-            display: 'flex',
-            gap: '15px',
-            marginTop: '25px',
-            flexWrap: 'wrap',
+            marginTop: 0,
+            marginBottom: '20px',
           }}
         >
-          <button
-            onClick={exportExcel}
-            style={excelButton}
-          >
-            Descargar Excel
-          </button>
+          Historial Alumnado
+        </h2>
 
-          <button
-            onClick={exportPDF}
-            style={pdfButton}
-          >
-            Descargar PDF
-          </button>
-        </div>
-      </div>
-
-      {/* TABLA */}
-      <div style={tableCard}>
         <table
           style={{
             width: '100%',
-            borderCollapse: 'collapse',
+            borderCollapse:
+              'collapse',
           }}
         >
+
           <thead>
-            <tr
-              style={{
-                backgroundColor:
-                  '#f47920',
-                color: 'white',
-              }}
-            >
+
+            <tr>
+
               <th style={thStyle}>
                 Alumno
               </th>
@@ -313,27 +248,28 @@ function HistoryPage() {
               </th>
 
               <th style={thStyle}>
-                Fecha
+                Fecha/Hora
               </th>
+
             </tr>
+
           </thead>
 
           <tbody>
+
             {filteredCheckins.map(
               (item) => (
+
                 <tr
-                  key={item.id}
-                  style={{
-                    transition:
-                      '0.2s',
-                  }}
+                  key={
+                    item.created_at
+                  }
                 >
+
                   <td style={tdStyle}>
-                    <strong>
-                      {
-                        item.student_name
-                      }
-                    </strong>
+                    {
+                      item.student_name
+                    }
                   </td>
 
                   <td style={tdStyle}>
@@ -341,116 +277,139 @@ function HistoryPage() {
                   </td>
 
                   <td style={tdStyle}>
-                    {item.classroom}
+                    {
+                      item.classroom
+                    }
                   </td>
 
                   <td style={tdStyle}>
-                    <span
-                      style={{
-                        ...badgeStyle,
-                        backgroundColor:
-                          item.type ===
-                          'Entrada'
-                            ? '#dcfce7'
-                            : '#fee2e2',
-
-                        color:
-                          item.type ===
-                          'Entrada'
-                            ? '#166534'
-                            : '#991b1b',
-                      }}
-                    >
-                      {item.type}
-                    </span>
+                    {item.type}
                   </td>
 
                   <td style={tdStyle}>
-                    {new Date(
+                    {formatDate(
                       item.created_at
-                    ).toLocaleString()}
+                    )}
                   </td>
+
                 </tr>
               )
             )}
+
           </tbody>
+
         </table>
+
       </div>
+
+      {/* HISTORIAL PROFESORADO */}
+      <div
+        style={{
+          marginTop: '30px',
+          backgroundColor:
+            'white',
+          padding: '20px',
+          borderRadius: '10px',
+          overflowX: 'auto',
+        }}
+      >
+
+        <h2
+          style={{
+            marginTop: 0,
+            marginBottom: '20px',
+          }}
+        >
+          Historial Profesorado
+        </h2>
+
+        <table
+          style={{
+            width: '100%',
+            borderCollapse:
+              'collapse',
+          }}
+        >
+
+          <thead>
+
+            <tr>
+
+              <th style={thStyle}>
+                Profesor
+              </th>
+
+              <th style={thStyle}>
+                Tipo
+              </th>
+
+              <th style={thStyle}>
+                Fecha/Hora
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {teacherCheckins.map(
+              (item) => (
+
+                <tr
+                  key={
+                    item.created_at
+                  }
+                >
+
+                  <td style={tdStyle}>
+                    {
+                      item.teacher_name
+                    }
+                  </td>
+
+                  <td style={tdStyle}>
+                    {item.type}
+                  </td>
+
+                  <td style={tdStyle}>
+                    {formatDate(
+                      item.created_at
+                    )}
+                  </td>
+
+                </tr>
+              )
+            )}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
   );
 }
 
-const filterCard = {
-  backgroundColor: 'white',
-  padding: '30px',
-  borderRadius: '24px',
-  boxShadow:
-    '0 10px 30px rgba(0,0,0,0.05)',
-  marginBottom: '25px',
-};
-
-const filterGrid = {
-  display: 'grid',
-  gridTemplateColumns:
-    'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: '18px',
-};
-
-const inputStyle = {
-  padding: '16px',
-  borderRadius: '14px',
-  border: '1px solid #d1d5db',
-  fontSize: '15px',
-  outline: 'none',
-};
-
-const excelButton = {
-  padding: '14px 22px',
-  backgroundColor: '#217346',
-  color: 'white',
-  border: 'none',
-  borderRadius: '14px',
-  cursor: 'pointer',
-  fontWeight: '600',
-  fontSize: '15px',
-};
-
-const pdfButton = {
-  padding: '14px 22px',
-  backgroundColor: '#d32f2f',
-  color: 'white',
-  border: 'none',
-  borderRadius: '14px',
-  cursor: 'pointer',
-  fontWeight: '600',
-  fontSize: '15px',
-};
-
-const tableCard = {
-  backgroundColor: 'white',
-  borderRadius: '24px',
-  overflowX: 'auto',
-  boxShadow:
-    '0 10px 30px rgba(0,0,0,0.05)',
-};
-
 const thStyle = {
-  padding: '18px',
   textAlign: 'left',
-  fontSize: '15px',
+  padding: '12px',
+  borderBottom:
+    '2px solid #ddd',
 };
 
 const tdStyle = {
-  padding: '18px',
-  borderBottom: '1px solid #f1f1f1',
-  color: '#374151',
+  padding: '12px',
+  borderBottom:
+    '1px solid #eee',
 };
 
-const badgeStyle = {
-  padding: '8px 14px',
-  borderRadius: '999px',
-  fontSize: '13px',
-  fontWeight: '600',
+const inputStyle = {
+  padding: '12px',
+  borderRadius: '10px',
+  border: '1px solid #ddd',
+  fontSize: '14px',
 };
 
 export default HistoryPage;
