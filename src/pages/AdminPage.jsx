@@ -278,27 +278,45 @@ function AdminPage() {
                   </p>
                 </div>
 
-                {qrCodes[
-                  student.id
-                ] && (
-                  <img
-                    src={
-                      qrCodes[
-                        student.id
-                      ]
-                    }
-                    alt="QR"
-                    width="90"
-                    height="90"
-                    style={{
-                      borderRadius:
-                        '10px',
-                      backgroundColor:
-                        'white',
-                      padding: '5px',
-                    }}
-                  />
-                )}
+                <div
+                  style={{
+                    width: '90px',
+                    height: '90px',
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {qrCodes[
+                    student.id
+                  ] && (
+                    <img
+                      src={
+                        qrCodes[
+                          student.id
+                        ]
+                      }
+                      alt="QR"
+                      width="90"
+                      height="90"
+                      style={{
+                        width: '90px',
+                        height: '90px',
+                        objectFit:
+                          'contain',
+                        display:
+                          'block',
+                        borderRadius:
+                          '10px',
+                        backgroundColor:
+                          'white',
+                        padding: '5px',
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                </div>
               </div>
             ))}
           </div>
