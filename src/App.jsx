@@ -12,7 +12,6 @@ import AdminPage from './pages/AdminPage';
 import HistoryPage from './pages/HistoryPage';
 import TeacherHistoryPage from './pages/TeacherHistoryPage';
 import LoginPage from './pages/LoginPage';
-import TeacherCheckInPage from './pages/TeacherCheckInPage';
 
 // PROTEGER RUTAS
 function ProtectedRoute({
@@ -42,22 +41,12 @@ function App() {
           element={<LoginPage />}
         />
 
-        {/* FICHAJE ALUMNOS */}
+        {/* FICHAJE */}
         <Route
           path="/"
           element={
-            <MainLayout hideHeader>
+            <MainLayout>
               <CheckInPage />
-            </MainLayout>
-          }
-        />
-
-        {/* FICHAJE PROFESORES */}
-        <Route
-          path="/teacher-checkin"
-          element={
-            <MainLayout hideHeader>
-              <TeacherCheckInPage />
             </MainLayout>
           }
         />
@@ -76,7 +65,7 @@ function App() {
           }
         />
 
-        {/* HISTORY */}
+        {/* HISTORIAL ALUMNOS */}
         <Route
           path="/history"
           element={
@@ -90,18 +79,19 @@ function App() {
           }
         />
 
+        {/* HISTORIAL PROFESORES */}
         <Route
-  path="/teacher-history"
-  element={
-    <ProtectedRoute>
+          path="/teacher-history"
+          element={
+            <ProtectedRoute>
 
-      <MainLayout>
-        <TeacherHistoryPage />
-      </MainLayout>
+              <MainLayout>
+                <TeacherHistoryPage />
+              </MainLayout>
 
-    </ProtectedRoute>
-  }
-/>
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
 
