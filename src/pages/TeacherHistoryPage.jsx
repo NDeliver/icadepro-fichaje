@@ -7,6 +7,14 @@ function TeacherHistoryPage() {
     setTeacherCheckins] =
     useState([]);
 
+  const [startDate,
+    setStartDate] =
+    useState('');
+
+  const [endDate,
+    setEndDate] =
+    useState('');
+
   useEffect(() => {
     fetchTeacherCheckins();
   }, []);
@@ -57,6 +65,54 @@ function TeacherHistoryPage() {
     );
   };
 
+  // FILTRAR FECHAS
+  const filteredTeacherCheckins =
+    teacherCheckins.filter(
+      (item) => {
+
+        if (
+          !startDate &&
+          !endDate
+        ) {
+          return true;
+        }
+
+        const itemDate =
+          new Date(
+            item.created_at
+          );
+
+        const start =
+          startDate
+            ? new Date(startDate)
+            : null;
+
+        const end =
+          endDate
+            ? new Date(
+                endDate +
+                'T23:59:59'
+              )
+            : null;
+
+        if (
+          start &&
+          itemDate < start
+        ) {
+          return false;
+        }
+
+        if (
+          end &&
+          itemDate > end
+        ) {
+          return false;
+        }
+
+        return true;
+      }
+    );
+
   return (
     <div>
 
@@ -80,6 +136,71 @@ function TeacherHistoryPage() {
         Consulta el historial completo de fichajes del profesorado.
       </p>
 
+      {/* FILTROS */}
+      <div
+        style={{
+          backgroundColor: '#f5f5f5',
+          padding: '30px',
+          borderRadius: '30px',
+          marginBottom: '30px',
+        }}
+      >
+
+        <div
+          style={{
+            display: 'flex',
+            gap: '15px',
+            flexWrap: 'wrap',
+          }}
+        >
+
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Fecha desde
+            </label>
+
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) =>
+                setStartDate(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            />
+
+          </div>
+
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Fecha hasta
+            </label>
+
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) =>
+                setEndDate(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            />
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* TABLA */}
       <div
         style={tableContainer}
       >
@@ -128,7 +249,7 @@ function TeacherHistoryPage() {
 
           <tbody>
 
-            {teacherCheckins.map(
+            {filteredTeacherCheckins.map(
               (item) => (
 
                 <tr
@@ -193,6 +314,22 @@ const tdStyle = {
   borderBottom:
     '1px solid #f1f1f1',
   backgroundColor: 'white',
+};
+
+const inputStyle = {
+  padding: '16px',
+  borderRadius: '14px',
+  border: '1px solid #d1d5db',
+  fontSize: '15px',
+  minWidth: '220px',
+  backgroundColor: 'white',
+};
+
+const labelStyle = {
+  display: 'block',
+  marginBottom: '8px',
+  fontWeight: '600',
+  color: '#374151',
 };
 
 export default TeacherHistoryPage;
