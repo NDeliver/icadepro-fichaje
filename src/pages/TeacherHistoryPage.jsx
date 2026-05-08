@@ -15,7 +15,7 @@ function TeacherHistoryPage() {
             color: '#111827',
           }}
         >
-          Historial Profesores
+          Historial Profesorado
         </h1>
 
         <p
