@@ -93,9 +93,6 @@ function TeacherCheckInPage() {
               teacher.full_name,
 
             type,
-
-            created_at:
-              new Date(),
           },
         ]);
 
