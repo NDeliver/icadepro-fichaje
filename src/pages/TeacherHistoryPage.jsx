@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 function TeacherHistoryPage() {
 
@@ -74,7 +77,6 @@ function TeacherHistoryPage() {
     teacherCheckins.filter(
       (item) => {
 
-        // FECHAS
         const itemDate =
           new Date(
             item.created_at
@@ -107,7 +109,6 @@ function TeacherHistoryPage() {
           return false;
         }
 
-        // PROFESOR
         if (
           searchTeacher &&
           !item.teacher_name
@@ -122,6 +123,149 @@ function TeacherHistoryPage() {
         return true;
       }
     );
+
+  // EXPORTAR EXCEL
+  const exportExcel = () => {
+
+    const data =
+      filteredTeacherCheckins.map(
+        (item) => ({
+          Profesor:
+            item.teacher_name,
+          Tipo:
+            item.type,
+          Fecha:
+            formatDate(
+              item.created_at
+            ),
+        })
+      );
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        data
+      );
+
+    const workbook =
+      XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      'Profesorado'
+    );
+
+    XLSX.writeFile(
+      workbook,
+      'historial_profesorado.xlsx'
+    );
+  };
+
+  // EXPORTAR PDF
+  const exportPDF = () => {
+
+    const doc = new jsPDF();
+
+    // LOGO TEXTO
+    doc.setFontSize(24);
+
+    doc.setTextColor(
+      244,
+      121,
+      32
+    );
+
+    doc.text(
+      'ICADEPRO',
+      14,
+      20
+    );
+
+    // TITULO
+    doc.setFontSize(18);
+
+    doc.setTextColor(
+      17,
+      24,
+      39
+    );
+
+    doc.text(
+      'Historial Profesorado',
+      14,
+      35
+    );
+
+    // FECHA
+    doc.setFontSize(11);
+
+    doc.setTextColor(
+      107,
+      114,
+      128
+    );
+
+    doc.text(
+      `Generado: ${new Date().toLocaleString('es-ES')}`,
+      14,
+      43
+    );
+
+    autoTable(doc, {
+
+      startY: 55,
+
+      head: [[
+        'Profesor',
+        'Tipo',
+        'Fecha',
+      ]],
+
+      body:
+        filteredTeacherCheckins.map(
+          (item) => [
+            item.teacher_name,
+            item.type,
+            formatDate(
+              item.created_at
+            ),
+          ]
+        ),
+
+      headStyles: {
+        fillColor: [
+          244,
+          121,
+          32,
+        ],
+        textColor: 255,
+        fontStyle: 'bold',
+      },
+
+      styles: {
+        fontSize: 10,
+        cellPadding: 4,
+      },
+
+      alternateRowStyles: {
+        fillColor: [
+          248,
+          248,
+          248,
+        ],
+      },
+
+      margin: {
+        left: 14,
+        right: 14,
+      },
+
+    });
+
+    doc.save(
+      'historial_profesorado_icadepro.pdf'
+    );
+  };
 
   return (
     <div>
@@ -165,72 +309,64 @@ function TeacherHistoryPage() {
           }}
         >
 
-          {/* PROFESOR */}
-          <div>
+          <input
+            type="text"
+            placeholder="Buscar profesor..."
+            value={searchTeacher}
+            onChange={(e) =>
+              setSearchTeacher(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-            <label
-              style={labelStyle}
-            >
-              Profesor
-            </label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) =>
+              setStartDate(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-            <input
-              type="text"
-              placeholder="Buscar profesor..."
-              value={searchTeacher}
-              onChange={(e) =>
-                setSearchTeacher(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) =>
+              setEndDate(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-          </div>
+        </div>
 
-          {/* FECHA DESDE */}
-          <div>
+        {/* BOTONES */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '15px',
+            marginTop: '25px',
+          }}
+        >
 
-            <label
-              style={labelStyle}
-            >
-              Fecha desde
-            </label>
+          <button
+            onClick={exportExcel}
+            style={excelButton}
+          >
+            Descargar Excel
+          </button>
 
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) =>
-                setStartDate(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            />
-
-          </div>
-
-          {/* FECHA HASTA */}
-          <div>
-
-            <label
-              style={labelStyle}
-            >
-              Fecha hasta
-            </label>
-
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) =>
-                setEndDate(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            />
-
-          </div>
+          <button
+            onClick={exportPDF}
+            style={pdfButton}
+          >
+            Descargar PDF
+          </button>
 
         </div>
 
@@ -361,11 +497,26 @@ const inputStyle = {
   backgroundColor: 'white',
 };
 
-const labelStyle = {
-  display: 'block',
-  marginBottom: '8px',
-  fontWeight: '600',
-  color: '#374151',
+const excelButton = {
+  backgroundColor: '#15803d',
+  color: 'white',
+  border: 'none',
+  padding: '14px 22px',
+  borderRadius: '14px',
+  cursor: 'pointer',
+  fontWeight: '700',
+  fontSize: '14px',
+};
+
+const pdfButton = {
+  backgroundColor: '#dc2626',
+  color: 'white',
+  border: 'none',
+  padding: '14px 22px',
+  borderRadius: '14px',
+  cursor: 'pointer',
+  fontWeight: '700',
+  fontSize: '14px',
 };
 
 export default TeacherHistoryPage;
