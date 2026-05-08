@@ -12,6 +12,14 @@ function HistoryPage() {
   const [endDate, setEndDate] =
     useState('');
 
+  const [searchStudent,
+    setSearchStudent] =
+    useState('');
+
+  const [selectedCourse,
+    setSelectedCourse] =
+    useState('');
+
   useEffect(() => {
     fetchCheckins();
   }, []);
@@ -82,17 +90,11 @@ function HistoryPage() {
     );
   };
 
-  // FILTRAR FECHAS
+  // FILTROS
   const filteredCheckins =
     checkins.filter((item) => {
 
-      if (
-        !startDate &&
-        !endDate
-      ) {
-        return true;
-      }
-
+      // FECHAS
       const itemDate =
         new Date(
           item.created_at
@@ -121,6 +123,27 @@ function HistoryPage() {
       if (
         end &&
         itemDate > end
+      ) {
+        return false;
+      }
+
+      // ALUMNO
+      if (
+        searchStudent &&
+        !item.student_name
+          ?.toLowerCase()
+          .includes(
+            searchStudent.toLowerCase()
+          )
+      ) {
+        return false;
+      }
+
+      // CURSO
+      if (
+        selectedCourse &&
+        item.course !==
+          selectedCourse
       ) {
         return false;
       }
@@ -166,9 +189,76 @@ function HistoryPage() {
             display: 'flex',
             gap: '15px',
             flexWrap: 'wrap',
+            alignItems: 'end',
           }}
         >
 
+          {/* ALUMNO */}
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Alumno
+            </label>
+
+            <input
+              type="text"
+              placeholder="Buscar alumno..."
+              value={searchStudent}
+              onChange={(e) =>
+                setSearchStudent(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            />
+
+          </div>
+
+          {/* CURSO */}
+          <div>
+
+            <label
+              style={labelStyle}
+            >
+              Curso
+            </label>
+
+            <select
+              value={selectedCourse}
+              onChange={(e) =>
+                setSelectedCourse(
+                  e.target.value
+                )
+              }
+              style={inputStyle}
+            >
+
+              <option value="">
+                Todos los cursos
+              </option>
+
+              {[...new Set(
+                checkins.map(
+                  (item) =>
+                    item.course
+                )
+              )].map((course) => (
+
+                <option
+                  key={course}
+                  value={course}
+                >
+                  {course}
+                </option>
+              ))}
+
+            </select>
+
+          </div>
+
+          {/* FECHA DESDE */}
           <div>
 
             <label
@@ -190,6 +280,7 @@ function HistoryPage() {
 
           </div>
 
+          {/* FECHA HASTA */}
           <div>
 
             <label
