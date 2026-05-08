@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 function HistoryPage() {
 
@@ -94,7 +97,6 @@ function HistoryPage() {
   const filteredCheckins =
     checkins.filter((item) => {
 
-      // FECHAS
       const itemDate =
         new Date(
           item.created_at
@@ -127,7 +129,6 @@ function HistoryPage() {
         return false;
       }
 
-      // ALUMNO
       if (
         searchStudent &&
         !item.student_name
@@ -139,7 +140,6 @@ function HistoryPage() {
         return false;
       }
 
-      // CURSO
       if (
         selectedCourse &&
         item.course !==
@@ -150,6 +150,86 @@ function HistoryPage() {
 
       return true;
     });
+
+  // EXPORTAR EXCEL
+  const exportExcel = () => {
+
+    const data =
+      filteredCheckins.map(
+        (item) => ({
+          Alumno:
+            item.student_name,
+          Curso:
+            item.course,
+          Aula:
+            item.classroom,
+          Tipo:
+            item.type,
+          Fecha:
+            formatDate(
+              item.created_at
+            ),
+        })
+      );
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        data
+      );
+
+    const workbook =
+      XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      'Historial'
+    );
+
+    XLSX.writeFile(
+      workbook,
+      'historial_alumnado.xlsx'
+    );
+  };
+
+  // EXPORTAR PDF
+  const exportPDF = () => {
+
+    const doc = new jsPDF();
+
+    doc.text(
+      'Historial Alumnado',
+      14,
+      15
+    );
+
+    autoTable(doc, {
+      startY: 25,
+      head: [[
+        'Alumno',
+        'Curso',
+        'Aula',
+        'Tipo',
+        'Fecha',
+      ]],
+      body:
+        filteredCheckins.map(
+          (item) => [
+            item.student_name,
+            item.course,
+            item.classroom,
+            item.type,
+            formatDate(
+              item.created_at
+            ),
+          ]
+        ),
+    });
+
+    doc.save(
+      'historial_alumnado.pdf'
+    );
+  };
 
   return (
     <div>
@@ -193,129 +273,103 @@ function HistoryPage() {
           }}
         >
 
-          {/* ALUMNO */}
-          <div>
+          <input
+            type="text"
+            placeholder="Buscar alumno..."
+            value={searchStudent}
+            onChange={(e) =>
+              setSearchStudent(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-            <label
-              style={labelStyle}
-            >
-              Alumno
-            </label>
+          <select
+            value={selectedCourse}
+            onChange={(e) =>
+              setSelectedCourse(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          >
 
-            <input
-              type="text"
-              placeholder="Buscar alumno..."
-              value={searchStudent}
-              onChange={(e) =>
-                setSearchStudent(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            />
+            <option value="">
+              Todos los cursos
+            </option>
 
-          </div>
+            {[...new Set(
+              checkins.map(
+                (item) =>
+                  item.course
+              )
+            )].map((course) => (
 
-          {/* CURSO */}
-          <div>
-
-            <label
-              style={labelStyle}
-            >
-              Curso
-            </label>
-
-            <select
-              value={selectedCourse}
-              onChange={(e) =>
-                setSelectedCourse(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            >
-
-              <option value="">
-                Todos los cursos
+              <option
+                key={course}
+                value={course}
+              >
+                {course}
               </option>
+            ))}
 
-              {[...new Set(
-                checkins.map(
-                  (item) =>
-                    item.course
-                )
-              )].map((course) => (
+          </select>
 
-                <option
-                  key={course}
-                  value={course}
-                >
-                  {course}
-                </option>
-              ))}
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) =>
+              setStartDate(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-            </select>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) =>
+              setEndDate(
+                e.target.value
+              )
+            }
+            style={inputStyle}
+          />
 
-          </div>
+        </div>
 
-          {/* FECHA DESDE */}
-          <div>
+        <div
+          style={{
+            display: 'flex',
+            gap: '15px',
+            marginTop: '25px',
+          }}
+        >
 
-            <label
-              style={labelStyle}
-            >
-              Fecha desde
-            </label>
+          <button
+            onClick={exportExcel}
+            style={excelButton}
+          >
+            Descargar Excel
+          </button>
 
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) =>
-                setStartDate(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            />
-
-          </div>
-
-          {/* FECHA HASTA */}
-          <div>
-
-            <label
-              style={labelStyle}
-            >
-              Fecha hasta
-            </label>
-
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) =>
-                setEndDate(
-                  e.target.value
-                )
-              }
-              style={inputStyle}
-            />
-
-          </div>
+          <button
+            onClick={exportPDF}
+            style={pdfButton}
+          >
+            Descargar PDF
+          </button>
 
         </div>
 
       </div>
 
-      {/* HISTORIAL ALUMNADO */}
+      {/* TABLA */}
       <div
         style={tableContainer}
       >
-
-        <h2
-          style={titleStyle}
-        >
-          Historial Alumnado
-        </h2>
 
         <table
           style={tableStyle}
@@ -432,13 +486,6 @@ const tableStyle = {
     'collapse',
 };
 
-const titleStyle = {
-  padding: '30px 30px 0px',
-  margin: 0,
-  marginBottom: '20px',
-  color: '#111827',
-};
-
 const thStyle = {
   textAlign: 'left',
   padding: '18px',
@@ -462,11 +509,26 @@ const inputStyle = {
   backgroundColor: 'white',
 };
 
-const labelStyle = {
-  display: 'block',
-  marginBottom: '8px',
-  fontWeight: '600',
-  color: '#374151',
+const excelButton = {
+  backgroundColor: '#15803d',
+  color: 'white',
+  border: 'none',
+  padding: '14px 22px',
+  borderRadius: '14px',
+  cursor: 'pointer',
+  fontWeight: '700',
+  fontSize: '14px',
+};
+
+const pdfButton = {
+  backgroundColor: '#dc2626',
+  color: 'white',
+  border: 'none',
+  padding: '14px 22px',
+  borderRadius: '14px',
+  cursor: 'pointer',
+  fontWeight: '700',
+  fontSize: '14px',
 };
 
 export default HistoryPage;
